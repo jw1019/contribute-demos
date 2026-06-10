@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Presence — Creator Card + AI Chat</title>
+<style>
+/* ── Reset ── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-font-smoothing:antialiased; }
+
+/* ── Design tokens (from Figma) ── */
+:root {
+  --cream:      #F0EAE0;
+  --cream-mid:  #E8E1D6;
+  --white:      #FFFFFF;
+  --black:      #1A1A1A;
+  --gray-dark:  #444444;
+  --gray-mid:   #888888;
+  --gray-light: #CCCCCC;
+  --border:     #E4DDD4;
+  --purple:     #7B5EA7;
+  --purple-dim: rgba(123,94,167,0.12);
+
+  /* chat (AiJiv palette) */
+  --chat-bg:    #FAFAFE;
+  --chat-blue:  #7B88CC;
+  --chat-blue-h:#6A77BB;
+  --chat-border:#E6E6F2;
+  --chat-bubble:#F0F2FB;
+  --chat-muted: #9999BB;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  background: #1E1E1E;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 36px 16px 56px;
+}
+
+/* Touch targets — eliminate iOS 300ms tap delay */
+button, a, [onclick] { touch-action: manipulation; }
+
+/* On real phones — fill the screen, no bezel */
+@media (max-width: 480px) {
+  body { padding: 0; background: var(--cream); }
+  .phone-wrap { display: block; }
+  .phone-caption { display: none; }
+  .phone {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+  }
+  .phone::before { display: none !important; }
+  /* Account for iOS safe area (home indicator / notch) */
+  #s1 .sbar, #s3 .sbar, #s4 .sbar {
+    padding-top: max(38px, env(safe-area-inset-top));
+  }
+  .spacer16 { padding-bottom: env(safe-area-inset-bottom, 16px); }
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  width: 188px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-top: 4px;
+  position: sticky;
+  top: 36px;
+}
+
+.sb-label {
+  color: rgba(255,255,255,0.28);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0 4px;
+  margin-bottom: 4px;
+}
+
+.sb-btn {
+  background: rgba(255,255,255,0.05);
+  color: rgba(255,255,255,0.45);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 9px;
+  padding: 9px 12px;
+  font-size: 12.5px;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: left;
+  line-height: 1.3;
+  transition: all 0.18s;
+}
+.sb-btn:hover { background: rgba(255,255,255,0.09); color: rgba(255,255,255,0.7); }
+.sb-btn.on {
+  background: rgba(123,94,167,0.2);
+  border-color: rgba(123,94,167,0.4);
+  color: #C4AEDE;
+  font-weight: 600;
+}
+.sb-sub { font-size: 10px; opacity: 0.5; display: block; margin-top: 1px; }
+.sb-rule { border: none; border-top: 1px solid rgba(255,255,255,0.07); margin: 4px 0; }
+.sb-note { color: rgba(255,255,255,0.2); font-size: 11px; line-height: 1.5; padding: 6px 4px; }
+
+/* ── Phone ── */
+.phone-wrap { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.phone-caption { color: rgba(255,255,255,0.22); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; }
+
+.phone {
+  width: 375px;
+  height: 812px;
+  background: var(--cream);
+  border-radius: 46px;
+  overflow: hidden;
+  position: relative;
+  box-shadow:
+    0 0 0 10px #0d0d0d,
+    0 0 0 11px #2a2a2a,
+    0 36px 80px rgba(0,0,0,0.65);
+}
+
+/* Notch */
+.phone::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 116px; height: 28px;
+  background: #0d0d0d;
+  border-radius: 0 0 16px 16px;
+  z-index: 1000;
+}
+
+/* ── Screen management ── */
+.screen {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: transform 0.42s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+.screen::-webkit-scrollbar { display: none; }
+.screen.right { transform: translateX(100%); pointer-events: none; }
+.screen.left  { transform: translateX(-100%); pointer-events: none; }
+
+/* ── Status bar ── */
+.sbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 38px 22px 6px;
+  font-size: 15px;
+  font-weight: 600;
+  position: relative;
+  z-index: 10;
+}
+.sbar-icons { display: flex; gap: 5px; align-items: center; }
+.batt {
+  font-size: 11px; font-weight: 700;
+  background: var(--black); color: white;
+  padding: 2px 5px; border-radius: 4px;
+}
+
+/* ── Modals / Sheets ── */
+.backdrop {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0);
+  pointer-events: none;
+  transition: background 0.3s;
+  z-index: 200;
+}
+.backdrop.on { background: rgba(0,0,0,0.35); pointer-events: all; }
+
+.sheet {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  border-radius: 22px 22px 0 0;
+  transform: translateY(100%);
+  transition: transform 0.38s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 201;
+}
+.sheet.on { transform: translateY(0); }
+
+.handle {
+  width: 34px; height: 4px;
+  border-radius: 2px;
+  margin: 10px auto 0;
+}
+
+/* ════════════════════════════════
+   SCREEN 1 · PROFILE CARD
+   ════════════════════════════════ */
+#s1 { background: var(--cream); }
+#s1 .sbar { color: var(--black); }
+
+.ph { padding: 8px 18px 14px; display: flex; justify-content: space-between; align-items: center; }
+
+.icon-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 15px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  transition: border-color 0.2s;
+}
+.icon-btn:hover { border-color: var(--gray-mid); }
+
+.un-mark {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700; color: var(--black);
+}
+.un-dot {
+  width: 26px; height: 26px; background: #0085C8;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 13px;
+}
+
+/* Artwork frame */
+.artwork-frame {
+  margin: 0 16px;
+  border-radius: 28px 28px 0 0;
+  overflow: hidden;
+  height: 252px;
+  position: relative;
+  background: #EDE6D8;
+}
+
+/* Minimal illustrated art (CSS) */
+.art-canvas {
+  width: 100%; height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Andrew Wong — painterly olive/sage background */
+.art-sky {
+  position: absolute; inset: 0;
+  background: linear-gradient(145deg, #C8D080 0%, #A8B860 28%, #7A9648 55%, #5A7838 100%);
+}
+
+/* Red vertical panel on far left — signature accent */
+.art-red-blob {
+  position: absolute;
+  top: 0; bottom: 0; left: 0;
+  width: 48px;
+  background: linear-gradient(180deg, #C84830 0%, #A83420 60%, #8C2818 100%);
+}
+
+/* Warm ochre/tan wash — lower left ground area */
+.art-tan-blob {
+  position: absolute;
+  bottom: 0; left: 44px; right: 0;
+  height: 38%;
+  background: linear-gradient(180deg, transparent, #8C7840 60%, #6C5828 100%);
+  clip-path: polygon(0 60%, 15% 30%, 32% 52%, 50% 18%, 68% 44%, 85% 10%, 100% 38%, 100% 100%, 0 100%);
+}
+
+/* Large dark cat silhouette — lower centre */
+.art-mountain {
+  position: absolute;
+  bottom: 28px; left: 50%; transform: translateX(-55%);
+  width: 52px; height: 38px;
+  background: #181818;
+  border-radius: 40% 40% 50% 50%;
+}
+.art-mountain::before { /* ears */
+  content: '';
+  position: absolute;
+  top: -13px; left: 4px;
+  width: 0; height: 0;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-bottom: 16px solid #181818;
+}
+.art-mountain::after { /* second ear */
+  content: '';
+  position: absolute;
+  top: -13px; right: 4px;
+  width: 0; height: 0;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-bottom: 16px solid #181818;
+}
+
+/* Raised-arms figure silhouette — upper right of centre */
+.art-dark-blob {
+  position: absolute;
+  bottom: 64px; left: 58%;
+  width: 22px; height: 44px;
+  background: #181818;
+  border-radius: 30% 30% 40% 40%;
+}
+.art-dark-blob::before { /* left arm raised */
+  content: '';
+  position: absolute;
+  top: 6px; left: -18px;
+  width: 20px; height: 6px;
+  background: #181818;
+  border-radius: 3px;
+  transform: rotate(-38deg);
+  transform-origin: right center;
+}
+.art-dark-blob::after { /* right arm raised */
+  content: '';
+  position: absolute;
+  top: 6px; right: -18px;
+  width: 20px; height: 6px;
+  background: #181818;
+  border-radius: 3px;
+  transform: rotate(38deg);
+  transform-origin: left center;
+}
+
+/* Paint splatter dots — scattered across canvas */
+.art-dot1 { position:absolute; width:9px; height:9px; border-radius:50%; background:#E85030; top:32px; left:62%; }
+.art-dot2 { position:absolute; width:6px; height:6px; border-radius:50%; background:#4888C8; top:52px; left:72%; }
+.art-dot3 { position:absolute; width:7px; height:7px; border-radius:50%; background:#E8C030; top:22px; left:78%; }
+.art-dot4 { position:absolute; width:5px; height:5px; border-radius:50%; background:#58B858; top:68px; left:66%; }
+.art-dot5 { position:absolute; width:6px; height:6px; border-radius:50%; background:#C84830; top:44px; left:55%; }
+.art-dot6 { position:absolute; width:8px; height:8px; border-radius:50%; background:#F0A820; top:15px; left:50%; }
+.art-dot7 { position:absolute; width:4px; height:4px; border-radius:50%; background:#4888C8; top:78px; left:80%; }
+.art-dot8 { position:absolute; width:5px; height:5px; border-radius:50%; background:#E85030; top:88px; left:58%; }
+
+.art-play {
+  position: absolute;
+  top: 12px; left: 14px;
+  display: flex; align-items: center; gap: 5px;
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(6px);
+  border-radius: 14px;
+  padding: 5px 12px;
+  font-size: 11.5px; font-weight: 600;
+  color: var(--black);
+  cursor: pointer;
+}
+
+/* Card body */
+.card-body {
+  background: var(--white);
+  margin: 0 16px;
+  border-radius: 0 0 28px 28px;
+  padding: 12px 16px 16px;
+}
+
+/* Creator row */
+.creator-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 0 10px;
+}
+
+.creator-av {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: var(--black);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.av-art {
+  width: 100%; height: 100%;
+  background: var(--black);
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 13px; font-weight: 800; letter-spacing: -0.5px;
+}
+
+.creator-meta { flex: 1; min-width: 0; }
+.creator-name { font-size: 17px; font-weight: 700; color: var(--black); }
+.creator-handle { font-size: 13px; color: var(--gray-mid); }
+
+.creator-links { display: flex; gap: 8px; }
+.creator-link {
+  width: 30px; height: 30px; border-radius: 50%;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; cursor: pointer;
+}
+
+.card-title { font-size: 19px; font-weight: 800; color: var(--black); margin-bottom: 7px; letter-spacing: -0.2px; }
+
+.card-bio { font-size: 13.5px; color: var(--gray-dark); line-height: 1.55; margin-bottom: 12px; }
+.bio-link { font-weight: 700; color: var(--black); cursor: pointer; }
+
+/* Tabs */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  margin: 0 -16px 12px;
+  padding: 0 16px;
+}
+.tab {
+  flex: 1; text-align: center;
+  padding: 7px 0; font-size: 13px; font-weight: 600;
+  color: var(--gray-light); cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: all 0.18s;
+}
+.tab.on { color: var(--black); border-bottom-color: var(--black); }
+
+/* Gallery */
+.gallery {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 3px; margin-bottom: 22px;
+}
+.gitem {
+  aspect-ratio: 1; border-radius: 8px; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; position: relative;
+}
+.gitem-inner {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* Action buttons */
+.actions { display: flex; gap: 8px; margin-bottom: 10px; }
+
+.btn {
+  flex: 1; height: 44px; border-radius: 22px;
+  display: flex; align-items: center; justify-content: center;
+  gap: 6px; font-size: 14px; font-weight: 700;
+  cursor: pointer; border: none; font-family: inherit;
+  transition: all 0.15s;
+}
+.btn:active { transform: scale(0.97); }
+
+.btn-ghost {
+  background: var(--white);
+  border: 1.5px solid var(--black);
+  color: var(--black);
+}
+.btn-ghost:hover { background: #f5f5f5; }
+
+.btn-solid {
+  background: var(--black);
+  color: var(--white);
+  border: none;
+}
+.btn-solid:hover { background: #333; }
+
+/* AI Chat button */
+.btn-ai {
+  width: 100%; height: 46px;
+  margin-top: 24px;
+  background: var(--purple);
+  color: var(--white);
+  border: none; border-radius: 23px;
+  font-size: 14px; font-weight: 700;
+  font-family: inherit;
+  display: flex; align-items: center; justify-content: center;
+  gap: 6px; cursor: pointer; margin-bottom: 10px;
+  transition: all 0.18s;
+}
+.btn-ai:hover { background: #6A4F92; }
+.btn-ai:active { transform: scale(0.97); }
+
+.card-foot-note {
+  text-align: center;
+  font-size: 11px;
+  color: var(--gray-light);
+  line-height: 1.5;
+  padding-top: 2px;
+}
+.card-foot-note a { color: var(--gray-mid); text-decoration: none; }
+
+.spacer16 { height: 16px; }
+
+/* ════════════════════════════════
+   SCREEN 2 · EXPANDED PROFILE
+   ════════════════════════════════ */
+#s2 { background: var(--cream); }
+#s2 .sbar { color: var(--black); }
+
+.exp-artwork {
+  margin: 0 16px;
+  border-radius: 28px 28px 0 0;
+  overflow: hidden;
+  height: 220px;
+  position: relative;
+  background: #EDE6D8;
+}
+
+.exp-card {
+  background: var(--white);
+  margin: 0 16px;
+  border-radius: 0 0 28px 28px;
+  padding: 16px;
+}
+
+.exp-creator-row {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 6px; margin-bottom: 16px; padding-top: 8px;
+}
+.exp-av {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--black);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; margin-top: -44px;
+  border: 3px solid var(--white);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+}
+.exp-name { font-size: 16px; font-weight: 800; color: var(--black); margin-top: 6px; }
+.exp-bio {
+  font-size: 12.5px; color: var(--gray-dark); text-align: center;
+  line-height: 1.55; margin-top: 4px;
+}
+
+.divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
+
+.section-label { font-size: 11px; font-weight: 700; color: var(--gray-mid); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 24px; margin-bottom: 8px; }
+
+.h-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
+.h-scroll::-webkit-scrollbar { display: none; }
+
+.artwork-thumb {
+  width: 88px; height: 88px; border-radius: 10px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+
+.stats-row { display: flex; gap: 0; margin-bottom: 12px; }
+.stat { flex: 1; text-align: center; }
+.stat-num { font-size: 18px; font-weight: 800; color: var(--black); }
+.stat-label { font-size: 10.5px; color: var(--gray-mid); margin-top: 1px; }
+.stat + .stat { border-left: 1px solid var(--border); }
+
+.exp-socials { display: flex; justify-content: center; gap: 10px; margin-bottom: 12px; }
+.exp-social {
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; cursor: pointer;
+}
+
+.endorsed-strip {
+  display: flex; align-items: center; justify-content: center;
+  gap: 6px; background: #EEF4FF; border-radius: 10px;
+  padding: 8px; font-size: 11.5px; font-weight: 600; color: #0085C8;
+  margin-top: 10px; cursor: pointer;
+}
+
+/* ════════════════════════════════
+   SCREEN 3 · AI CHAT (AiJiv style)
+   ════════════════════════════════ */
+#s3 {
+  background: var(--chat-bg);
+  display: flex; flex-direction: column;
+}
+#s3 .sbar { color: var(--black); flex-shrink: 0; }
+
+.chat-bar {
+  padding: 0 16px 12px;
+  border-bottom: 1px solid var(--chat-border);
+  background: var(--white);
+  flex-shrink: 0;
+}
+.chat-bar-inner { display: flex; align-items: center; gap: 10px; }
+.chat-back {
+  color: var(--chat-blue); font-size: 13px; font-weight: 600;
+  cursor: pointer; display: flex; align-items: center; gap: 3px;
+  flex-shrink: 0; padding: 2px 0;
+  transition: color 0.15s;
+}
+.chat-back:hover { color: var(--chat-blue-h); }
+
+.chat-meta { flex: 1; display: flex; align-items: center; gap: 9px; min-width: 0; }
+.chat-av {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--chat-blue);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  border: none;
+  position: relative;
+}
+.chat-av::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 9px; height: 9px;
+  background: #6FCF97;
+  border-radius: 50%;
+  border: 1.5px solid var(--white);
+}
+.chat-name { color: var(--black); font-size: 14px; font-weight: 700; line-height: 1.2; }
+.chat-sub  { color: var(--chat-muted); font-size: 11px; }
+
+.q-pill {
+  background: var(--chat-bubble);
+  border: 1px solid var(--chat-border);
+  color: var(--chat-blue);
+  border-radius: 10px; padding: 4px 9px;
+  font-size: 11px; font-weight: 700; flex-shrink: 0;
+  white-space: nowrap;
+}
+.q-pill.warn { background: #FFF3E8; border-color: #F0C090; color: #C07030; }
+
+/* Messages */
+.msgs {
+  flex: 1; overflow-y: auto; overflow-x: hidden;
+  padding: 16px 14px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.msgs::-webkit-scrollbar { display: none; }
+
+.unlock-banner { text-align:center; font-size:12px; font-weight:700; color:#2E7D52; background:#E8F5EE; border:1px solid #A8D8BA; border-radius:20px; padding:7px 16px; margin:4px auto; max-width:220px; }
+.sys-line {
+  text-align: center;
+  color: var(--chat-muted); font-size: 11px; line-height: 1.5;
+  padding: 4px 16px;
+}
+
+.mrow { display: flex; gap: 7px; max-width: 87%; }
+.mrow.ai  { align-self: flex-start; }
+.mrow.usr { align-self: flex-end; flex-direction: row-reverse; }
+
+.mav {
+  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 3px;
+  background: var(--chat-blue);
+}
+.mav.u { font-size: 10px; font-weight: 700; background: #DDDDF0; color: var(--chat-blue); }
+
+.mbub {
+  padding: 10px 13px; border-radius: 16px;
+  font-size: 13.5px; line-height: 1.55;
+}
+.mrow.ai  .mbub {
+  background: var(--chat-bubble);
+  color: var(--black);
+  border-radius: 4px 16px 16px 16px;
+}
+.mrow.usr .mbub {
+  background: var(--chat-blue);
+  color: white;
+  border-radius: 16px 4px 16px 16px;
+}
+
+.typing { display: flex; gap: 4px; align-items: center; padding: 3px 0; }
+.td {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--chat-muted);
+  animation: td 1.2s infinite;
+}
+.td:nth-child(2) { animation-delay:.16s }
+.td:nth-child(3) { animation-delay:.32s }
+@keyframes td {
+  0%,55%,100% { transform:translateY(0); opacity:.4; }
+  27% { transform:translateY(-5px); opacity:1; }
+}
+
+/* Chat CTA strip */
+.chat-cta {
+  border-top: 1px solid var(--chat-border);
+  background: var(--white);
+  padding: 9px 14px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+}
+.cta-text { color: var(--chat-muted); font-size: 12px; }
+.cta-btn {
+  background: var(--chat-blue); color: white; border: none;
+  border-radius: 10px; padding: 5px 13px;
+  font-size: 12px; font-weight: 700; font-family: inherit; cursor: pointer;
+  transition: background 0.15s;
+}
+.cta-btn:hover { background: var(--chat-blue-h); }
+
+/* Chat input */
+.chat-foot { padding: 9px 14px 24px; flex-shrink: 0; background: var(--white); border-top: 1px solid var(--chat-border); }
+.chat-row { display: flex; gap: 7px; align-items: center; }
+.chat-in {
+  flex: 1; background: var(--chat-bubble);
+  border: 1px solid var(--chat-border); border-radius: 20px;
+  padding: 10px 14px; color: var(--black);
+  font-size: 13.5px; font-family: inherit;
+  outline: none; resize: none; line-height: 1.4;
+  transition: border-color 0.2s;
+}
+.chat-in::placeholder { color: var(--chat-muted); }
+.chat-in:focus { border-color: var(--chat-blue); }
+
+.send-btn {
+  width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+  background: var(--chat-blue); border: none;
+  color: white; font-size: 15px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.send-btn:hover { background: var(--chat-blue-h); }
+.send-btn:active { transform: scale(0.94); }
+
+/* ════════════════════════════════
+   SCREEN 4 · CHAT UNLOCKED
+   ════════════════════════════════ */
+#s4 { background: var(--chat-bg); display: flex; flex-direction: column; }
+#s4 .sbar { color: var(--black); flex-shrink: 0; }
+
+/* ════════════════════════════════
+   SHEET · CONTRIBUTE (light)
+   ════════════════════════════════ */
+#sh-contrib {
+  background: var(--white);
+  padding: 0 20px 32px;
+  box-shadow: 0 -6px 30px rgba(0,0,0,0.12);
+}
+#sh-contrib .handle { background: var(--border); }
+
+.sh-title { font-size: 20px; font-weight: 800; color: var(--black); text-align: center; margin-bottom: 4px; margin-top: 16px; }
+
+.freq-row {
+  display: flex; align-items: center; justify-content: center;
+  gap: 5px; font-size: 13.5px; color: var(--gray-dark);
+  margin-bottom: 18px;
+}
+.freq-btn { font-weight: 800; color: var(--black); display: flex; align-items: center; gap: 3px; cursor: pointer; }
+
+.amounts { display: grid; grid-template-columns: repeat(4,1fr); gap: 7px; margin-bottom: 18px; }
+.amtbtn {
+  height: 42px; border-radius: 21px;
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  font-size: 14px; font-weight: 700; font-family: inherit;
+  cursor: pointer; color: var(--gray-dark);
+  transition: all 0.18s;
+}
+.amtbtn.on { background: var(--purple); color: white; border-color: var(--purple); }
+
+.contrib-cta {
+  width: 100%; height: 50px;
+  background: var(--purple); color: white; border: none;
+  border-radius: 25px; font-size: 15px; font-weight: 700;
+  font-family: inherit; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  margin-bottom: 14px; transition: all 0.15s;
+}
+.contrib-cta:hover { background: #6A4F92; }
+.contrib-cta:active { transform: scale(0.97); }
+
+.matcher-row {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--cream); border-radius: 12px; padding: 11px 13px;
+}
+.matcher-av {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--black); display: flex; align-items: center;
+  justify-content: center; font-size: 14px; flex-shrink: 0;
+}
+.matcher-text { font-size: 12px; color: var(--gray-dark); line-height: 1.45; }
+.matcher-text strong { color: var(--black); }
+
+.be-matcher {
+  text-align: center; font-size: 12px; color: var(--purple);
+  font-weight: 600; cursor: pointer; margin-top: 11px; padding: 2px;
+}
+
+/* ════════════════════════════════
+   SHEET · PAYWALL (light)
+   ════════════════════════════════ */
+#sh-pay {
+  background: var(--white);
+  border-top: 1px solid var(--chat-border);
+  padding: 0 20px 36px;
+  box-shadow: 0 -6px 30px rgba(0,0,0,0.1);
+}
+#sh-pay .handle { background: var(--border); }
+
+.pw-title { margin-top:30px; font-size: 19px; font-weight: 800; color: var(--black); text-align: center; margin-bottom: 5px; }
+.pw-sub { color: var(--chat-muted); font-size: 13px; text-align: center; line-height: 1.5; margin-bottom: 18px; }
+
+.pw-opts { display: flex; flex-direction: column; gap: 7px; margin-bottom: 18px; }
+.pw-opt {
+  background: var(--chat-bubble);
+  border: 1.5px solid var(--chat-border);
+  border-radius: 14px; padding: 13px 15px;
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; transition: all 0.18s;
+}
+.pw-opt:hover { border-color: var(--chat-blue); background: #EEEEF8; }
+.pw-opt.on { border-color: var(--chat-blue); background: #EAEAF8; }
+.pw-opt-l { color: var(--black); font-size: 13.5px; font-weight: 700; margin-bottom: 2px; }
+.pw-opt-s { color: var(--chat-muted); font-size: 11.5px; }
+.pw-opt-p { color: var(--black); font-size: 18px; font-weight: 800; text-align: right; }
+.pw-opt-p span { font-size: 10.5px; font-weight: 400; color: var(--chat-muted); display: block; }
+
+.pw-cta {
+  width: 100%; height: 50px;
+  background: var(--chat-blue); color: white; border: none;
+  border-radius: 25px; font-size: 15px; font-weight: 700;
+  font-family: inherit; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  margin-bottom: 10px; transition: all 0.15s;
+}
+.pw-cta:hover { background: var(--chat-blue-h); }
+.pw-cta:active { transform: scale(0.97); }
+
+.pw-skip { text-align: center; color: var(--chat-muted); font-size: 12.5px; cursor: pointer; padding: 4px; }
+.pw-skip:hover { color: var(--black); }
+
+/* ── Animations ── */
+@keyframes up { from { opacity:0; transform:translateY(7px); } to { opacity:1; transform:translateY(0); } }
+.anim { animation: up 0.35s ease forwards; }
+
+/* ── Card flip ── */
+.phone { perspective: 1200px; }
+
+@keyframes flipOut {
+  0%   { transform: rotateY(0deg); opacity: 1; }
+  100% { transform: rotateY(-90deg); opacity: 0; }
+}
+@keyframes flipIn {
+  0%   { transform: rotateY(90deg); opacity: 0; }
+  100% { transform: rotateY(0deg); opacity: 1; }
+}
+@keyframes flipOutBack {
+  0%   { transform: rotateY(0deg); opacity: 1; }
+  100% { transform: rotateY(90deg); opacity: 0; }
+}
+@keyframes flipInBack {
+  0%   { transform: rotateY(-90deg); opacity: 0; }
+  100% { transform: rotateY(0deg); opacity: 1; }
+}
+
+.flip-out      { animation: flipOut     0.22s ease-in  forwards; transition: none !important; }
+.flip-in       { animation: flipIn      0.22s ease-out forwards; transition: none !important; }
+.flip-out-back { animation: flipOutBack 0.22s ease-in  forwards; transition: none !important; }
+.flip-in-back  { animation: flipInBack  0.22s ease-out forwards; transition: none !important; }
+
+/* ── Minimal art palettes for gallery items ── */
+.ga { background: #EDE6D8; }
+.gb { background: #2C2C2C; }
+.gc { background: #C0614A; }
+.gd { background: #B5975A; }
+.ge { background: #4A7AA3; }
+.gf { background: #8C7460; }
+</style>
+</head>
+<body>
+
+<!-- ── Phone ── -->
+<div class="phone-wrap">
+  <div class="phone-caption">Presence — Interactive Prototype</div>
+
+  <div class="phone">
+
+    <!-- ══ SCREEN 1 · PROFILE CARD ══ -->
+    <div id="s1" class="screen">
+      <div class="sbar">
+        <span>5:52</span>
+        <div class="sbar-icons">
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="currentColor"><rect x="0" y="3.5" width="2.8" height="7.5" rx="0.8"/><rect x="4.3" y="2.2" width="2.8" height="8.8" rx="0.8"/><rect x="8.6" y="0.5" width="2.8" height="10.5" rx="0.8"/><rect x="12.9" y="0" width="2.8" height="11" rx="0.8" opacity="0.25"/></svg>
+          <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><path d="M7.5 2.2C10 2.2 12.2 3.2 13.8 4.8L15 3.6C13.1 1.7 10.4.5 7.5.5S1.9 1.7 0 3.6l1.2 1.2C2.8 3.2 5 2.2 7.5 2.2z"/><path d="M7.5 5C9.3 5 10.9 5.7 12.1 6.8l1.2-1.2C11.7 4 9.7 3 7.5 3S3.3 4 1.7 5.6l1.2 1.2C4.1 5.7 5.7 5 7.5 5z"/><circle cx="7.5" cy="9.5" r="1.5"/></svg>
+          <div class="batt">98</div>
+        </div>
+      </div>
+
+      <div class="ph">
+        <div class="icon-btn">♡</div>
+        <div class="un-mark">
+          <div class="un-dot">🌐</div>
+          <div>
+            <div style="font-size:9px;font-weight:400;color:#888;line-height:1.1">United</div>
+            <div style="font-size:11px;line-height:1.1">Nations</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Artwork frame -->
+      <div class="artwork-frame">
+        <img referrerpolicy="no-referrer" src="https://cdn.boldjourney.com/wp-content/uploads/2024/07/c-1720482802523-personal_andrew_wong_self-portrait.jpg"
+             alt="Andrew Wong — Self Portrait"
+             style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block">
+        <div class="art-play">▶ Play Video</div>
+      </div>
+
+      <!-- Card body -->
+      <div class="card-body">
+        <div class="creator-row">
+          <div class="creator-av">
+            <div class="av-art">AW</div>
+          </div>
+          <div class="creator-meta">
+            <div class="creator-name">Andrew Wong</div>
+            <div class="creator-handle">@andrewwong</div>
+          </div>
+          <div class="creator-links">
+            <div class="creator-link"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+            <div class="creator-link"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div>
+          </div>
+        </div>
+
+        <p class="card-bio">
+          Visual artist & UN Human Rights honourable mention, using art to explore identity, cultural assimilation, and social disparities facing minority communities. <span class="bio-link">Read More</span>
+        </p>
+
+        <div class="section-label">Gallery</div>
+
+        <div class="gallery">
+          <!-- Thumb 1: The Emperor -->
+          <div class="gitem"><div class="gitem-inner" style="position:relative;overflow:hidden">
+            <img referrerpolicy="no-referrer" src="https://cdn.boldjourney.com/wp-content/uploads/2024/07/c-1720482936470-andrew_wong_the-emperor.jpg" alt="The Emperor" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block">
+          </div></div>
+          <!-- Thumb 2: Opera Singer -->
+          <div class="gitem"><div class="gitem-inner" style="position:relative;overflow:hidden">
+            <img referrerpolicy="no-referrer" src="https://cdn.boldjourney.com/wp-content/uploads/2024/07/c-1720482936470-andrew_wong_opera-singer.jpg" alt="Opera Singer" style="width:100%;height:100%;object-fit:cover;object-position:center;display:block">
+          </div></div>
+          <!-- Thumb 3: sage green with paint splatters, minimal figure -->
+          <div class="gitem"><div class="gitem-inner" style="position:relative;overflow:hidden">
+            <div style="position:absolute;inset:0;background:linear-gradient(160deg,#A8B860,#5A7838)"></div>
+            <div style="position:absolute;top:0;bottom:0;left:0;width:12px;background:#8C2818"></div>
+            <div style="position:absolute;bottom:10px;left:40%;width:22px;height:16px;background:#181818;border-radius:40% 40% 50% 50%"></div>
+            <div style="position:absolute;top:12px;left:55%;width:7px;height:7px;border-radius:50%;background:#E85030"></div>
+            <div style="position:absolute;top:20px;left:65%;width:5px;height:5px;border-radius:50%;background:#4888C8"></div>
+            <div style="position:absolute;top:8px;left:70%;width:4px;height:4px;border-radius:50%;background:#E8C030"></div>
+            <div style="position:absolute;top:28px;left:50%;width:4px;height:4px;border-radius:50%;background:#58B858"></div>
+          </div></div>
+        </div>
+
+        <!-- AI Chat -->
+        <button class="btn-ai" onclick="nav('s3');resetChat()">
+          Chat with Andrew Wong AI →
+        </button>
+
+        <div class="actions">
+          <button class="btn btn-ghost">↗ Share</button>
+          <button class="btn btn-solid" onclick="openC()">♡ Contribute</button>
+        </div>
+
+        <div class="card-foot-note">
+          If you like this, get your own card<br>
+          <a href="#">Terms &amp; Policy</a> &nbsp;·&nbsp; ©2024 Contribute.to
+        </div>
+      </div>
+      <div class="spacer16"></div>
+    </div>
+
+    <!-- ══ SCREEN 3 · AI CHAT ══ -->
+    <div id="s3" class="screen right">
+      <div class="sbar">
+        <span>5:52</span>
+        <div class="sbar-icons">
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="#1A1A1A"><rect x="0" y="3.5" width="2.8" height="7.5" rx="0.8"/><rect x="4.3" y="2.2" width="2.8" height="8.8" rx="0.8"/><rect x="8.6" y="0.5" width="2.8" height="10.5" rx="0.8"/></svg>
+          <div class="batt">98</div>
+        </div>
+      </div>
+
+      <div class="chat-bar">
+        <div class="chat-bar-inner">
+          <div class="chat-back" onclick="nav('s1')">← Back</div>
+          <div class="chat-meta">
+            <div class="chat-av" style="color:white;font-size:11px;font-weight:800;letter-spacing:-0.5px">AW</div>
+            <div>
+              <div class="chat-name">Andrew Wong AI</div>
+              <div class="chat-sub">Trained on his art &amp; interviews</div>
+            </div>
+          </div>
+          <div class="q-pill" id="qbadge">3 free</div>
+        </div>
+      </div>
+
+      <div class="msgs" id="msgs">
+        <div class="sys-line anim">You're chatting with the AI trained on<br>Andrew Wong's art, interviews &amp; work</div>
+        <div class="mrow ai anim">
+          <div class="mav" style="color:white;font-size:9px;font-weight:800;letter-spacing:-0.5px">AW</div>
+          <div class="mbub">Hi — I'm the Andrew Wong AI. Ask me anything about my art, my journey, or the human rights themes in my work.</div>
+        </div>
+      </div>
+
+      <div class="chat-cta">
+        <div class="cta-text">Support Andrew Wong's mission</div>
+        <button class="cta-btn" onclick="openC()">Contribute ♡</button>
+      </div>
+
+      <div class="chat-foot">
+        <div class="chat-row">
+          <textarea class="chat-in" id="chin" placeholder="Ask anything…" rows="1" onkeydown="onkey(event)"></textarea>
+          <button class="send-btn" onclick="send()">→</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ SCREEN 4 · CHAT UNLOCKED ══ -->
+    <div id="s4" class="screen right">
+      <div class="sbar">
+        <span>5:52</span>
+        <div class="sbar-icons">
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="#1A1A1A"><rect x="0" y="3.5" width="2.8" height="7.5" rx="0.8"/><rect x="4.3" y="2.2" width="2.8" height="8.8" rx="0.8"/><rect x="8.6" y="0.5" width="2.8" height="10.5" rx="0.8"/></svg>
+          <div class="batt">98</div>
+        </div>
+      </div>
+
+      <div class="chat-bar">
+        <div class="chat-bar-inner">
+          <div class="chat-back" onclick="nav('s1')">← Back</div>
+          <div class="chat-meta">
+            <div class="chat-av" style="color:white;font-size:11px;font-weight:800;letter-spacing:-0.5px">AW</div>
+            <div>
+              <div class="chat-name">Andrew Wong AI</div>
+              <div class="chat-sub">Unlimited access · Thank you ♡</div>
+            </div>
+          </div>
+          <div class="q-pill" style="background:#E8F5EE;border-color:#A8D8BA;color:#2E7D52">∞ unlocked</div>
+        </div>
+      </div>
+
+      <div class="msgs">
+        <div class="sys-line anim">Chat unlocked — unlimited questions</div>
+
+        <div class="mrow ai anim">
+          <div class="mav" style="color:white;font-size:9px;font-weight:800;letter-spacing:-0.5px">AW</div>
+          <div class="mbub">Thank you for your support — it means everything. Your contribution helps me continue creating work that amplifies minority voices. What else would you like to know?</div>
+        </div>
+
+        <div class="mrow usr anim">
+          <div class="mav u">J</div>
+          <div class="mbub">How can I help spread the word beyond contributing?</div>
+        </div>
+
+        <div class="mrow ai anim">
+          <div class="mav" style="color:white;font-size:9px;font-weight:800;letter-spacing:-0.5px">AW</div>
+          <div class="mbub">Share my work with people who care about cultural identity and human rights. Talk about the stories behind the paintings — every conversation opens someone's eyes. That's how art creates change. 🎨</div>
+        </div>
+
+        <div class="mrow usr anim">
+          <div class="mav u">J</div>
+          <div class="mbub">What's the biggest theme in your art?</div>
+        </div>
+
+        <div class="mrow ai anim">
+          <div class="mav" style="color:white;font-size:9px;font-weight:800;letter-spacing:-0.5px">AW</div>
+          <div class="mbub">The tension between belonging and loss. Growing up in Hong Kong then living in the US — you carry two worlds inside you. My paintings try to hold both without choosing.</div>
+        </div>
+      </div>
+
+      <div class="chat-cta">
+        <div class="cta-text">Deepen your impact</div>
+        <button class="cta-btn" onclick="openC()">Contribute more ♡</button>
+      </div>
+
+      <div class="chat-foot">
+        <div class="chat-row">
+          <textarea class="chat-in" placeholder="Keep the conversation going…" rows="1"></textarea>
+          <button class="send-btn">→</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ Backdrop ══ -->
+    <div id="bd" class="backdrop" onclick="closeAll()"></div>
+
+    <!-- ══ SHEET · CONTRIBUTE ══ -->
+    <div id="sh-contrib" class="sheet">
+      <div class="handle"></div>
+      <div class="sh-title">Make a Contribution</div>
+      <div class="freq-row">
+        Send this contribution
+        <div class="freq-btn">once ▾</div>
+      </div>
+
+      <div class="amounts">
+        <button class="amtbtn on" onclick="pickAmt(this)">$5</button>
+        <button class="amtbtn" onclick="pickAmt(this)">$10</button>
+        <button class="amtbtn" onclick="pickAmt(this)">$20</button>
+        <button class="amtbtn" onclick="pickAmt(this)">Custom</button>
+      </div>
+
+      <button class="contrib-cta">♡ Contribute</button>
+
+      <div class="matcher-row">
+        <div class="matcher-av">👤</div>
+        <div class="matcher-text">Your contribution will be matched by <strong>Evan Flory</strong> — doubling the impact.</div>
+      </div>
+
+      <div class="be-matcher">Be a matcher · Double contributions made to this card →</div>
+    </div>
+
+    <!-- ══ SHEET · PAYWALL ══ -->
+    <div id="sh-pay" class="sheet">
+      <div class="handle"></div>
+      <div class="pw-title">You've used 3 free questions</div>
+      <div class="pw-sub">Unlock more to keep the conversation going<br>with Andrew Wong's AI</div>
+
+      <div class="pw-opts">
+        <div class="pw-opt on" onclick="pickPw(this)">
+          <div>
+            <div class="pw-opt-l">Unlock 10 more questions</div>
+            <div class="pw-opt-s">One-time micropayment</div>
+          </div>
+          <div class="pw-opt-p">$1<span>one-time</span></div>
+        </div>
+        <div class="pw-opt" onclick="pickPw(this)">
+          <div>
+            <div class="pw-opt-l">Unlimited + Support the cause</div>
+            <div class="pw-opt-s">Contributes directly to Andrew Wong</div>
+          </div>
+          <div class="pw-opt-p">$5<span>one-time</span></div>
+        </div>
+        <div class="pw-opt" onclick="pickPw(this)">
+          <div>
+            <div class="pw-opt-l">Monthly supporter</div>
+            <div class="pw-opt-s">Unlimited chat + ongoing impact</div>
+          </div>
+          <div class="pw-opt-p">$3<span>/month</span></div>
+        </div>
+      </div>
+
+      <button class="pw-cta" onclick="unlock()">Unlock Now</button>
+      <div class="pw-skip" onclick="closeAll()">Not now</div>
+    </div>
+
+  </div><!-- /phone -->
+  <div class="phone-caption" style="margin-top:6px">Interact inside the phone to explore the full flow ↑</div>
+</div>
+
+<script>
+/* ── State ── */
+let cur = 's1';
+let qUsed = 0;
+const Q_LIMIT = 3;
+let rIdx = 0;
+
+const REPLIES = [
+  "Growing up in Hong Kong, traditional Chinese art was all around me — calligraphy, ink wash, ceremonial colours. When I moved to the US, those roots became something I had to consciously protect. That tension lives in every painting I make.",
+  "My UN Human Rights honourable mention came from a series exploring the erasure of minority cultural identity. The judges said the work made the invisible visible — which is exactly what I set out to do.",
+  "Colour is my primary language. I use red for both danger and celebration — because in Chinese culture it can be both. That ambiguity is intentional. Life rarely fits one meaning.",
+  "I hope people feel seen. Not just Asian audiences — anyone who's ever stood between two worlds and wondered where they belong. That feeling is universal, even if the specifics differ.",
+];
+
+/* ── Nav ── */
+const ORDER = ['s1','s3','s4'];
+
+function nav(id, btn) {
+  if (id === cur) return;
+  const prev = document.getElementById(cur);
+  const next = document.getElementById(id);
+  const isFlip = (cur === 's1' && id === 's3') || (cur === 's3' && id === 's1');
+  const toChat = id === 's3';
+
+  closeAll();
+  cur = id;
+  if (btn) {
+    document.querySelectorAll('.sb-btn').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+  }
+
+  if (isFlip) {
+    // Kill transitions on both screens for the entire flip duration
+    prev.style.transition = 'none';
+    next.style.transition = 'none';
+
+    // Snap incoming screen to centre, invisible
+    next.classList.remove('right', 'left');
+    next.style.transform = 'translateX(0)';
+    next.style.opacity = '0';
+    next.getBoundingClientRect(); // force reflow
+
+    prev.classList.add(toChat ? 'flip-out' : 'flip-out-back');
+    prev.addEventListener('animationend', () => {
+      prev.classList.remove('flip-out', 'flip-out-back');
+
+      // Snap prev offscreen via class (transition still none — no slide)
+      prev.classList.add(toChat ? 'left' : 'right');
+      prev.style.transform = '';
+      prev.style.opacity = '';
+
+      // Start flip-in on next
+      next.style.transform = '';
+      next.style.opacity = '';
+      next.getBoundingClientRect(); // force reflow before animation
+      next.classList.add(toChat ? 'flip-in' : 'flip-in-back');
+
+      next.addEventListener('animationend', () => {
+        next.classList.remove('flip-in', 'flip-in-back');
+        // Restore transitions on both now that flip is fully done
+        prev.style.transition = '';
+        next.style.transition = '';
+      }, { once: true });
+    }, { once: true });
+  } else {
+    // Slide
+    const fwd = ORDER.indexOf(id) > ORDER.indexOf(prev.id);
+    prev.classList.add(fwd ? 'left' : 'right');
+    next.style.transform = fwd ? 'translateX(100%)' : 'translateX(-100%)';
+    next.classList.remove('right','left');
+    next.getBoundingClientRect();
+    next.style.transform = '';
+  }
+}
+
+function delay(fn) { setTimeout(fn, 220); }
+
+/* ── Sheets ── */
+function openC()   { document.getElementById('sh-contrib').classList.add('on'); document.getElementById('bd').classList.add('on'); }
+function openPay() { document.getElementById('sh-pay').classList.add('on'); document.getElementById('bd').classList.add('on'); }
+function closeAll(){ document.querySelectorAll('.sheet').forEach(s=>s.classList.remove('on')); document.getElementById('bd').classList.remove('on'); }
+
+function pickAmt(b) { document.querySelectorAll('.amtbtn').forEach(x=>x.classList.remove('on')); b.classList.add('on'); }
+function pickPw(b)  { document.querySelectorAll('.pw-opt').forEach(x=>x.classList.remove('on')); b.classList.add('on'); }
+
+function unlockInstant() {
+  closeAll();
+  const badge = document.getElementById('qbadge');
+  if (badge) { badge.textContent='∞ unlocked'; badge.style.cssText='background:#E8F5EE;border-color:#A8D8BA;color:#2E7D52;border-radius:10px;padding:4px 9px;font-size:11px;font-weight:700;flex-shrink:0;white-space:nowrap;'; badge.classList.remove('warn'); }
+  const msgs = document.getElementById('msgs');
+  if (!msgs) return;
+  const banner = document.createElement('div');
+  banner.className = 'unlock-banner anim';
+  banner.textContent = '🔓 You have unlocked chat';
+  msgs.appendChild(banner); msgs.scrollTop = msgs.scrollHeight;
+  const t = document.createElement('div'); t.className='mrow ai anim';
+  t.innerHTML='<div class="mav" style="color:white;font-size:9px;font-weight:800;letter-spacing:-0.5px">AW</div><div class="mbub"><div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>';
+  setTimeout(() => {
+    msgs.appendChild(t); msgs.scrollTop = msgs.scrollHeight;
+    setTimeout(() => {
+      t.remove();
+      const a = document.createElement('div'); a.className = 'mrow ai anim';
+      a.innerHTML = '<div class="mav" style="color:white;font-size:9px;font-weight:800;letter-spacing:-0.5px">AW</div><div class="mbub">Thank you for your support — it means everything to me. Your contribution helps me keep creating work that matters. There's no limit now — keep asking. 🙏</div>';
+      msgs.appendChild(a); msgs.scrollTop = msgs.scrollHeight;
+    }, 1200);
+  }, 350);
+}
+function unlock() { unlockInstant(); }
+
+/* ── Chat ── */
+function resetChat() {
+  qUsed = 0; rIdx = 0;
+  const badge = document.getElementById('qbadge');
+  if (badge) { badge.textContent='3 free'; badge.classList.remove('warn'); }
+  const msgs = document.getElementById('msgs');
+  if (msgs) msgs.innerHTML = `
+    <div class="sys-line anim">You're chatting with the AI trained on<br>Andrew Wong's art, interviews &amp; work</div>
+    <div class="mrow ai anim"><div class="mav" style="color:white;font-size:9px;font-weight:800;letter-spacing:-0.5px">AW</div><div class="mbub">Hi — I'm the Andrew Wong AI. Ask me anything about my art, my journey, or the human rights themes in my work.</div></div>`;
+  const inp = document.getElementById('chin');
+  if (inp) inp.value = '';
+}
+
+function onkey(e) { if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); send(); } }
+
+function send() {
+  const inp = document.getElementById('chin');
+  const msgs = document.getElementById('msgs');
+  const txt = inp.value.trim();
+  if (!txt) return;
+  if (qUsed >= Q_LIMIT) { openPay(); return; }
+
+  // User message
+  const u = document.createElement('div');
+  u.className = 'mrow usr anim';
+  u.innerHTML = `<div class="mav u">J</div><div class="mbub">${esc(txt)}</div>`;
+  msgs.appendChild(u);
+  inp.value = '';
+  msgs.scrollTop = msgs.scrollHeight;
+  qUsed++;
+  updateBadge();
+
+  // Typing
+  const t = document.createElement('div');
+  t.className = 'mrow ai anim';
+  t.innerHTML = `<div class="mav" style="color:white;font-size:9px;font-weight:800;letter-spacing:-0.5px">AW</div><div class="mbub"><div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>`;
+  msgs.appendChild(t);
+  msgs.scrollTop = msgs.scrollHeight;
+
+  setTimeout(() => {
+    t.remove();
+    const reply = REPLIES[rIdx++ % REPLIES.length];
+    const a = document.createElement('div');
+    a.className = 'mrow ai anim';
+    const extra = qUsed >= Q_LIMIT ? `<br><span style="opacity:0.4;font-size:11.5px">You've reached your 3 free questions</span>` : '';
+    a.innerHTML = `<div class="mav" style="color:white;font-size:9px;font-weight:800;letter-spacing:-0.5px">AW</div><div class="mbub">${reply}${extra}</div>`;
+    msgs.appendChild(a);
+    msgs.scrollTop = msgs.scrollHeight;
+    if (qUsed >= Q_LIMIT) setTimeout(openPay, 800);
+  }, 1100 + Math.random()*500);
+}
+
+function updateBadge() {
+  const b = document.getElementById('qbadge');
+  if (!b) return;
+  const left = Q_LIMIT - qUsed;
+  b.textContent = `${left} free`;
+  b.classList.toggle('warn', left <= 1);
+}
+
+function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+/* ── Tabs ── */
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', function() {
+    document.querySelectorAll('#s1 .tab').forEach(x=>x.classList.remove('on'));
+    this.classList.add('on');
+  });
+});
+</script>
+</body>
+</html>
