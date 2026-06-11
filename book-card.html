@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Awakening — Book Card</title>
 <style>
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-font-smoothing:antialiased; }
@@ -29,7 +31,7 @@
 }
 
 button, textarea { font-family: inherit; }
-html, body { height: 100%; }
+html, body { height: 100%; overflow: hidden; }
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
   background: var(--cream);
@@ -177,10 +179,10 @@ body {
 .send-btn:hover { background:var(--chat-blue-h); }
 
 /* ── SHEETS ── */
-.backdrop { position:absolute; inset:0; background:rgba(0,0,0,0); pointer-events:none; transition:background 0.3s; z-index:200; }
-.backdrop.on { background:rgba(0,0,0,0.35); pointer-events:all; }
-.sheet { position:absolute; bottom:0; left:0; right:0; border-radius:22px 22px 0 0; transform:translateY(100%); transition:transform 0.38s cubic-bezier(0.25,0.46,0.45,0.94); z-index:201; background:var(--white); padding:0 20px 32px; box-shadow:0 -6px 30px rgba(0,0,0,0.12); }
-.sheet.on { transform:translateY(0); }
+.backdrop { position:fixed; inset:0; background:rgba(0,0,0,0); pointer-events:none; transition:background 0.3s; z-index:200; visibility:hidden; }
+.backdrop.on { background:rgba(0,0,0,0.35); pointer-events:all; visibility:visible; }
+.sheet { position:fixed; bottom:0; left:0; right:0; border-radius:22px 22px 0 0; transform:translateY(100%); transition:transform 0.38s cubic-bezier(0.25,0.46,0.45,0.94), visibility 0s 0.38s; z-index:201; background:var(--white); padding:0 20px 32px; box-shadow:0 -6px 30px rgba(0,0,0,0.12); visibility:hidden; }
+.sheet.on { transform:translateY(0); visibility:visible; transition:transform 0.38s cubic-bezier(0.25,0.46,0.45,0.94), visibility 0s 0s; }
 .handle  { width:34px; height:4px; border-radius:2px; background:var(--border); margin:10px auto 0; }
 .sh-title{ font-size:20px; font-weight:800; color:var(--black); text-align:center; margin-bottom:4px; margin-top:16px; }
 .freq-row{ display:flex; align-items:center; justify-content:center; gap:4px; font-size:13px; color:var(--gray-mid); margin:10px 0; }

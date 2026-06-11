@@ -805,6 +805,70 @@ body {
 .gd { background: #B5975A; }
 .ge { background: #4A7AA3; }
 .gf { background: #8C7460; }
+
+/* ══ AiJiv Chat Style ══ */
+#s3 { background:#F0EAE4 !important; display:flex !important; flex-direction:column !important; overflow:hidden !important; }
+
+.aj-hdr { display:flex; align-items:center; justify-content:space-between; padding:48px 20px 10px; background:#F0EAE4; flex-shrink:0; }
+.aj-logo { font-size:20px; font-weight:800; color:#1A1A2E; letter-spacing:-0.3px; }
+
+.aj-scroll { flex:1; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; }
+.aj-scroll::-webkit-scrollbar { display:none; }
+
+.aj-profile { text-align:center; padding:22px 24px 16px; }
+.aj-av { width:80px; height:80px; border-radius:50%; object-fit:cover; object-position:center top; display:block; margin:0 auto 14px; border:3px solid white; box-shadow:0 4px 16px rgba(0,0,0,0.12); }
+.aj-name { font-size:22px; font-weight:700; color:#1A1A2E; margin-bottom:8px; }
+.aj-bio  { font-size:13.5px; color:#888; line-height:1.55; }
+
+.aj-rule { height:1px; background:#DDD5CB; margin:4px 20px 20px; }
+
+.aj-bubble-wrap { padding:0 16px 12px; }
+.aj-bubble { background:#fff; border-radius:16px; padding:14px 16px; font-size:14.5px; line-height:1.58; color:#1A1A2E; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
+
+.aj-chips { display:grid; grid-template-columns:1fr 1fr; gap:8px; padding:0 16px 20px; }
+.aj-chip  { background:#fff; border:none; border-radius:20px; padding:8px 12px; font-size:12px; color:#555; cursor:pointer; text-align:left; line-height:1.35; font-family:inherit; transition:all 0.15s; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
+.aj-chip:hover { background:#F0EAE4; }
+
+#chatThread { display:flex; flex-direction:column; padding:4px 0; }
+#s3 .mrow { max-width:88%; margin:0 16px 8px; }
+#s3 .mrow.ai  { align-self:flex-start; }
+#s3 .mrow.usr { align-self:flex-end; flex-direction:row-reverse; margin-left:auto; }
+#s3 .mrow.ai  .mbub { background:#fff; color:#1A1A2E; border-radius:4px 16px 16px 16px; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
+#s3 .mrow.usr .mbub { background:#4F6EF7; color:white; border-radius:16px 4px 16px 16px; }
+#s3 .unlock-banner { max-width:220px; margin:4px auto 8px; }
+
+.aj-about { padding:4px 20px 16px; }
+.aj-about-title { font-size:15px; font-weight:700; color:#1A1A2E; margin-bottom:5px; }
+.aj-about-text  { font-size:13px; color:#666; line-height:1.6; }
+.aj-powered { text-align:center; font-size:12px; color:#7B88CC; padding:6px 0 24px; }
+
+.aj-foot  { background:#F0EAE4; border-top:1px solid #DDD5CB; padding:10px 16px 28px; display:flex; align-items:center; gap:10px; flex-shrink:0; }
+.aj-input { flex:1; background:#fff; border:none; border-radius:24px; padding:11px 16px; font-size:14px; color:#1A1A2E; outline:none; resize:none; line-height:1.4; font-family:inherit; }
+.aj-input::placeholder { color:#9A9490; }
+.aj-send  { width:42px; height:42px; border-radius:50%; background:#4F6EF7; border:none; color:white; font-size:20px; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:opacity 0.15s; }
+.aj-send:active { opacity:0.8; }
+
+
+/* ── Chat-mode takeover ── */
+.aj-chat-bar {
+  display:none; align-items:center; gap:10px;
+  padding:44px 16px 12px; background:#F0EAE4;
+  flex-shrink:0; border-bottom:1px solid #DDD5CB;
+}
+#s3.chatting .aj-hdr      { display:none; }
+#s3.chatting .aj-chat-bar { display:flex; }
+#s3.chatting .aj-profile,
+#s3.chatting .aj-rule,
+#s3.chatting .aj-bubble-wrap,
+#s3.chatting .aj-about,
+#s3.chatting .aj-powered  { display:none; }
+#s3.chatting #chatThread  { padding-top:8px; }
+
+.aj-chat-av   { width:36px; height:36px; border-radius:50%; object-fit:cover; object-position:center top; border:2px solid white; box-shadow:0 1px 6px rgba(0,0,0,0.15); flex-shrink:0; }
+.aj-chat-name { font-size:15px; font-weight:700; color:#1A1A2E; flex:1; }
+
+.aj-back { background:none; border:none; font-size:28px; font-weight:300; color:#1A1A2E; cursor:pointer; padding:0 8px 0 0; line-height:1; flex-shrink:0; opacity:0.7; }
+.aj-back:hover { opacity:1; }
 </style>
 </head>
 <body>
@@ -835,9 +899,9 @@ body {
     <span class="sb-sub">$1 unlock · or $5 contribute</span>
   </button>
 
-  <button class="sb-btn" onclick="nav('s4',this)">
+  <button class="sb-btn" onclick="nav('s3',this);resetChat();delay(unlockInstant)">
     ⑤ Chat Unlocked
-    <span class="sb-sub">Unlimited · Supporter mode</span>
+    <span class="sb-sub">Inline unlock · Thank-you bubble</span>
   </button>
 
   <hr class="sb-rule">
@@ -943,114 +1007,60 @@ body {
 
     <!-- ══ SCREEN 3 · AI CHAT ══ -->
     <div id="s3" class="screen right">
-      <div class="sbar">
-        <span>5:52</span>
-        <div class="sbar-icons">
-          <svg width="16" height="11" viewBox="0 0 16 11" fill="#1A1A1A"><rect x="0" y="3.5" width="2.8" height="7.5" rx="0.8"/><rect x="4.3" y="2.2" width="2.8" height="8.8" rx="0.8"/><rect x="8.6" y="0.5" width="2.8" height="10.5" rx="0.8"/></svg>
-          <div class="batt">98</div>
-        </div>
+      <!-- AiJiv header -->
+      <div class="aj-hdr">
+        <button class="aj-back" onclick="nav('s1', document.querySelectorAll('.sb-btn')[0])">‹</button>
+        <div class="q-pill" id="qbadge">3 free</div>
       </div>
 
-      <div class="chat-bar">
-        <div class="chat-bar-inner">
-          <div class="chat-back" onclick="nav('s1')">← Back</div>
-          <div class="chat-meta">
-            <div class="chat-av" style="color:white;font-size:11px;font-weight:800;letter-spacing:-0.5px">AW</div>
-            <div>
-              <div class="chat-name">Andrew Wong AI</div>
-              <div class="chat-sub">Trained on his art &amp; interviews</div>
-            </div>
-          </div>
-          <div class="q-pill" id="qbadge">3 free</div>
+
+      <!-- Compact chat header (shown when chatting) -->
+      <div class="aj-chat-bar">
+        <button class="aj-back" onclick="nav('s1', document.querySelectorAll('.sb-btn')[0])">‹</button>
+        <img class="aj-chat-av" src="https://cdn.boldjourney.com/wp-content/uploads/2024/07/c-1720482802523-personal_andrew_wong_self-portrait.jpg" alt="Andrew Wong">
+        <div class="aj-chat-name">Andrew Wong</div>
+        <div class="q-pill" id="qbadge2">3 free</div>
+      </div>
+      <!-- Scrollable body -->
+      <div class="aj-scroll" id="msgs">
+        <div class="aj-profile">
+          <img class="aj-av" src="https://cdn.boldjourney.com/wp-content/uploads/2024/07/c-1720482802523-personal_andrew_wong_self-portrait.jpg" alt="Andrew Wong">
+          <div class="aj-name">Andrew Wong</div>
+          <p class="aj-bio">Exploring the bridge between ancient wisdom systems and intelligent machines — designing the future of human flourishing in the age of AI.</p>
         </div>
+
+        <div class="aj-rule"></div>
+
+        <div class="aj-bubble-wrap">
+          <div class="aj-bubble">Hi — I'm Andrew Wong. Ask me anything about my art, my journey, or the human rights themes in my work.</div>
+        </div>
+
+<div class="aj-chips" id="ajChips">
+          <button class="aj-chip" onclick="sendChip(this)">Tell me about your art</button>
+          <button class="aj-chip" onclick="sendChip(this)">Human rights themes</button>
+          <button class="aj-chip" onclick="sendChip(this)">Your Hong Kong roots</button>
+          <button class="aj-chip" onclick="sendChip(this)">AI &amp; human creativity</button>
+        </div>
+
+        <div id="chatThread"></div>
+
+        <div class="aj-about">
+          <div class="aj-about-title">About</div>
+          <p class="aj-about-text">Andrew Wong is an interdisciplinary artist whose work explores cultural identity, displacement, and the tension between belonging and loss. Born in Hong Kong, based in the US — his paintings hold both worlds without choosing.</p>
+        </div>
+
+        <div class="aj-powered">Powered by AiJiv</div>
       </div>
 
-      <div class="msgs" id="msgs">
-        <div class="sys-line anim">You're chatting with the AI trained on<br>Andrew Wong's art, interviews &amp; work</div>
-        <div class="mrow ai anim">
-          <div class="mav" style="color:white;font-size:9px;font-weight:800;letter-spacing:-0.5px">AW</div>
-          <div class="mbub">Hi — I'm the Andrew Wong AI. Ask me anything about my art, my journey, or the human rights themes in my work.</div>
-        </div>
-      </div>
-
-      <div class="chat-cta">
-        <div class="cta-text">Support Andrew Wong's mission</div>
-        <button class="cta-btn" onclick="openC()">Contribute ♡</button>
-      </div>
-
-      <div class="chat-foot">
-        <div class="chat-row">
-          <textarea class="chat-in" id="chin" placeholder="Ask anything…" rows="1" onkeydown="onkey(event)"></textarea>
-          <button class="send-btn" onclick="send()">→</button>
-        </div>
+      <!-- Input bar -->
+      <div class="aj-foot">
+        <textarea class="aj-input" id="chin" placeholder="Ask Andrew anything…" rows="1" onkeydown="onkey(event)"></textarea>
+        <button class="aj-send" onclick="send()">↑</button>
       </div>
     </div>
 
     <!-- ══ SCREEN 4 · CHAT UNLOCKED ══ -->
-    <div id="s4" class="screen right">
-      <div class="sbar">
-        <span>5:52</span>
-        <div class="sbar-icons">
-          <svg width="16" height="11" viewBox="0 0 16 11" fill="#1A1A1A"><rect x="0" y="3.5" width="2.8" height="7.5" rx="0.8"/><rect x="4.3" y="2.2" width="2.8" height="8.8" rx="0.8"/><rect x="8.6" y="0.5" width="2.8" height="10.5" rx="0.8"/></svg>
-          <div class="batt">98</div>
-        </div>
-      </div>
-
-      <div class="chat-bar">
-        <div class="chat-bar-inner">
-          <div class="chat-back" onclick="nav('s1')">← Back</div>
-          <div class="chat-meta">
-            <div class="chat-av" style="color:white;font-size:11px;font-weight:800;letter-spacing:-0.5px">AW</div>
-            <div>
-              <div class="chat-name">Andrew Wong AI</div>
-              <div class="chat-sub">Unlimited access · Thank you ♡</div>
-            </div>
-          </div>
-          <div class="q-pill" style="background:#E8F5EE;border-color:#A8D8BA;color:#2E7D52">∞ unlocked</div>
-        </div>
-      </div>
-
-      <div class="msgs">
-        <div class="unlock-banner anim">🔓 You have unlocked chat</div>
-
-        <div class="mrow ai anim">
-          <div class="mav" style="color:white;font-size:9px;font-weight:800;letter-spacing:-0.5px">AW</div>
-          <div class="mbub">Thank you for your support — it means everything. Your contribution helps me continue creating work that amplifies minority voices. What else would you like to know?</div>
-        </div>
-
-        <div class="mrow usr anim">
-          <div class="mav u">J</div>
-          <div class="mbub">How can I help spread the word beyond contributing?</div>
-        </div>
-
-        <div class="mrow ai anim">
-          <div class="mav" style="color:white;font-size:9px;font-weight:800;letter-spacing:-0.5px">AW</div>
-          <div class="mbub">Share my work with people who care about cultural identity and human rights. Talk about the stories behind the paintings — every conversation opens someone's eyes. That's how art creates change. 🎨</div>
-        </div>
-
-        <div class="mrow usr anim">
-          <div class="mav u">J</div>
-          <div class="mbub">What's the biggest theme in your art?</div>
-        </div>
-
-        <div class="mrow ai anim">
-          <div class="mav" style="color:white;font-size:9px;font-weight:800;letter-spacing:-0.5px">AW</div>
-          <div class="mbub">The tension between belonging and loss. Growing up in Hong Kong then living in the US — you carry two worlds inside you. My paintings try to hold both without choosing.</div>
-        </div>
-      </div>
-
-      <div class="chat-cta">
-        <div class="cta-text">Deepen your impact</div>
-        <button class="cta-btn" onclick="openC()">Contribute more ♡</button>
-      </div>
-
-      <div class="chat-foot">
-        <div class="chat-row">
-          <textarea class="chat-in" placeholder="Keep the conversation going…" rows="1"></textarea>
-          <button class="send-btn">→</button>
-        </div>
-      </div>
-    </div>
+    <div id="s4" class="screen right"></div>
 
     <!-- ══ Backdrop ══ -->
     <div id="bd" class="backdrop" onclick="closeAll()"></div>
@@ -1206,25 +1216,28 @@ function pickPw(b)  { document.querySelectorAll('.pw-opt').forEach(x=>x.classLis
 
 function unlockInstant() {
   closeAll();
-  const badge = document.getElementById('qbadge');
-  if (badge) { badge.textContent='∞ unlocked'; badge.style.cssText='background:#E8F5EE;border-color:#A8D8BA;color:#2E7D52;border-radius:10px;padding:4px 9px;font-size:11px;font-weight:700;flex-shrink:0;white-space:nowrap;'; badge.classList.remove('warn'); }
+  ['qbadge','qbadge2'].forEach(id => { const b2 = document.getElementById(id); if (!b2) return; b2.textContent='∞ unlocked'; b2.style.cssText='background:#E8F5EE;border-color:#A8D8BA;color:#2E7D52;border-radius:10px;padding:4px 9px;font-size:11px;font-weight:700;flex-shrink:0;white-space:nowrap;'; b2.classList.remove('warn'); });
+
   document.querySelectorAll('.sb-btn').forEach((b,i) => b.classList.toggle('on', i===4));
-  const msgs = document.getElementById('msgs');
-  if (!msgs) return;
+  const scroll = document.getElementById('msgs');
+  const thread = document.getElementById('chatThread');
+  if (!thread) return;
+  const chips = document.getElementById('ajChips');
+  if (chips) chips.style.display = 'none';
   const banner = document.createElement('div');
   banner.className = 'unlock-banner anim';
   banner.textContent = '🔓 You have unlocked chat';
-  msgs.appendChild(banner); msgs.scrollTop = msgs.scrollHeight;
+  thread.appendChild(banner); scroll.scrollTop = scroll.scrollHeight;
   const t = document.createElement('div');
   t.className = 'mrow ai anim';
   t.innerHTML = '<div class="mav" style="color:white;font-size:9px;font-weight:800;letter-spacing:-0.5px">AW</div><div class="mbub"><div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>';
   setTimeout(() => {
-    msgs.appendChild(t); msgs.scrollTop = msgs.scrollHeight;
+    thread.appendChild(t); scroll.scrollTop = scroll.scrollHeight;
     setTimeout(() => {
       t.remove();
       const a = document.createElement('div'); a.className = 'mrow ai anim';
       a.innerHTML = '<div class="mav" style="color:white;font-size:9px;font-weight:800;letter-spacing:-0.5px">AW</div><div class="mbub">Thank you for your support — it means everything. Your contribution helps me continue creating work that amplifies minority voices. There\'s no limit now — ask me anything. 🎨</div>';
-      msgs.appendChild(a); msgs.scrollTop = msgs.scrollHeight;
+      thread.appendChild(a); scroll.scrollTop = scroll.scrollHeight;
     }, 1200);
   }, 350);
 }
@@ -1233,61 +1246,74 @@ function unlock()  { unlockInstant(); }
 /* ── Chat ── */
 function resetChat() {
   qUsed = 0; rIdx = 0;
-  const badge = document.getElementById('qbadge');
-  if (badge) { badge.textContent='3 free'; badge.classList.remove('warn'); }
-  const msgs = document.getElementById('msgs');
-  if (msgs) msgs.innerHTML = `
-    <div class="sys-line anim">You're chatting with the AI trained on<br>Andrew Wong's art, interviews &amp; work</div>
-    <div class="mrow ai anim"><div class="mav" style="color:white;font-size:9px;font-weight:800;letter-spacing:-0.5px">AW</div><div class="mbub">Hi — I'm the Andrew Wong AI. Ask me anything about my art, my journey, or the human rights themes in my work.</div></div>`;
+  document.getElementById('s3').classList.remove('chatting');
+  ['qbadge','qbadge2'].forEach(id => { const b = document.getElementById(id); if (!b) return; b.textContent='3 free'; b.removeAttribute('style'); b.classList.remove('warn'); });
+  const thread = document.getElementById('chatThread');
+  if (thread) thread.innerHTML = '';
+  const chips = document.getElementById('ajChips');
+  if (chips) chips.style.display = '';
   const inp = document.getElementById('chin');
   if (inp) inp.value = '';
+  const scroll = document.getElementById('msgs');
+  if (scroll) scroll.scrollTop = 0;
 }
+
 
 function onkey(e) { if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); send(); } }
 
-function send() {
+function sendChip(el) {
+  const chips = document.getElementById('ajChips');
+  if (chips) chips.style.display = 'none';
+  send(el.textContent);
+}
+
+function send(preset) {
   const inp = document.getElementById('chin');
-  const msgs = document.getElementById('msgs');
-  const txt = inp.value.trim();
+  const thread = document.getElementById('chatThread');
+  const scroll = document.getElementById('msgs');
+  const txt = preset || inp.value.trim();
   if (!txt) return;
   if (qUsed >= Q_LIMIT) { openPay(); return; }
 
-  // User message
+  const chips = document.getElementById('ajChips');
+  if (chips) chips.style.display = 'none';
+  document.getElementById('s3').classList.add('chatting');
+
   const u = document.createElement('div');
   u.className = 'mrow usr anim';
   u.innerHTML = `<div class="mav u">J</div><div class="mbub">${esc(txt)}</div>`;
-  msgs.appendChild(u);
-  inp.value = '';
-  msgs.scrollTop = msgs.scrollHeight;
+  thread.appendChild(u);
+  if (!preset) inp.value = '';
+  scroll.scrollTop = scroll.scrollHeight;
   qUsed++;
   updateBadge();
 
-  // Typing
   const t = document.createElement('div');
   t.className = 'mrow ai anim';
   t.innerHTML = `<div class="mav" style="color:white;font-size:9px;font-weight:800;letter-spacing:-0.5px">AW</div><div class="mbub"><div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>`;
-  msgs.appendChild(t);
-  msgs.scrollTop = msgs.scrollHeight;
+  thread.appendChild(t);
+  scroll.scrollTop = scroll.scrollHeight;
 
   setTimeout(() => {
     t.remove();
     const reply = REPLIES[rIdx++ % REPLIES.length];
-    const a = document.createElement('div');
-    a.className = 'mrow ai anim';
     const extra = qUsed >= Q_LIMIT ? `<br><span style="opacity:0.4;font-size:11.5px">You've reached your 3 free questions</span>` : '';
+    const a = document.createElement('div'); a.className = 'mrow ai anim';
     a.innerHTML = `<div class="mav" style="color:white;font-size:9px;font-weight:800;letter-spacing:-0.5px">AW</div><div class="mbub">${reply}${extra}</div>`;
-    msgs.appendChild(a);
-    msgs.scrollTop = msgs.scrollHeight;
+    thread.appendChild(a);
+    scroll.scrollTop = scroll.scrollHeight;
     if (qUsed >= Q_LIMIT) setTimeout(openPay, 800);
   }, 1100 + Math.random()*500);
 }
 
 function updateBadge() {
-  const b = document.getElementById('qbadge');
-  if (!b) return;
   const left = Q_LIMIT - qUsed;
-  b.textContent = `${left} free`;
-  b.classList.toggle('warn', left <= 1);
+  ['qbadge','qbadge2'].forEach(id => {
+    const b = document.getElementById(id);
+    if (!b) return;
+    b.textContent = `${left} free`;
+    b.classList.toggle('warn', left <= 1);
+  });
 }
 
 function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
