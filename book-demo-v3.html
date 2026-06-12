@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Awakening — Demo</title>
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-font-smoothing:antialiased; }
+
+:root {
+  --navy:    #0D1240;
+  --indigo:  #6B6DC8;
+  --yellow:  #F5C422;
+  --black:   #111111;
+  --gray-dk: #3C3C3C;
+  --gray-md: #8A8A8A;
+  --gray-lt: #F4F4F6;
+  --white:   #FFFFFF;
+  --border:  #E4E4E6;
+  --purple:  #7B5EA7;
+  --chat-bg:    #FAFAFE;
+  --chat-blue:  #7B88CC;
+  --chat-blue-h:#6A77BB;
+  --chat-border:#E6E6F2;
+  --chat-bubble:#F0F2FB;
+  --chat-muted: #9999BB;
+}
+
+button, textarea { font-family: inherit; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  background: #1A1A1E;
+  min-height: 100vh;
+  display: flex; align-items: flex-start; justify-content: center;
+  gap: 60px; padding: 40px 24px 56px;
+}
+
+/* ── Sidebar ── */
+.sidebar { width:188px; flex-shrink:0; display:flex; flex-direction:column; gap:5px; padding-top:4px; position:sticky; top:40px; }
+.sb-label { color:rgba(255,255,255,0.28); font-size:10px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; padding:0 4px; margin-bottom:4px; }
+.sb-btn { background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.45); border:1px solid rgba(255,255,255,0.08); border-radius:9px; padding:9px 12px; font-size:12.5px; cursor:pointer; text-align:left; line-height:1.3; transition:all 0.18s; }
+.sb-btn:hover { background:rgba(255,255,255,0.09); color:rgba(255,255,255,0.7); }
+.sb-btn.on { background:rgba(107,109,200,0.2); border-color:rgba(107,109,200,0.45); color:#AABDE8; font-weight:600; }
+.sb-sub { font-size:10px; opacity:0.5; display:block; margin-top:1px; }
+.sb-rule { border:none; border-top:1px solid rgba(255,255,255,0.07); margin:4px 0; }
+.sb-note { color:rgba(255,255,255,0.2); font-size:11px; line-height:1.5; padding:6px 4px; }
+
+/* ── Phone ── */
+.phone-wrap { display:flex; flex-direction:column; align-items:center; gap:14px; }
+.phone-caption { color:rgba(255,255,255,0.22); font-size:11px; letter-spacing:0.06em; text-transform:uppercase; }
+.phone { width:375px; height:812px; background:var(--white); border-radius:46px; overflow:hidden; position:relative; box-shadow:0 0 0 10px #0d0d0d, 0 0 0 11px #2a2a2a, 0 36px 80px rgba(0,0,0,0.65); }
+.phone::before { content:''; position:absolute; top:0; left:50%; transform:translateX(-50%); width:116px; height:28px; background:#0d0d0d; border-radius:0 0 16px 16px; z-index:1000; }
+
+/* ── Screens ── */
+.screen { position:absolute; inset:0; transition:transform 0.38s cubic-bezier(0.4,0,0.2,1); }
+.screen.left  { transform:translateX(-100%); }
+.screen.right { transform:translateX(100%); }
+#s1 { overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; background:var(--white); }
+#s3, #s4 { overflow:hidden; display:flex; flex-direction:column; background:var(--chat-bg); }
+
+@keyframes flipOut     { from{transform:perspective(900px) rotateY(0);opacity:1} to{transform:perspective(900px) rotateY(-90deg);opacity:0} }
+@keyframes flipIn      { from{transform:perspective(900px) rotateY(90deg);opacity:0} to{transform:perspective(900px) rotateY(0);opacity:1} }
+@keyframes flipOutBack { from{transform:perspective(900px) rotateY(0);opacity:1} to{transform:perspective(900px) rotateY(90deg);opacity:0} }
+@keyframes flipInBack  { from{transform:perspective(900px) rotateY(-90deg);opacity:0} to{transform:perspective(900px) rotateY(0);opacity:1} }
+.flip-out      { animation:flipOut      0.22s ease-in  forwards; transition:none!important; }
+.flip-in       { animation:flipIn       0.22s ease-out forwards; transition:none!important; }
+.flip-out-back { animation:flipOutBack  0.22s ease-in  forwards; transition:none!important; }
+.flip-in-back  { animation:flipInBack   0.22s ease-out forwards; transition:none!important; }
+.anim { animation:fadeUp 0.3s ease both; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+
+/* ── BOOK CARD ── */
+.book-hdr { display:flex; align-items:center; justify-content:center; padding:40px 20px 12px; position:relative; background:var(--white); }
+.hdr-back { position:absolute; left:16px; top:40px; width:34px; height:34px; border-radius:50%; background:var(--gray-lt); border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--gray-dk); font-size:20px; }
+.hdr-name { font-size:16px; font-weight:600; color:var(--black); }
+.book-banner { height:260px; background:var(--navy); display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+.book-banner::before { content:''; position:absolute; top:15%; left:50%; transform:translateX(-50%); width:200px; height:160px; background:radial-gradient(ellipse, rgba(107,109,200,0.2) 0%, transparent 65%); }
+.book-cover { width:155px; height:208px; background:linear-gradient(158deg,#1d2585 0%,#090d36 58%,#140e52 100%); border-radius:2px 6px 6px 2px; box-shadow:-4px 0 8px rgba(0,0,0,0.5), 0 18px 48px rgba(0,0,0,0.65), 6px 0 0 #120c45; position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; justify-content:space-between; padding:13px 10px 11px; overflow:hidden; }
+.book-cover::before { content:''; position:absolute; left:0; top:0; bottom:0; width:9px; background:linear-gradient(90deg,rgba(0,0,0,0.45) 0%,rgba(255,255,255,0.06) 50%,rgba(0,0,0,0.25) 100%); }
+.bc-sub   { font-size:6.5px; color:rgba(255,255,255,0.6); text-align:center; text-transform:uppercase; letter-spacing:0.13em; line-height:1.55; z-index:1; }
+.bc-lotus { width:74px; height:74px; z-index:1; }
+.bc-title { font-size:20px; font-weight:900; color:#fff; letter-spacing:0.14em; text-transform:uppercase; text-shadow:0 0 24px rgba(107,109,200,0.6); z-index:1; }
+.bc-author{ font-size:7.5px; font-weight:800; color:var(--yellow); text-transform:uppercase; letter-spacing:0.12em; text-align:center; z-index:1; }
+.bc-byline{ font-size:5.5px; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:0.09em; text-align:center; z-index:1; }
+.banner-mtn { position:absolute; bottom:0; left:0; right:0; }
+.book-body { padding:18px 20px 28px; }
+.title-row { display:flex; align-items:center; gap:10px; margin-bottom:4px; }
+.book-title { font-size:26px; font-weight:800; color:var(--black); letter-spacing:-0.3px; }
+.badge { background:var(--yellow); color:#3A2800; font-size:9.5px; font-weight:800; letter-spacing:0.07em; padding:4px 10px; border-radius:20px; text-transform:uppercase; white-space:nowrap; flex-shrink:0; }
+.book-sub-text { font-size:13px; color:var(--gray-md); margin-bottom:14px; }
+.btn-buy { width:100%; height:50px; background:var(--black); color:var(--white); border:none; border-radius:25px; font-size:16px; font-weight:700; cursor:pointer; margin-bottom:18px; transition:opacity 0.15s; }
+.btn-buy:active { opacity:0.72; }
+.rule { height:1px; background:#EBEBEB; margin-bottom:16px; }
+.about-head { font-size:16px; font-weight:700; color:var(--black); margin-bottom:8px; }
+.about-body { font-size:13px; color:var(--gray-dk); line-height:1.62; margin-bottom:7px; }
+.about-extra { display:none; font-size:13px; color:var(--gray-dk); line-height:1.62; margin-bottom:7px; }
+.read-more { font-size:13px; color:var(--indigo); font-weight:500; cursor:pointer; display:inline-block; margin-bottom:16px; }
+.book-actions { display:flex; gap:10px; }
+.btn-contribute { flex:1; height:46px; border:1.5px solid #D2D2D2; background:transparent; border-radius:23px; font-size:14px; font-weight:600; color:var(--black); cursor:pointer; transition:background 0.15s; }
+.btn-contribute:active { background:var(--gray-lt); }
+.btn-ask { flex:1; height:46px; background:var(--indigo); border:none; border-radius:23px; font-size:14px; font-weight:700; color:var(--white); cursor:pointer; transition:opacity 0.15s; }
+.btn-ask:active { opacity:0.8; }
+
+/* ── CHAT ── */
+.chat-bar { padding:40px 16px 12px; border-bottom:1px solid var(--chat-border); background:var(--white); flex-shrink:0; }
+.chat-bar-inner { display:flex; align-items:center; gap:10px; }
+.chat-back { color:var(--chat-blue); font-size:13px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:3px; flex-shrink:0; transition:color 0.15s; }
+.chat-back:hover { color:var(--chat-blue-h); }
+.chat-meta { flex:1; display:flex; align-items:center; gap:9px; min-width:0; }
+.chat-av { width:36px; height:36px; border-radius:50%; background:var(--chat-blue); display:flex; align-items:center; justify-content:center; color:white; font-size:11px; font-weight:800; letter-spacing:-0.5px; flex-shrink:0; position:relative; }
+.chat-av::after { content:''; position:absolute; bottom:0; right:0; width:9px; height:9px; background:#6FCF97; border-radius:50%; border:1.5px solid var(--white); }
+.chat-name { color:var(--black); font-size:14px; font-weight:700; line-height:1.2; }
+.chat-sub  { color:var(--chat-muted); font-size:11px; }
+.q-pill { background:var(--chat-bubble); border:1px solid var(--chat-border); color:var(--chat-blue); border-radius:10px; padding:4px 9px; font-size:11px; font-weight:700; flex-shrink:0; white-space:nowrap; }
+.q-pill.warn { background:#FFF3E8; border-color:#F0C090; color:#C07030; }
+.msgs { flex:1; overflow-y:auto; overflow-x:hidden; padding:16px 14px; display:flex; flex-direction:column; gap:12px; -webkit-overflow-scrolling:touch; }
+.msgs::-webkit-scrollbar { display:none; }
+.sys-line { text-align:center; color:var(--chat-muted); font-size:11px; line-height:1.5; padding:4px 16px; }
+.unlock-banner { text-align:center; font-size:12px; font-weight:700; color:#2E7D52; background:#E8F5EE; border:1px solid #A8D8BA; border-radius:20px; padding:7px 16px; margin:4px auto; max-width:220px; }
+.mrow { display:flex; gap:7px; max-width:87%; }
+.mrow.ai  { align-self:flex-start; }
+.mrow.usr { align-self:flex-end; flex-direction:row-reverse; }
+.mav { width:28px; height:28px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; margin-top:3px; background:var(--chat-blue); color:white; font-size:9px; font-weight:800; letter-spacing:-0.5px; }
+.mav.u { background:#DDDDF0; color:var(--chat-blue); font-size:10px; }
+.mbub { padding:10px 13px; border-radius:16px; font-size:13.5px; line-height:1.55; }
+.mrow.ai  .mbub { background:var(--chat-bubble); color:var(--black); border-radius:4px 16px 16px 16px; }
+.mrow.usr .mbub { background:var(--chat-blue); color:white; border-radius:16px 4px 16px 16px; }
+.typing { display:flex; gap:4px; align-items:center; padding:3px 0; }
+.td { width:6px; height:6px; border-radius:50%; background:var(--chat-muted); animation:td 1.2s infinite; }
+.td:nth-child(2){animation-delay:.16s} .td:nth-child(3){animation-delay:.32s}
+@keyframes td { 0%,55%,100%{transform:translateY(0);opacity:.4} 27%{transform:translateY(-5px);opacity:1} }
+.chat-cta  { border-top:1px solid var(--chat-border); background:var(--white); padding:9px 14px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
+.cta-text  { color:var(--chat-muted); font-size:12px; }
+.cta-btn   { background:var(--chat-blue); color:white; border:none; border-radius:10px; padding:5px 13px; font-size:12px; font-weight:700; cursor:pointer; transition:background 0.15s; }
+.cta-btn:hover { background:var(--chat-blue-h); }
+.chat-foot { padding:9px 14px 24px; flex-shrink:0; background:var(--white); border-top:1px solid var(--chat-border); }
+.chat-row  { display:flex; gap:7px; align-items:center; }
+.chat-in   { flex:1; background:var(--chat-bubble); border:1px solid var(--chat-border); border-radius:20px; padding:10px 14px; color:var(--black); font-size:13.5px; outline:none; resize:none; line-height:1.4; transition:border-color 0.2s; }
+.chat-in::placeholder { color:var(--chat-muted); }
+.chat-in:focus { border-color:var(--chat-blue); }
+.send-btn  { width:40px; height:40px; border-radius:50%; flex-shrink:0; background:var(--chat-blue); border:none; color:white; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background 0.15s; }
+.send-btn:hover { background:var(--chat-blue-h); }
+
+/* ── SHEETS ── */
+.backdrop { position:absolute; inset:0; background:rgba(0,0,0,0.42); z-index:200; opacity:0; pointer-events:none; transition:opacity 0.25s; }
+.backdrop.on { opacity:1; pointer-events:auto; }
+.sheet { position:absolute; bottom:0; left:0; right:0; background:var(--white); border-radius:24px 24px 0 0; padding:16px 20px 36px; z-index:201; transform:translateY(100%); transition:transform 0.3s cubic-bezier(0.32,0.72,0,1); }
+.sheet.on { transform:translateY(0); }
+.handle { width:36px; height:4px; background:#D8D8D8; border-radius:2px; margin:0 auto 18px; }
+.sh-title { font-size:18px; font-weight:700; color:var(--black); margin-bottom:14px; }
+.freq-row { display:flex; align-items:center; justify-content:space-between; font-size:13px; color:var(--gray-md); margin-bottom:12px; }
+.freq-btn { font-weight:800; color:var(--black); cursor:pointer; }
+.amounts  { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:14px; }
+.amtbtn   { height:44px; border:1.5px solid #E0E0E0; background:transparent; border-radius:12px; font-size:15px; font-weight:600; color:var(--black); cursor:pointer; transition:all 0.15s; }
+.amtbtn.on { background:var(--purple); color:white; border-color:var(--purple); }
+.contrib-cta { width:100%; height:52px; background:var(--purple); color:white; border:none; border-radius:26px; font-size:16px; font-weight:700; cursor:pointer; margin-bottom:14px; }
+.matcher-row { display:flex; gap:10px; align-items:flex-start; margin-bottom:10px; }
+.matcher-av  { font-size:22px; flex-shrink:0; }
+.matcher-text{ font-size:12px; color:var(--gray-dk); line-height:1.45; }
+.matcher-text strong { color:var(--black); }
+.be-matcher { font-size:11.5px; color:var(--chat-blue); font-weight:600; text-align:center; cursor:pointer; padding:4px; }
+.pw-title { margin-top:30px; font-size:19px; font-weight:800; color:var(--black); text-align:center; margin-bottom:5px; }
+.pw-sub   { color:var(--chat-muted); font-size:13px; text-align:center; line-height:1.5; margin-bottom:18px; }
+.pw-opts  { display:flex; flex-direction:column; gap:7px; margin-bottom:18px; }
+.pw-opt   { display:flex; align-items:center; justify-content:space-between; border:1.5px solid var(--chat-border); border-radius:14px; padding:12px 14px; cursor:pointer; transition:all 0.15s; }
+.pw-opt:hover { border-color:var(--chat-blue); background:#EEEEF8; }
+.pw-opt.on    { border-color:var(--chat-blue); background:#EAEAF8; }
+.pw-opt-l { color:var(--black); font-size:13.5px; font-weight:700; margin-bottom:2px; }
+.pw-opt-s { color:var(--chat-muted); font-size:11.5px; }
+.pw-opt-p { color:var(--black); font-size:18px; font-weight:800; text-align:right; }
+.pw-opt-p span { font-size:10.5px; font-weight:400; color:var(--chat-muted); display:block; }
+.pw-cta  { width:100%; height:52px; background:var(--chat-blue); color:white; border:none; border-radius:26px; font-size:16px; font-weight:700; cursor:pointer; margin-bottom:10px; }
+.pw-skip { text-align:center; color:var(--chat-muted); font-size:12.5px; cursor:pointer; padding:4px; }
+
+/* ══ AiJiv Chat Style ══ */
+#s3 { background:#F0EAE4 !important; display:flex !important; flex-direction:column !important; overflow:hidden !important; }
+
+.aj-hdr { display:flex; align-items:center; justify-content:space-between; padding:48px 20px 10px; background:#F0EAE4; flex-shrink:0; }
+.aj-back { background:none; border:none; font-size:28px; font-weight:300; color:#1A1A2E; cursor:pointer; padding:0 8px 0 0; line-height:1; flex-shrink:0; opacity:0.7; }
+.aj-back:hover { opacity:1; }
+
+.aj-scroll { flex:1; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; }
+.aj-scroll::-webkit-scrollbar { display:none; }
+
+.aj-profile { text-align:center; padding:22px 24px 16px; }
+.aj-av-dc { width:80px; height:80px; border-radius:50%; object-fit:cover; object-position:center top; display:block; margin:0 auto 14px; border:3px solid white; box-shadow:0 4px 16px rgba(0,0,0,0.12); }
+.aj-name { font-size:22px; font-weight:700; color:#1A1A2E; margin-bottom:8px; }
+.aj-bio  { font-size:13.5px; color:#888; line-height:1.55; }
+
+.aj-rule { height:1px; background:#DDD5CB; margin:4px 20px 20px; }
+
+.aj-bubble-wrap { padding:0 16px 12px; }
+.aj-bubble { background:#fff; border-radius:16px; padding:14px 16px; font-size:14.5px; line-height:1.58; color:#1A1A2E; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
+
+.aj-chips { display:grid; grid-template-columns:1fr 1fr; gap:8px; padding:0 16px 20px; }
+.aj-chip  { background:#fff; border:none; border-radius:20px; padding:8px 12px; font-size:12px; color:#555; cursor:pointer; text-align:left; line-height:1.35; font-family:inherit; transition:all 0.15s; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
+.aj-chip:hover { background:#F0EAE4; }
+
+#chatThread { display:flex; flex-direction:column; }
+#s3 .mrow { max-width:88%; margin:4px 16px 12px; }
+#s3 .mrow.ai  { align-self:flex-start; }
+#s3 .mrow.usr { align-self:flex-end; flex-direction:row-reverse; margin-left:auto; }
+#s3 .mrow.ai  .mbub { background:#fff; color:#1A1A2E; border-radius:4px 16px 16px 16px; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
+#s3 .mrow.usr .mbub { background:#4F6EF7; color:white; border-radius:16px 4px 16px 16px; }
+#s3 .unlock-banner { max-width:220px; margin:4px auto 8px; }
+
+.aj-about { padding:4px 20px 16px; }
+.aj-about-title { font-size:15px; font-weight:700; color:#1A1A2E; margin-bottom:5px; }
+.aj-about-text  { font-size:13px; color:#666; line-height:1.6; }
+.aj-powered { text-align:center; font-size:12px; color:#7B88CC; padding:6px 0 24px; }
+
+.aj-foot  { background:#F0EAE4; border-top:1px solid #DDD5CB; padding:10px 16px 28px; display:flex; align-items:center; gap:10px; flex-shrink:0; }
+.aj-input { flex:1; background:#fff; border:none; border-radius:24px; padding:11px 16px; font-size:14px; color:#1A1A2E; outline:none; resize:none; line-height:1.4; font-family:inherit; }
+.aj-input::placeholder { color:#9A9490; }
+.aj-send  { width:42px; height:42px; border-radius:50%; background:#4F6EF7; border:none; color:white; font-size:20px; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:opacity 0.15s; }
+.aj-send:active { opacity:0.8; }
+
+/* Chat-mode takeover */
+.aj-chat-bar { display:none; align-items:center; gap:10px; padding:44px 16px 12px; background:#F0EAE4; flex-shrink:0; border-bottom:1px solid #DDD5CB; }
+#s3.chatting .aj-hdr      { display:none; }
+#s3.chatting .aj-chat-bar { display:flex; }
+#s3.chatting .aj-profile,
+#s3.chatting .aj-rule,
+#s3.chatting .aj-bubble-wrap,
+#s3.chatting .aj-about,
+#s3.chatting .aj-powered  { display:none; }
+#s3.chatting #chatThread  { padding-top:16px; }
+
+.aj-chat-av-sm { width:36px; height:36px; border-radius:50%; object-fit:cover; object-position:center top; flex-shrink:0; border:2px solid white; box-shadow:0 1px 6px rgba(0,0,0,0.15); }
+.aj-chat-name  { font-size:15px; font-weight:700; color:#1A1A2E; flex:1; }
+
+
+.aj-cta { background:#F0EAE4; border-top:1px solid #DDD5CB; padding:10px 16px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
+.aj-cta-text { font-size:12px; color:#888; }
+.aj-cta-btn { font-size:12px; font-weight:700; color:#1A1A2E; background:none; border:1.5px solid #1A1A2E; border-radius:20px; padding:6px 14px; cursor:pointer; font-family:inherit; transition:all 0.15s; }
+.aj-cta-btn:hover { background:#1A1A2E; color:white; }
+
+/* ══ Voice Feature ══ */
+
+/* Mic button */
+.aj-mic { width:42px; height:42px; border-radius:50%; background:#fff; border:1.5px solid #DDD5CB; color:#555; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:all 0.2s; line-height:0; }
+.aj-mic:hover { border-color:#1A1A2E; color:#1A1A2E; }
+.aj-mic.recording { background:#FF3B30; border-color:#FF3B30; color:white; animation:mic-pulse 1s ease infinite; }
+.aj-mic.hidden { display:none; }
+@keyframes mic-pulse { 0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,59,48,0.4);} 50%{transform:scale(1.08);box-shadow:0 0 0 8px rgba(255,59,48,0);} }
+
+/* Listening label */
+.aj-listen-label { position:absolute; top:-28px; left:50%; transform:translateX(-50%); background:#FF3B30; color:white; font-size:11px; font-weight:600; padding:3px 9px; border-radius:10px; white-space:nowrap; opacity:0; pointer-events:none; transition:opacity 0.2s; }
+.aj-listen-label.on { opacity:1 !important; }
+
+/* Profile avatar wrapper with rings */
+.aj-avatar-wrap { position:relative; width:80px; height:80px; margin:0 auto 14px; display:flex; align-items:center; justify-content:center; }
+.aj-avatar-wrap img, .aj-avatar-wrap .aj-av-dc { margin:0; width:80px; height:80px; }
+.aj-ring { position:absolute; border-radius:50%; border:2px solid rgba(79,110,247,0.45); opacity:0; pointer-events:none; }
+.aj-ring-1 { inset:-8px; animation:none; }
+.aj-ring-2 { inset:-16px; animation:none; }
+.aj-ring-3 { inset:-24px; animation:none; }
+#s3.ai-speaking .aj-ring-1 { animation:ring-out 1.8s ease-out infinite 0s; }
+#s3.ai-speaking .aj-ring-2 { animation:ring-out 1.8s ease-out infinite 0.5s; }
+#s3.ai-speaking .aj-ring-3 { animation:ring-out 1.8s ease-out infinite 1s; }
+@keyframes ring-out { 0%{opacity:0.7;transform:scale(0.92);} 100%{opacity:0;transform:scale(1.35);} }
+
+/* Equalizer bars in compact chat header */
+.aj-eq { display:none; align-items:flex-end; gap:2.5px; height:18px; margin-left:4px; }
+#s3.ai-speaking .aj-eq { display:flex; }
+.aj-eq-b { width:3px; background:#4F6EF7; border-radius:2px; animation:eq-dance 0.7s ease infinite; }
+.aj-eq-b:nth-child(1){ animation-delay:0.0s; }
+.aj-eq-b:nth-child(2){ animation-delay:0.12s; }
+.aj-eq-b:nth-child(3){ animation-delay:0.24s; }
+.aj-eq-b:nth-child(4){ animation-delay:0.36s; }
+.aj-eq-b:nth-child(5){ animation-delay:0.48s; }
+@keyframes eq-dance { 0%,100%{height:3px;} 50%{height:18px;} }
+
+/* Speaking badge on compact av */
+.aj-chat-av-sm-wrap { position:relative; flex-shrink:0; }
+</style>
+</head>
+<body>
+
+<!-- ── Sidebar ── -->
+<nav class="sidebar">
+  <div class="sb-label">Screens</div>
+  <button class="sb-btn on" onclick="nav('s1',this)">
+    ① Book Card
+    <span class="sb-sub">Buy · Contribute · Ask Deepak</span>
+  </button>
+  <button class="sb-btn" onclick="nav('s1',this);delay(openC)">
+    ② Contribute Sheet
+    <span class="sb-sub">Amount picker · Matching</span>
+  </button>
+  <hr class="sb-rule">
+  <button class="sb-btn" onclick="nav('s3',this);resetChat()">
+    ③ AI Chat — 3 free Qs
+    <span class="sb-sub">AiJiv style · Typed AI replies</span>
+  </button>
+  <button class="sb-btn" onclick="nav('s3',this);resetChat();delay(openPay)">
+    ④ Paywall
+    <span class="sb-sub">$1 unlock · or $5 contribute</span>
+  </button>
+  <button class="sb-btn" onclick="nav('s3',this);resetChat();delay(unlockInstant)">
+    ⑤ Chat Unlocked
+    <span class="sb-sub">Inline unlock · Thank-you bubble</span>
+  </button>
+  <hr class="sb-rule">
+  <p class="sb-note">Interact inside the phone for the full flow.</p>
+</nav>
+
+<!-- ── Phone ── -->
+<div class="phone-wrap">
+  <div class="phone-caption">Awakening — Demo</div>
+  <div class="phone">
+
+    <!-- S1 · BOOK CARD -->
+    <div id="s1" class="screen">
+      <div class="book-hdr">
+        <span class="hdr-name">Deepak Chopra</span>
+      </div>
+      <div class="book-banner">
+        <div class="book-cover">
+          <div class="bc-sub">The Path to Freedom<br>and Enlightenment</div>
+          <svg class="bc-lotus" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="pg" cx="50%" cy="65%" r="55%"><stop offset="0%" stop-color="#FFE566"/><stop offset="100%" stop-color="#F5A020"/></radialGradient>
+              <filter id="gl"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            </defs>
+            <ellipse cx="50" cy="63" rx="8.5" ry="21" fill="url(#pg)" filter="url(#gl)" opacity="0.8"  transform="rotate(-36 50 63)"/>
+            <ellipse cx="50" cy="63" rx="8.5" ry="21" fill="url(#pg)" filter="url(#gl)" opacity="0.88" transform="rotate(-18 50 63)"/>
+            <ellipse cx="50" cy="63" rx="8.5" ry="21" fill="url(#pg)" filter="url(#gl)"/>
+            <ellipse cx="50" cy="63" rx="8.5" ry="21" fill="url(#pg)" filter="url(#gl)" opacity="0.88" transform="rotate(18 50 63)"/>
+            <ellipse cx="50" cy="63" rx="8.5" ry="21" fill="url(#pg)" filter="url(#gl)" opacity="0.8"  transform="rotate(36 50 63)"/>
+            <ellipse cx="50" cy="57" rx="26" ry="8" fill="url(#pg)" opacity="0.65" filter="url(#gl)"/>
+            <circle cx="50" cy="57" r="10" fill="#FFE566" filter="url(#gl)"/>
+            <circle cx="50" cy="57" r="6" fill="#FFFCE0"/>
+          </svg>
+          <div class="bc-title">AWAKENING</div>
+          <div class="bc-author">DEEPAK CHOPRA, MD</div>
+          <div class="bc-byline">NEW YORK TIMES BESTSELLING AUTHOR</div>
+        </div>
+        <svg class="banner-mtn" height="58" viewBox="0 0 375 58" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+          <path d="M0,58 L0,40 L55,15 L110,34 L168,7 L228,28 L284,3 L338,22 L375,11 L375,58 Z" fill="rgba(25,35,100,0.42)"/>
+          <path d="M0,58 L0,48 L74,28 L144,44 L208,18 L272,36 L338,20 L375,30 L375,58 Z" fill="rgba(10,14,52,0.62)"/>
+        </svg>
+      </div>
+      <div class="book-body">
+        <div class="title-row">
+          <h1 class="book-title">Awakening</h1>
+          <span class="badge">New Book</span>
+        </div>
+        <p class="book-sub-text">The Path to Freedom and Enlightenment</p>
+        <button class="btn-buy">Buy Now</button>
+        <div class="rule"></div>
+        <h3 class="about-head">About</h3>
+        <p class="about-body">Are you sleepwalking through life? New York Times bestselling author Deepak Chopra offers an accessible, powerful guide to personal transformation so you can unlock the power of awakened consciousness and grasp your limitless potential.</p>
+        <p class="about-extra" id="aboutExtra">In Awakening, Chopra weaves together insights from neuroscience, quantum physics, and ancient wisdom traditions to chart a practical roadmap for anyone ready to step beyond the noise of daily life.</p>
+        <a class="read-more" id="readMoreLink" onclick="toggleMore()">Read more →</a>
+        <div class="rule"></div>
+        <div class="book-actions">
+          <button class="btn-contribute" onclick="openC()">Contribute</button>
+          <button class="btn-ask" onclick="nav('s3', document.querySelectorAll('.sb-btn')[2]); resetChat()">Ask Deepak</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- S3 · CHAT -->
+    <div id="s3" class="screen right">
+      <div class="aj-hdr">
+        <button class="aj-back" onclick="nav('s1', document.querySelectorAll('.sb-btn')[0])">‹</button>
+        <div class="q-pill" id="qbadge">3 free</div>
+      </div>
+
+      <div class="aj-chat-bar">
+        <button class="aj-back" onclick="nav('s1', document.querySelectorAll('.sb-btn')[0])">‹</button>
+        <img class="aj-chat-av-sm" src="https://dzpl40kl77mj.cloudfront.net/deepak/images/pages/home/homepage-headshot.png" alt="Deepak Chopra">
+        <div style="display:flex;align-items:center;flex:1;gap:6px;">
+          <div class="aj-chat-name">Deepak Chopra</div>
+          <div class="aj-eq">
+            <div class="aj-eq-b"></div><div class="aj-eq-b"></div>
+            <div class="aj-eq-b"></div><div class="aj-eq-b"></div>
+            <div class="aj-eq-b"></div>
+          </div>
+        </div>
+        <div class="q-pill" id="qbadge2">3 free</div>
+      </div>
+
+      <div class="aj-scroll" id="msgs">
+        <div class="aj-profile">
+          <img class="aj-av-dc" src="https://dzpl40kl77mj.cloudfront.net/deepak/images/pages/home/homepage-headshot.png" alt="Deepak Chopra">
+          <div class="aj-name">Deepak Chopra</div>
+          <p class="aj-bio">Physician, author, and pioneer of integrative medicine — exploring consciousness, healing, and the intersection of science and spirituality.</p>
+        </div>
+
+        <div class="aj-rule"></div>
+
+        <div class="aj-bubble-wrap">
+          <div class="aj-bubble">Ask me anything about <em>Awakening</em>, consciousness, healing, or how to live with greater purpose and presence.</div>
+        </div>
+
+        <div class="aj-chips" id="ajChips">
+          <button class="aj-chip" onclick="sendChip(this)">What is Awakening about?</button>
+          <button class="aj-chip" onclick="sendChip(this)">Consciousness &amp; healing</button>
+          <button class="aj-chip" onclick="sendChip(this)">Science &amp; spirituality</button>
+          <button class="aj-chip" onclick="sendChip(this)">How to find purpose</button>
+        </div>
+
+        <div id="chatThread"></div>
+
+        <div class="aj-about">
+          <div class="aj-about-title">About</div>
+          <p class="aj-about-text">Deepak Chopra, MD is a world-renowned pioneer in integrative medicine and personal transformation. Author of over 90 books, he bridges ancient wisdom with modern science to explore consciousness, healing, and human potential.</p>
+        </div>
+
+        <div class="aj-powered">Powered by AiJiv</div>
+      </div>
+
+      <div class="aj-cta">
+        <div class="aj-cta-text">Support Deepak's mission</div>
+        <button class="aj-cta-btn" onclick="openC()">Contribute ♡</button>
+      </div>
+      <div class="aj-foot">
+        <div style="position:relative;display:flex;align-items:center;">
+          <button class="aj-mic" id="micBtn" onclick="toggleMic()" title="Speak to Deepak"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg></button>
+          <div class="aj-listen-label" id="listenLabel">Listening…</div>
+        </div>
+        <textarea class="aj-input" id="chin" placeholder="Ask Deepak anything…" rows="1" onkeydown="onkey(event)"></textarea>
+        <button class="aj-send" onclick="send()">↑</button>
+      </div>
+    </div>
+    <div id="bd" class="backdrop" onclick="closeAll()"></div>
+
+    <!-- CONTRIBUTE SHEET -->
+    <div id="sh-contrib" class="sheet">
+      <div class="handle"></div>
+      <div class="sh-title">Make a Contribution</div>
+      <div class="freq-row">Send this contribution <div class="freq-btn">once ▾</div></div>
+      <div class="amounts">
+        <button class="amtbtn on" onclick="pickAmt(this)">$5</button>
+        <button class="amtbtn" onclick="pickAmt(this)">$10</button>
+        <button class="amtbtn" onclick="pickAmt(this)">$20</button>
+        <button class="amtbtn" onclick="pickAmt(this)">Custom</button>
+      </div>
+      <button class="contrib-cta">♡ Contribute</button>
+      <div class="matcher-row">
+        <div class="matcher-av">👤</div>
+        <div class="matcher-text">Your contribution will be matched by <strong>Evan Flory</strong> — doubling the impact.</div>
+      </div>
+      <div class="be-matcher">Be a matcher · Double contributions made to this card →</div>
+    </div>
+
+    <!-- PAYWALL SHEET -->
+    <div id="sh-pay" class="sheet">
+      <div class="handle"></div>
+<div class="pw-title">You've used 3 free questions</div>
+      <div class="pw-sub">Unlock more to keep the conversation going<br>with Deepak Chopra's AI</div>
+      <div class="pw-opts">
+        <div class="pw-opt on" onclick="pickPw(this)">
+          <div><div class="pw-opt-l">Unlock 10 more questions</div><div class="pw-opt-s">One-time micropayment</div></div>
+          <div class="pw-opt-p">$1<span>one-time</span></div>
+        </div>
+        <div class="pw-opt" onclick="pickPw(this)">
+          <div><div class="pw-opt-l">Unlimited + Support the cause</div><div class="pw-opt-s">Contributes directly to Deepak Chopra</div></div>
+          <div class="pw-opt-p">$5<span>one-time</span></div>
+        </div>
+        <div class="pw-opt" onclick="pickPw(this)">
+          <div><div class="pw-opt-l">Monthly supporter</div><div class="pw-opt-s">Unlimited chat + ongoing impact</div></div>
+          <div class="pw-opt-p">$3<span>/month</span></div>
+        </div>
+      </div>
+      <button class="pw-cta" onclick="unlock()">Unlock Now</button>
+      <div class="pw-skip" onclick="closeAll()">Not now</div>
+    </div>
+
+  </div><!-- /phone -->
+  <div class="phone-caption" style="margin-top:6px">Interact inside the phone to explore the full flow ↑</div>
+</div>
+
+<script>
+let cur = 's1', qUsed = 0, rIdx = 0;
+const Q_LIMIT = 3;
+const ORDER = ['s1','s3'];
+
+const REPLIES = [
+  "Awakening begins the moment you stop identifying with the voice in your head and recognize yourself as the awareness that hears it. This shift — from 'I am my thoughts' to 'I am the witness' — is the heart of the book.",
+  "In Awakening, I explore how quantum physics and ancient Vedanta arrive at the same truth: consciousness is primary. The brain doesn't create awareness — awareness creates the experience of having a brain.",
+  "The bridge between AI and ancient wisdom runs deeper than it appears. AI can process information brilliantly, but wisdom requires something else — the capacity to sit with uncertainty without grasping. That is awakened intelligence.",
+  "True transformation isn't about willpower. It's about recognizing the part of you that has never been hurt, never been afraid, and never stopped being whole. That's what Awakening is really pointing toward.",
+];
+
+function nav(id, btn) {
+  if (id === cur) { closeAll(); return; }
+  const prev = document.getElementById(cur);
+  const next = document.getElementById(id);
+  const isFlip = (cur==='s1'&&id==='s3') || (cur==='s3'&&id==='s1');
+  const toChat = id === 's3';
+  closeAll(); cur = id;
+  if (btn) { document.querySelectorAll('.sb-btn').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); }
+
+  if (isFlip) {
+    prev.style.transition='none'; next.style.transition='none';
+    next.classList.remove('right','left');
+    next.style.transform='translateX(0)'; next.style.opacity='0'; next.getBoundingClientRect();
+    prev.classList.add(toChat?'flip-out':'flip-out-back');
+    prev.addEventListener('animationend',()=>{
+      prev.classList.remove('flip-out','flip-out-back'); prev.classList.add(toChat?'left':'right');
+      prev.style.transform=''; prev.style.opacity='';
+      next.style.transform=''; next.style.opacity=''; next.getBoundingClientRect();
+      next.classList.add(toChat?'flip-in':'flip-in-back');
+      next.addEventListener('animationend',()=>{ next.classList.remove('flip-in','flip-in-back'); prev.style.transition=''; next.style.transition=''; },{once:true});
+    },{once:true});
+  } else {
+    const fwd = ORDER.indexOf(id) > ORDER.indexOf(prev.id);
+    prev.classList.add(fwd?'left':'right');
+    next.style.transform=fwd?'translateX(100%)':'translateX(-100%)';
+    next.classList.remove('right','left'); next.getBoundingClientRect(); next.style.transform='';
+  }
+}
+
+function delay(fn) { setTimeout(fn, 260); }
+function openC()   { document.getElementById('sh-contrib').classList.add('on'); document.getElementById('bd').classList.add('on'); }
+function openPay() { document.getElementById('sh-pay').classList.add('on');    document.getElementById('bd').classList.add('on'); }
+function closeAll(){ document.querySelectorAll('.sheet').forEach(s=>s.classList.remove('on')); document.getElementById('bd').classList.remove('on'); }
+function pickAmt(b){ document.querySelectorAll('.amtbtn').forEach(x=>x.classList.remove('on')); b.classList.add('on'); }
+function pickPw(b) { document.querySelectorAll('.pw-opt').forEach(x=>x.classList.remove('on'));  b.classList.add('on'); }
+
+function unlockInstant() {
+  closeAll();
+  ['qbadge','qbadge2'].forEach(id => { const b = document.getElementById(id); if (!b) return; b.textContent='∞ unlocked'; b.style.cssText='background:#E8F5EE;border-color:#A8D8BA;color:#2E7D52;border-radius:10px;padding:4px 9px;font-size:11px;font-weight:700;flex-shrink:0;white-space:nowrap;'; b.classList.remove('warn'); });
+  document.querySelectorAll('.sb-btn').forEach((b,i) => b.classList.toggle('on', i===3));
+  const scroll = document.getElementById('msgs');
+  const thread = document.getElementById('chatThread');
+  if (!thread) return;
+  const chips = document.getElementById('ajChips');
+  if (chips) chips.style.display = 'none';
+  document.getElementById('s3').classList.add('chatting');
+  const banner = document.createElement('div');
+  banner.className = 'unlock-banner anim';
+  banner.textContent = '🔓 You have unlocked chat';
+  thread.appendChild(banner); scroll.scrollTop = scroll.scrollHeight;
+  const t = document.createElement('div');
+  t.className = 'mrow ai anim';
+  t.innerHTML = '<div class="mav">DC</div><div class="mbub"><div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>';
+  setTimeout(() => {
+    thread.appendChild(t); scroll.scrollTop = scroll.scrollHeight;
+    setTimeout(() => {
+      t.remove();
+      const a = document.createElement('div'); a.className = 'mrow ai anim';
+      a.innerHTML = '<div class="mav">DC</div><div class="mbub">Thank you for your support — your contribution helps bring this wisdom to more people around the world. There\'s no limit now — ask me anything. 🙏</div>';
+      thread.appendChild(a); scroll.scrollTop = scroll.scrollHeight;
+      speakText(a.querySelector('.mbub').textContent);
+    }, 1200);
+  }, 350);
+}
+function unlock() { unlockInstant(); }
+
+function toggleMore() {
+  const e=document.getElementById('aboutExtra'), l=document.getElementById('readMoreLink');
+  if(e.style.display==='block'){e.style.display='none';l.textContent='Read more →';}
+  else{e.style.display='block';l.textContent='Read less ↑';}
+}
+
+function resetChat() {
+  if (_synth) _synth.cancel(); stopSpeaking();
+  qUsed = 0; rIdx = 0;
+  document.getElementById('s3').classList.remove('chatting');
+  ['qbadge','qbadge2'].forEach(id => { const b = document.getElementById(id); if (!b) return; b.textContent='3 free'; b.removeAttribute('style'); b.classList.remove('warn'); });
+  const thread = document.getElementById('chatThread');
+  if (thread) thread.innerHTML = '';
+  const chips = document.getElementById('ajChips');
+  if (chips) chips.style.display = '';
+  const inp = document.getElementById('chin');
+  if (inp) inp.value = '';
+  const scroll = document.getElementById('msgs');
+  if (scroll) scroll.scrollTop = 0;
+}
+
+function onkey(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();} }
+
+function sendChip(el) {
+  const chips = document.getElementById('ajChips');
+  if (chips) chips.style.display = 'none';
+  send(el.textContent);
+}
+
+function send(preset) {
+  const inp = document.getElementById('chin');
+  const thread = document.getElementById('chatThread');
+  const scroll = document.getElementById('msgs');
+  const txt = preset || inp.value.trim();
+  if (!txt) return;
+  if (qUsed >= Q_LIMIT) { openPay(); return; }
+
+  const chips = document.getElementById('ajChips');
+  if (chips) chips.style.display = 'none';
+  document.getElementById('s3').classList.add('chatting');
+
+  const u = document.createElement('div');
+  u.className = 'mrow usr anim';
+  u.innerHTML = `<div class="mav u">J</div><div class="mbub">${esc(txt)}</div>`;
+  thread.appendChild(u);
+  if (!preset) inp.value = '';
+  scroll.scrollTop = scroll.scrollHeight;
+  qUsed++;
+  updateBadge();
+
+  const t = document.createElement('div');
+  t.className = 'mrow ai anim';
+  t.innerHTML = `<div class="mav">DC</div><div class="mbub"><div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>`;
+  thread.appendChild(t);
+  scroll.scrollTop = scroll.scrollHeight;
+
+  setTimeout(() => {
+    t.remove();
+    const reply = REPLIES[rIdx++ % REPLIES.length];
+    const extra = qUsed >= Q_LIMIT ? `<br><span style="opacity:0.4;font-size:11.5px">You've reached your 3 free questions</span>` : '';
+    const a = document.createElement('div'); a.className = 'mrow ai anim';
+    a.innerHTML = `<div class="mav">DC</div><div class="mbub">${reply}${extra}</div>`;
+    thread.appendChild(a);
+    scroll.scrollTop = scroll.scrollHeight;
+    speakText(reply);
+    if (qUsed >= Q_LIMIT) setTimeout(openPay, 800);
+  }, 1100 + Math.random()*500);
+}
+
+function updateBadge() {
+  const left = Q_LIMIT - qUsed;
+  ['qbadge','qbadge2'].forEach(id => {
+    const b = document.getElementById(id);
+    if (!b) return;
+    b.textContent = `${left} free`;
+    b.classList.toggle('warn', left <= 1);
+  });
+}
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+/* ══ Voice ══ */
+let _recog = null, _synth = window.speechSynthesis, _speaking = false;
+
+function toggleMic() {
+  const btn = document.getElementById('micBtn');
+  const label = document.getElementById('listenLabel');
+
+  // Stop AI if speaking
+  if (_speaking) { if (_synth) _synth.cancel(); stopSpeaking(); }
+
+  // Toggle off if already recording
+  if (btn.classList.contains('recording')) {
+    if (_recog) _recog.stop();
+    btn.classList.remove('recording');
+    if (label) label.classList.remove('on');
+    return;
+  }
+
+  // Lazy init on first click (requires user gesture)
+  if (!_recog) {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) {
+      alert('Voice input requires Chrome or Edge. Try opening this page in Chrome.');
+      return;
+    }
+    _recog = new SR();
+    _recog.continuous = false;
+    _recog.interimResults = true;
+    _recog.lang = 'en-US';
+
+    _recog.onresult = e => {
+      const t = Array.from(e.results).map(r => r[0].transcript).join('');
+      const inp = document.getElementById('chin');
+      if (inp) inp.value = t;
+    };
+    _recog.onend = () => {
+      const b = document.getElementById('micBtn');
+      const l = document.getElementById('listenLabel');
+      if (b) b.classList.remove('recording');
+      if (l) l.classList.remove('on');
+      const inp = document.getElementById('chin');
+      if (inp && inp.value.trim()) setTimeout(send, 150);
+    };
+    _recog.onerror = e => {
+      console.warn('Speech error:', e.error);
+      const b = document.getElementById('micBtn');
+      const l = document.getElementById('listenLabel');
+      if (b) b.classList.remove('recording');
+      if (l) l.classList.remove('on');
+    };
+  }
+
+  // Start recording
+  btn.classList.add('recording');
+  if (label) label.classList.add('on');
+  try { _recog.start(); }
+  catch(e) {
+    console.warn('Could not start recognition:', e);
+    btn.classList.remove('recording');
+    if (label) label.classList.remove('on');
+  }
+}
+
+let _maleVoice = null;
+
+function loadMaleVoice() {
+  const voices = _synth ? _synth.getVoices() : [];
+  if (!voices.length) return;
+  // Priority: Google neural > macOS Enhanced > named male
+  _maleVoice = voices.find(v => v.name === 'Google UK English Male')
+             || voices.find(v => v.name === 'Google US English')
+             || voices.find(v => v.name.includes('Enhanced') && !['samantha','karen','victoria','fiona','moira','tessa','allison','ava','susan'].some(f => v.name.toLowerCase().includes(f)))
+             || voices.find(v => ['Daniel','Alex','Tom','Aaron','Arthur','Rishi','Gordon','James','David','Fred'].some(k => v.name.includes(k)))
+             || voices.find(v => v.name.toLowerCase().includes('male'));
+  console.log('Voice selected:', _maleVoice ? _maleVoice.name : 'default');
+}
+
+if (_synth) {
+  _synth.onvoiceschanged = loadMaleVoice;
+  loadMaleVoice();
+}
+
+function speakText(text) {
+  if (!_synth) return;
+  _synth.cancel();
+  const clean = text.replace(/<[^>]+>/g, '').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>');
+  const utt = new SpeechSynthesisUtterance(clean);
+    utt.rate = 0.84; utt.pitch = 0.93;
+  if (!_maleVoice) loadMaleVoice();
+  if (_maleVoice) utt.voice = _maleVoice;
+  utt.onstart = () => { _speaking = true; document.getElementById('s3').classList.add('ai-speaking'); };
+  utt.onend = utt.onerror = stopSpeaking;
+  _synth.speak(utt);
+}
+
+function stopSpeaking() {
+  _speaking = false;
+  const s3 = document.getElementById('s3');
+  if (s3) s3.classList.remove('ai-speaking');
+}
+
+</script>
+</body>
+</html>
