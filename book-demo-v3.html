@@ -121,8 +121,8 @@ body {
 .mrow { display:flex; gap:7px; max-width:87%; }
 .mrow.ai  { align-self:flex-start; }
 .mrow.usr { align-self:flex-end; flex-direction:row-reverse; }
-.mav { width:34px; height:34px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; margin-top:3px; background:#F5A623; color:white; font-size:10px; font-weight:800; letter-spacing:-0.5px; }
-.mav.u { background:#DDDDF0; color:var(--chat-blue); font-size:10px; }
+.mav { width:34px; height:34px; border-radius:50%; flex-shrink:0; margin-top:3px; object-fit:cover; object-position:center top; display:block; }
+.mav.u { display:flex; align-items:center; justify-content:center; background:#DDDDF0; color:var(--chat-blue); font-size:10px; font-weight:700; }
 .mbub { padding:10px 13px; border-radius:16px; font-size:13.5px; line-height:1.55; }
 .mrow.ai  .mbub { background:var(--chat-bubble); color:var(--black); border-radius:4px 16px 16px 16px; }
 .mrow.usr .mbub { background:var(--chat-blue); color:white; border-radius:16px 4px 16px 16px; }
@@ -538,13 +538,13 @@ function unlockInstant() {
   thread.appendChild(banner); scroll.scrollTop = scroll.scrollHeight;
   const t = document.createElement('div');
   t.className = 'mrow ai anim';
-  t.innerHTML = '<div class="mav">DC</div><div class="mbub"><div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>';
+  t.innerHTML = '<img class="mav" src="https://dzpl40kl77mj.cloudfront.net/deepak/images/pages/home/homepage-headshot.png" alt="DC"><div class="mbub"><div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>';
   setTimeout(() => {
     thread.appendChild(t); scroll.scrollTop = scroll.scrollHeight;
     setTimeout(() => {
       t.remove();
       const a = document.createElement('div'); a.className = 'mrow ai anim';
-      a.innerHTML = '<div class="mav">DC</div><div class="mbub">Thank you for your support — your contribution helps bring this wisdom to more people around the world. There\'s no limit now — ask me anything. 🙏</div>';
+      a.innerHTML = '<img class="mav" src="https://dzpl40kl77mj.cloudfront.net/deepak/images/pages/home/homepage-headshot.png" alt="DC"><div class="mbub">Thank you for your support — your contribution helps bring this wisdom to more people around the world. There\'s no limit now — ask me anything. 🙏</div>';
       thread.appendChild(a); scroll.scrollTop = scroll.scrollHeight;
       speakText(a.querySelector('.mbub').textContent);
     }, 1200);
@@ -604,7 +604,7 @@ function send(preset) {
 
   const t = document.createElement('div');
   t.className = 'mrow ai anim';
-  t.innerHTML = `<div class="mav">DC</div><div class="mbub"><div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>`;
+  t.innerHTML = `<img class="mav" src="https://dzpl40kl77mj.cloudfront.net/deepak/images/pages/home/homepage-headshot.png" alt="DC"><div class="mbub"><div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>`;
   thread.appendChild(t);
   scroll.scrollTop = scroll.scrollHeight;
 
@@ -613,7 +613,7 @@ function send(preset) {
     const reply = REPLIES[rIdx++ % REPLIES.length];
     const extra = qUsed >= Q_LIMIT ? `<br><span style="opacity:0.4;font-size:11.5px">You've reached your 3 free questions</span>` : '';
     const a = document.createElement('div'); a.className = 'mrow ai anim';
-    a.innerHTML = `<div class="mav">DC</div><div class="mbub">${reply}${extra}</div>`;
+    a.innerHTML = `<img class="mav" src="https://dzpl40kl77mj.cloudfront.net/deepak/images/pages/home/homepage-headshot.png" alt="DC"><div class="mbub">${reply}${extra}</div>`;
     thread.appendChild(a);
     scroll.scrollTop = scroll.scrollHeight;
     speakText(reply);
