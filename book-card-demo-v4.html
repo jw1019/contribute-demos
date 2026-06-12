@@ -142,8 +142,8 @@ body {
 .mrow { display:flex; gap:7px; max-width:87%; }
 .mrow.ai  { align-self:flex-start; }
 .mrow.usr { align-self:flex-end; flex-direction:row-reverse; }
-.mav  { width:34px; height:34px; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; margin-top:3px; background:#F5A623; color:white; font-size:10px; font-weight:800; letter-spacing:-0.5px; }
-.mav.u { background:#DDDDF0; color:var(--chat-blue); font-size:10px; font-weight:700; }
+.mav  { width:34px; height:34px; border-radius:50%; flex-shrink:0; margin-top:3px; object-fit:cover; object-position:center top; display:block; }
+.mav.u { display:flex; align-items:center; justify-content:center; background:#DDDDF0; color:var(--chat-blue); font-size:10px; font-weight:700; }
 .mbub { padding:10px 13px; border-radius:16px; font-size:13.5px; line-height:1.55; }
 .mrow.ai  .mbub { background:var(--chat-bubble); color:var(--black); border-radius:4px 16px 16px 16px; }
 .mrow.usr .mbub { background:var(--chat-blue); color:white; border-radius:16px 4px 16px 16px; }
@@ -255,18 +255,12 @@ body {
 #s3.chatting .aj-voice-zone { display:flex; }
 
 .aj-vav-wrap { position:relative; width:72px; height:72px; }
-.aj-vav-wrap img { width:72px; height:72px; border-radius:50%; object-fit:cover; object-position:center top; border:3px solid white; box-shadow:0 4px 16px rgba(0,0,0,0.18); display:block; opacity:0; transition:opacity 1.2s ease; }
+/* Avatar: fades in fast, fades out slow after eq is gone (0.4s delay) */
+.aj-vav-wrap img { width:72px; height:72px; border-radius:50%; object-fit:cover; object-position:center top; border:3px solid white; box-shadow:0 4px 16px rgba(0,0,0,0.18); display:block; opacity:0; transition:opacity 1s ease 0.4s; }
 #s3.ai-speaking .aj-vav-wrap img { opacity:1; transition:opacity 0.3s ease; }
 
-.aj-vring { position:absolute; border-radius:50%; border:2px solid rgba(79,110,247,0.4); opacity:0; pointer-events:none; }
-.aj-vring-1 { inset:-10px; }
-.aj-vring-2 { inset:-20px; }
-.aj-vring-3 { inset:-30px; }
-#s3.ai-speaking .aj-vring-1 { animation:ring-out 1.8s ease-out infinite 0s; }
-#s3.ai-speaking .aj-vring-2 { animation:ring-out 1.8s ease-out infinite 0.5s; }
-#s3.ai-speaking .aj-vring-3 { animation:ring-out 1.8s ease-out infinite 1s; }
-
-.aj-voice-eq { display:flex; align-items:flex-end; gap:3px; height:22px; margin-top:12px; opacity:0; transition:opacity 1.2s ease; }
+/* Eq: fades out first, no delay */
+.aj-voice-eq { display:flex; align-items:flex-end; gap:3px; height:22px; margin-top:12px; opacity:0; transition:opacity 0.35s ease; }
 #s3.ai-speaking .aj-voice-eq { opacity:1; transition:opacity 0.3s ease; }
 .aj-voice-eq-b { width:4px; background:#4F6EF7; border-radius:2px; animation:eq-dance 0.65s ease infinite; }
 .aj-voice-eq-b:nth-child(1){ animation-delay:0s; }
@@ -515,11 +509,11 @@ body {
       </div>
       <div class="msgs">
         <div class="unlock-banner anim">🔓 You have unlocked chat</div>
-        <div class="mrow ai anim"><div class="mav">DC</div><div class="mbub">Thank you for your support — it means everything. Your contribution helps spread these teachings to those who need them most. What else would you like to explore?</div></div>
+        <div class="mrow ai anim"><img class="mav" src="https://dzpl40kl77mj.cloudfront.net/deepak/images/pages/home/homepage-headshot.png" alt="DC"><div class="mbub">Thank you for your support — it means everything. Your contribution helps spread these teachings to those who need them most. What else would you like to explore?</div></div>
         <div class="mrow usr anim"><div class="mav u">J</div><div class="mbub">What's the most important practice from Awakening I can start today?</div></div>
-        <div class="mrow ai anim"><div class="mav">DC</div><div class="mbub">Begin each morning with five minutes of pure witnessing — not meditating on an object, but simply noticing that you are aware. Ask yourself: "What is it that is aware right now?" That question, held lightly, is the doorway to awakening.</div></div>
+        <div class="mrow ai anim"><img class="mav" src="https://dzpl40kl77mj.cloudfront.net/deepak/images/pages/home/homepage-headshot.png" alt="DC"><div class="mbub">Begin each morning with five minutes of pure witnessing — not meditating on an object, but simply noticing that you are aware. Ask yourself: "What is it that is aware right now?" That question, held lightly, is the doorway to awakening.</div></div>
         <div class="mrow usr anim"><div class="mav u">J</div><div class="mbub">How does AI fit into your vision for human flourishing?</div></div>
-        <div class="mrow ai anim"><div class="mav">DC</div><div class="mbub">AI can free us from mechanical thinking — so we have more time for wisdom, creativity, and love. Technology without awakening amplifies our confusion. Technology with awakening amplifies our humanity. 🌸</div></div>
+        <div class="mrow ai anim"><img class="mav" src="https://dzpl40kl77mj.cloudfront.net/deepak/images/pages/home/homepage-headshot.png" alt="DC"><div class="mbub">AI can free us from mechanical thinking — so we have more time for wisdom, creativity, and love. Technology without awakening amplifies our confusion. Technology with awakening amplifies our humanity. 🌸</div></div>
       </div>
       <div class="chat-cta">
         <div class="cta-text">Deepen your impact</div>
@@ -648,13 +642,13 @@ function unlockInstant() {
   thread.appendChild(banner); scroll.scrollTop = scroll.scrollHeight;
   const t = document.createElement('div');
   t.className = 'mrow ai anim';
-  t.innerHTML = '<div class="mav">DC</div><div class="mbub"><div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>';
+  t.innerHTML = '<img class="mav" src="https://dzpl40kl77mj.cloudfront.net/deepak/images/pages/home/homepage-headshot.png" alt="DC"><div class="mbub"><div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>';
   setTimeout(() => {
     thread.appendChild(t); scroll.scrollTop = scroll.scrollHeight;
     setTimeout(() => {
       t.remove();
       const a = document.createElement('div'); a.className = 'mrow ai anim';
-      a.innerHTML = '<div class="mav">DC</div><div class="mbub">Thank you for your support — your contribution helps bring this wisdom to more people around the world. There\'s no limit now — ask me anything. 🙏</div>';
+      a.innerHTML = '<img class="mav" src="https://dzpl40kl77mj.cloudfront.net/deepak/images/pages/home/homepage-headshot.png" alt="DC"><div class="mbub">Thank you for your support — your contribution helps bring this wisdom to more people around the world. There\'s no limit now — ask me anything. 🙏</div>';
       thread.appendChild(a); scroll.scrollTop = scroll.scrollHeight;
       speakText(a.querySelector('.mbub').textContent);
     }, 1200);
@@ -708,7 +702,7 @@ function send(preset) {
 
   const t = document.createElement('div');
   t.className = 'mrow ai anim';
-  t.innerHTML = `<div class="mav">DC</div><div class="mbub"><div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>`;
+  t.innerHTML = `<img class="mav" src="https://dzpl40kl77mj.cloudfront.net/deepak/images/pages/home/homepage-headshot.png" alt="DC"><div class="mbub"><div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>`;
   thread.appendChild(t);
   scroll.scrollTop = scroll.scrollHeight;
 
@@ -717,7 +711,7 @@ function send(preset) {
     const reply = REPLIES[rIdx++ % REPLIES.length];
     const extra = qUsed >= Q_LIMIT ? `<br><span style="opacity:0.4;font-size:11.5px">You've reached your 3 free questions</span>` : '';
     const a = document.createElement('div'); a.className = 'mrow ai anim';
-    a.innerHTML = `<div class="mav">DC</div><div class="mbub">${reply}${extra}</div>`;
+    a.innerHTML = `<img class="mav" src="https://dzpl40kl77mj.cloudfront.net/deepak/images/pages/home/homepage-headshot.png" alt="DC"><div class="mbub">${reply}${extra}</div>`;
     thread.appendChild(a);
     scroll.scrollTop = scroll.scrollHeight;
     speakText(reply);
