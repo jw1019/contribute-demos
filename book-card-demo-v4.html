@@ -251,11 +251,12 @@ body {
 #s3.chatting .aj-about,
 #s3.chatting .aj-powered      { display:none; }
 #s3.chatting #chatThread       { padding-top:8px; }
-#s3.chatting .aj-scroll        { flex:none; max-height:220px; }
+#s3.chatting .aj-scroll             { flex:1; overflow-y:auto; }
+#s3.chatting.ai-speaking .aj-scroll { flex:none; max-height:220px; }
 
 /* ── Voice Avatar Zone ── */
 .aj-voice-zone { display:none; flex:1; flex-direction:column; align-items:center; justify-content:flex-end; background:#F0EAE4; padding-bottom:20px; }
-#s3.chatting .aj-voice-zone { display:flex; }
+#s3.chatting.ai-speaking .aj-voice-zone { display:flex; }
 
 .aj-vav-wrap { position:relative; width:70px; height:70px; }
 /* Avatar + waveform: both fade in when speaking, both fade out together when done */
