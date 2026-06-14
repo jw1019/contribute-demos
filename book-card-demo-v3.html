@@ -237,6 +237,9 @@ body {
 .aj-input::placeholder { color:#9A9490; }
 .aj-send  { width:42px; height:42px; border-radius:50%; background:#4F6EF7; border:none; color:white; font-size:20px; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:opacity 0.15s; }
 .aj-send:active { opacity:0.8; }
+.aj-pause { display:none; width:42px; height:42px; border-radius:50%; background:#fff; border:1.5px solid #DDD5CB; color:#555; cursor:pointer; align-items:center; justify-content:center; flex-shrink:0; line-height:0; transition:all 0.2s; }
+#s3.ai-speaking .aj-pause { display:flex; }
+.aj-pause.paused { background:#4F6EF7; border-color:#4F6EF7; color:white; }
 
 /* Chat-mode takeover */
 .aj-chat-bar-new { display:none; align-items:center; gap:10px; padding:44px 16px 12px; background:#F0EAE4; flex-shrink:0; border-bottom:1px solid #DDD5CB; }
@@ -461,6 +464,10 @@ body {
           <button class="aj-mic" id="micBtn" onclick="toggleMic()" title="Speak to Deepak"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg></button>
           <div class="aj-listen-label" id="listenLabel">Listening…</div>
         </div>
+        <button class="aj-pause" id="pauseBtn" onclick="togglePause()" title="Pause / Resume">
+          <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+          <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="display:none"><polygon points="5,3 19,12 5,21"/></svg>
+        </button>
         <textarea class="aj-input" id="chin" placeholder="Ask Deepak anything…" rows="1" onkeydown="onkey(event)"></textarea>
         <button class="aj-send" onclick="send()">↑</button>
       </div>
@@ -704,7 +711,25 @@ function updateBadge() {
 function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 /* ══ Voice ══ */
-let _recog = null, _synth = window.speechSynthesis, _speaking = false, _maleVoice = null;
+let _recog = null, _synth = window.speechSynthesis, _speaking = false, _paused = false, _maleVoice = null;
+
+function togglePause() {
+  if (!_synth || !_speaking) return;
+  const btn = document.getElementById('pauseBtn');
+  const pauseIcon = document.getElementById('pauseIcon');
+  const playIcon  = document.getElementById('playIcon');
+  if (_paused) {
+    _synth.resume(); _paused = false;
+    btn.classList.remove('paused');
+    pauseIcon.style.display = ''; playIcon.style.display = 'none';
+    document.getElementById('s3').classList.add('ai-speaking');
+  } else {
+    _synth.pause(); _paused = true;
+    btn.classList.add('paused');
+    pauseIcon.style.display = 'none'; playIcon.style.display = '';
+    document.getElementById('s3').classList.remove('ai-speaking');
+  }
+}
 
 function loadMaleVoice() {
   const voices = _synth ? _synth.getVoices() : [];
@@ -757,9 +782,15 @@ function speakText(text) {
 }
 
 function stopSpeaking() {
-  _speaking = false;
+  _speaking = false; _paused = false;
   const s3 = document.getElementById('s3');
   if (s3) s3.classList.remove('ai-speaking');
+  const btn = document.getElementById('pauseBtn');
+  const pauseIcon = document.getElementById('pauseIcon');
+  const playIcon  = document.getElementById('playIcon');
+  if (btn) btn.classList.remove('paused');
+  if (pauseIcon) pauseIcon.style.display = '';
+  if (playIcon)  playIcon.style.display  = 'none';
 }
 
 </script>
