@@ -851,13 +851,13 @@ body {
 
 
 /* ── Chat-mode takeover ── */
-.aj-chat-bar {
+.aj-chat-bar-new {
   display:none; align-items:center; gap:10px;
   padding:44px 16px 12px; background:#F0EAE4;
   flex-shrink:0; border-bottom:1px solid #DDD5CB;
 }
-#s3.chatting .aj-hdr      { display:none; }
-#s3.chatting .aj-chat-bar { display:flex; }
+#s3.chatting .aj-hdr          { display:none; }
+#s3.chatting .aj-chat-bar-new { display:flex; }
 #s3.chatting .aj-profile,
 #s3.chatting .aj-rule,
 #s3.chatting .aj-bubble-wrap,
@@ -865,7 +865,7 @@ body {
 #s3.chatting .aj-powered  { display:none; }
 #s3.chatting #chatThread  { padding-top:16px; }
 
-.aj-chat-av   { width:36px; height:36px; border-radius:50%; object-fit:cover; object-position:center top; border:2px solid white; box-shadow:0 1px 6px rgba(0,0,0,0.15); flex-shrink:0; }
+.aj-chat-av-sm { width:36px; height:36px; border-radius:50%; object-fit:cover; object-position:center top; border:2px solid white; box-shadow:0 1px 6px rgba(0,0,0,0.15); flex-shrink:0; }
 .aj-chat-name { font-size:15px; font-weight:700; color:#1A1A2E; flex:1; }
 
 .aj-back { background:none; border:none; font-size:28px; font-weight:300; color:#1A1A2E; cursor:pointer; padding:0 8px 0 0; line-height:1; flex-shrink:0; opacity:0.7; }
@@ -1077,9 +1077,9 @@ body {
 
 
       <!-- Compact chat header (shown when chatting) -->
-      <div class="aj-chat-bar">
+      <div class="aj-chat-bar-new">
         <button class="aj-back" onclick="nav('s1', document.querySelectorAll('.sb-btn')[0])">‹</button>
-        <img class="aj-chat-av" src="https://cdn.boldjourney.com/wp-content/uploads/2024/07/c-1720482802523-personal_andrew_wong_self-portrait.jpg" alt="Andrew Wong">
+        <img class="aj-chat-av-sm" src="https://cdn.boldjourney.com/wp-content/uploads/2024/07/c-1720482802523-personal_andrew_wong_self-portrait.jpg" alt="Andrew Wong">
         <div style="display:flex;align-items:center;flex:1;gap:6px;">
           <div class="aj-chat-name">Andrew Wong</div>
           <div class="aj-eq">
