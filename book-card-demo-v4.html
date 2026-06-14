@@ -257,23 +257,82 @@ body {
 .aj-voice-zone { display:none; flex:1; flex-direction:column; align-items:center; justify-content:flex-end; background:#F0EAE4; padding-bottom:20px; }
 #s3.chatting .aj-voice-zone { display:flex; }
 
-.aj-vav-wrap { position:relative; width:72px; height:72px; }
-/* Avatar: fades in fast, fades out slow after eq is gone (0.4s delay) */
-.aj-vav-wrap img { width:72px; height:72px; border-radius:50%; object-fit:cover; object-position:center top; border:3px solid white; box-shadow:0 4px 16px rgba(0,0,0,0.18); display:block; opacity:0; transition:opacity 1s ease 0.4s; }
-#s3.ai-speaking .aj-vav-wrap img { opacity:1; transition:opacity 0.3s ease; }
+.aj-vav-wrap { position:relative; width:100px; height:100px; }
+/* Avatar: always visible when chatting */
+.aj-vav-wrap img { width:100px; height:100px; border-radius:50%; object-fit:cover; object-position:center top; border:3px solid white; box-shadow:0 4px 20px rgba(0,0,0,0.2); display:block; opacity:1; }
 
-/* Eq: fades out first, no delay */
-.aj-voice-eq { display:flex; align-items:flex-end; gap:3px; height:22px; margin-top:12px; opacity:0; transition:opacity 0.35s ease; }
+/* Waveform: fades in when speaking, fades out when done */
+.aj-voice-eq { display:flex; align-items:center; justify-content:center; gap:2px; width:200px; height:32px; margin-top:16px; opacity:0; transition:opacity 0.35s ease; }
 #s3.ai-speaking .aj-voice-eq { opacity:1; transition:opacity 0.3s ease; }
-.aj-voice-eq-b { width:4px; background:#4F6EF7; border-radius:2px; animation:eq-dance 0.65s ease infinite; }
-.aj-voice-eq-b:nth-child(1){ animation-delay:0s; }
-.aj-voice-eq-b:nth-child(2){ animation-delay:0.13s; }
-.aj-voice-eq-b:nth-child(3){ animation-delay:0.26s; }
-.aj-voice-eq-b:nth-child(4){ animation-delay:0.39s; }
-.aj-voice-eq-b:nth-child(5){ animation-delay:0.52s; }
+.aj-voice-eq-b { width:2px; flex-shrink:0; background:#868181; border-radius:2px; }
+@keyframes wf-s { 0%,100%{height:3px} 50%{height:8px} }
+@keyframes wf-m { 0%,100%{height:3px} 50%{height:16px} }
+@keyframes wf-t { 0%,100%{height:4px} 50%{height:26px} }
+.aj-voice-eq-b:nth-child(1) {animation:wf-m .75s ease infinite .00s}
+.aj-voice-eq-b:nth-child(2) {animation:wf-t .65s ease infinite .07s}
+.aj-voice-eq-b:nth-child(3) {animation:wf-m .90s ease infinite .14s}
+.aj-voice-eq-b:nth-child(4) {animation:wf-s .80s ease infinite .04s}
+.aj-voice-eq-b:nth-child(5) {animation:wf-t .70s ease infinite .21s}
+.aj-voice-eq-b:nth-child(6) {animation:wf-m .85s ease infinite .11s}
+.aj-voice-eq-b:nth-child(7) {animation:wf-s .75s ease infinite .28s}
+.aj-voice-eq-b:nth-child(8) {animation:wf-t .60s ease infinite .18s}
+.aj-voice-eq-b:nth-child(9) {animation:wf-m .95s ease infinite .35s}
+.aj-voice-eq-b:nth-child(10){animation:wf-t .70s ease infinite .25s}
+.aj-voice-eq-b:nth-child(11){animation:wf-s .80s ease infinite .42s}
+.aj-voice-eq-b:nth-child(12){animation:wf-m .65s ease infinite .32s}
+.aj-voice-eq-b:nth-child(13){animation:wf-t .90s ease infinite .49s}
+.aj-voice-eq-b:nth-child(14){animation:wf-t .75s ease infinite .39s}
+.aj-voice-eq-b:nth-child(15){animation:wf-m .70s ease infinite .56s}
+.aj-voice-eq-b:nth-child(16){animation:wf-s .85s ease infinite .46s}
+.aj-voice-eq-b:nth-child(17){animation:wf-t .65s ease infinite .63s}
+.aj-voice-eq-b:nth-child(18){animation:wf-m .80s ease infinite .53s}
+.aj-voice-eq-b:nth-child(19){animation:wf-s .90s ease infinite .70s}
+.aj-voice-eq-b:nth-child(20){animation:wf-t .70s ease infinite .60s}
+.aj-voice-eq-b:nth-child(21){animation:wf-m .75s ease infinite .67s}
+.aj-voice-eq-b:nth-child(22){animation:wf-s .85s ease infinite .77s}
+.aj-voice-eq-b:nth-child(23){animation:wf-t .65s ease infinite .84s}
+.aj-voice-eq-b:nth-child(24){animation:wf-m .95s ease infinite .74s}
+.aj-voice-eq-b:nth-child(25){animation:wf-s .80s ease infinite .91s}
+.aj-voice-eq-b:nth-child(26){animation:wf-t .70s ease infinite .81s}
+.aj-voice-eq-b:nth-child(27){animation:wf-m .75s ease infinite .88s}
+.aj-voice-eq-b:nth-child(28){animation:wf-s .90s ease infinite .95s}
 
 .aj-chat-av-sm { width:36px; height:36px; border-radius:50%; object-fit:cover; object-position:center top; flex-shrink:0; border:2px solid white; box-shadow:0 1px 6px rgba(0,0,0,0.15); }
-.aj-chat-name  { font-size:15px; font-weight:700; color:#1A1A2E; flex:1; }
+.aj-chat-name  { font-size:15px; font-weight:700; color:#1A1A2E; flex:1; transition:opacity 0.2s; }
+#s3.ai-speaking .aj-chat-bar-new .aj-chat-name { display:none; }
+
+/* Header waveform (replaces name when speaking) */
+.aj-chat-bar-new .aj-eq { display:none; flex:1; align-items:center; justify-content:center; gap:2px; height:28px; overflow:hidden; }
+#s3.ai-speaking .aj-chat-bar-new .aj-eq { display:flex; }
+.aj-eq-b { width:2px; flex-shrink:0; background:#868181; border-radius:2px; }
+.aj-eq-b:nth-child(1) {animation:wf-m .75s ease infinite .00s}
+.aj-eq-b:nth-child(2) {animation:wf-t .65s ease infinite .07s}
+.aj-eq-b:nth-child(3) {animation:wf-m .90s ease infinite .14s}
+.aj-eq-b:nth-child(4) {animation:wf-s .80s ease infinite .04s}
+.aj-eq-b:nth-child(5) {animation:wf-t .70s ease infinite .21s}
+.aj-eq-b:nth-child(6) {animation:wf-m .85s ease infinite .11s}
+.aj-eq-b:nth-child(7) {animation:wf-s .75s ease infinite .28s}
+.aj-eq-b:nth-child(8) {animation:wf-t .60s ease infinite .18s}
+.aj-eq-b:nth-child(9) {animation:wf-m .95s ease infinite .35s}
+.aj-eq-b:nth-child(10){animation:wf-t .70s ease infinite .25s}
+.aj-eq-b:nth-child(11){animation:wf-s .80s ease infinite .42s}
+.aj-eq-b:nth-child(12){animation:wf-m .65s ease infinite .32s}
+.aj-eq-b:nth-child(13){animation:wf-t .90s ease infinite .49s}
+.aj-eq-b:nth-child(14){animation:wf-t .75s ease infinite .39s}
+.aj-eq-b:nth-child(15){animation:wf-m .70s ease infinite .56s}
+.aj-eq-b:nth-child(16){animation:wf-s .85s ease infinite .46s}
+.aj-eq-b:nth-child(17){animation:wf-t .65s ease infinite .63s}
+.aj-eq-b:nth-child(18){animation:wf-m .80s ease infinite .53s}
+.aj-eq-b:nth-child(19){animation:wf-s .90s ease infinite .70s}
+.aj-eq-b:nth-child(20){animation:wf-t .70s ease infinite .60s}
+.aj-eq-b:nth-child(21){animation:wf-m .75s ease infinite .67s}
+.aj-eq-b:nth-child(22){animation:wf-s .85s ease infinite .77s}
+.aj-eq-b:nth-child(23){animation:wf-t .65s ease infinite .84s}
+.aj-eq-b:nth-child(24){animation:wf-m .95s ease infinite .74s}
+.aj-eq-b:nth-child(25){animation:wf-s .80s ease infinite .91s}
+.aj-eq-b:nth-child(26){animation:wf-t .70s ease infinite .81s}
+.aj-eq-b:nth-child(27){animation:wf-m .75s ease infinite .88s}
+.aj-eq-b:nth-child(28){animation:wf-s .90s ease infinite .95s}
 
 
 .aj-cta { background:#F0EAE4; border-top:1px solid #DDD5CB; padding:10px 16px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
@@ -301,15 +360,7 @@ body {
 #s3.ai-speaking .aj-ring-3 { animation:ring-out 1.8s ease-out infinite 1s; }
 @keyframes ring-out { 0%{opacity:0.7;transform:scale(0.92);} 100%{opacity:0;transform:scale(1.35);} }
 
-.aj-eq { display:none; align-items:flex-end; gap:2.5px; height:18px; margin-left:4px; }
-#s3.ai-speaking .aj-eq { display:flex; }
-.aj-eq-b { width:3px; background:#4F6EF7; border-radius:2px; animation:eq-dance 0.7s ease infinite; }
-.aj-eq-b:nth-child(1){ animation-delay:0.0s; }
-.aj-eq-b:nth-child(2){ animation-delay:0.12s; }
-.aj-eq-b:nth-child(3){ animation-delay:0.24s; }
-.aj-eq-b:nth-child(4){ animation-delay:0.36s; }
-.aj-eq-b:nth-child(5){ animation-delay:0.48s; }
-@keyframes eq-dance { 0%,100%{height:3px;} 50%{height:18px;} }
+/* (header eq removed in v4 — waveform lives in voice zone) */
 </style>
 </head>
 <body>
@@ -430,6 +481,15 @@ body {
         <button class="aj-back" onclick="nav('s1',null)">‹</button>
         <img class="aj-chat-av-sm" src="https://dzpl40kl77mj.cloudfront.net/deepak/images/pages/home/homepage-headshot.png" alt="Deepak Chopra">
         <div class="aj-chat-name">Deepak Chopra</div>
+        <div class="aj-eq">
+          <div class="aj-eq-b"></div><div class="aj-eq-b"></div><div class="aj-eq-b"></div><div class="aj-eq-b"></div>
+          <div class="aj-eq-b"></div><div class="aj-eq-b"></div><div class="aj-eq-b"></div><div class="aj-eq-b"></div>
+          <div class="aj-eq-b"></div><div class="aj-eq-b"></div><div class="aj-eq-b"></div><div class="aj-eq-b"></div>
+          <div class="aj-eq-b"></div><div class="aj-eq-b"></div><div class="aj-eq-b"></div><div class="aj-eq-b"></div>
+          <div class="aj-eq-b"></div><div class="aj-eq-b"></div><div class="aj-eq-b"></div><div class="aj-eq-b"></div>
+          <div class="aj-eq-b"></div><div class="aj-eq-b"></div><div class="aj-eq-b"></div><div class="aj-eq-b"></div>
+          <div class="aj-eq-b"></div><div class="aj-eq-b"></div><div class="aj-eq-b"></div><div class="aj-eq-b"></div>
+        </div>
         <div class="q-pill" id="qbadge2">3 free</div>
       </div>
 
@@ -474,11 +534,13 @@ body {
           <img src="https://dzpl40kl77mj.cloudfront.net/deepak/images/pages/home/homepage-headshot.png" alt="Deepak Chopra">
         </div>
         <div class="aj-voice-eq">
-          <div class="aj-voice-eq-b"></div>
-          <div class="aj-voice-eq-b"></div>
-          <div class="aj-voice-eq-b"></div>
-          <div class="aj-voice-eq-b"></div>
-          <div class="aj-voice-eq-b"></div>
+          <div class="aj-voice-eq-b"></div><div class="aj-voice-eq-b"></div><div class="aj-voice-eq-b"></div><div class="aj-voice-eq-b"></div>
+          <div class="aj-voice-eq-b"></div><div class="aj-voice-eq-b"></div><div class="aj-voice-eq-b"></div><div class="aj-voice-eq-b"></div>
+          <div class="aj-voice-eq-b"></div><div class="aj-voice-eq-b"></div><div class="aj-voice-eq-b"></div><div class="aj-voice-eq-b"></div>
+          <div class="aj-voice-eq-b"></div><div class="aj-voice-eq-b"></div><div class="aj-voice-eq-b"></div><div class="aj-voice-eq-b"></div>
+          <div class="aj-voice-eq-b"></div><div class="aj-voice-eq-b"></div><div class="aj-voice-eq-b"></div><div class="aj-voice-eq-b"></div>
+          <div class="aj-voice-eq-b"></div><div class="aj-voice-eq-b"></div><div class="aj-voice-eq-b"></div><div class="aj-voice-eq-b"></div>
+          <div class="aj-voice-eq-b"></div><div class="aj-voice-eq-b"></div><div class="aj-voice-eq-b"></div><div class="aj-voice-eq-b"></div>
         </div>
       </div>
 

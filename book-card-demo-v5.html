@@ -296,15 +296,40 @@ body {
 #s3.ai-speaking .aj-ring-3 { animation:ring-out 1.8s ease-out infinite 1s; }
 @keyframes ring-out { 0%{opacity:0.7;transform:scale(0.92);} 100%{opacity:0;transform:scale(1.35);} }
 
-.aj-eq { display:none; align-items:flex-end; gap:2.5px; height:18px; margin-left:4px; }
+.aj-eq { display:none; flex:1; align-items:center; justify-content:center; gap:2px; height:28px; margin-left:10px; overflow:hidden; }
 #s3.ai-speaking .aj-eq { display:flex; }
-.aj-eq-b { width:3px; background:#4F6EF7; border-radius:2px; animation:eq-dance 0.7s ease infinite; }
-.aj-eq-b:nth-child(1){ animation-delay:0.0s; }
-.aj-eq-b:nth-child(2){ animation-delay:0.12s; }
-.aj-eq-b:nth-child(3){ animation-delay:0.24s; }
-.aj-eq-b:nth-child(4){ animation-delay:0.36s; }
-.aj-eq-b:nth-child(5){ animation-delay:0.48s; }
-@keyframes eq-dance { 0%,100%{height:3px;} 50%{height:18px;} }
+.aj-eq-b { width:2px; flex-shrink:0; background:#868181; border-radius:2px; }
+@keyframes wf-s { 0%,100%{height:3px} 50%{height:8px} }
+@keyframes wf-m { 0%,100%{height:3px} 50%{height:16px} }
+@keyframes wf-t { 0%,100%{height:4px} 50%{height:26px} }
+.aj-eq-b:nth-child(1) {animation:wf-m .75s ease infinite .00s}
+.aj-eq-b:nth-child(2) {animation:wf-t .65s ease infinite .07s}
+.aj-eq-b:nth-child(3) {animation:wf-m .90s ease infinite .14s}
+.aj-eq-b:nth-child(4) {animation:wf-s .80s ease infinite .04s}
+.aj-eq-b:nth-child(5) {animation:wf-t .70s ease infinite .21s}
+.aj-eq-b:nth-child(6) {animation:wf-m .85s ease infinite .11s}
+.aj-eq-b:nth-child(7) {animation:wf-s .75s ease infinite .28s}
+.aj-eq-b:nth-child(8) {animation:wf-t .60s ease infinite .18s}
+.aj-eq-b:nth-child(9) {animation:wf-m .95s ease infinite .35s}
+.aj-eq-b:nth-child(10){animation:wf-t .70s ease infinite .25s}
+.aj-eq-b:nth-child(11){animation:wf-s .80s ease infinite .42s}
+.aj-eq-b:nth-child(12){animation:wf-m .65s ease infinite .32s}
+.aj-eq-b:nth-child(13){animation:wf-t .90s ease infinite .49s}
+.aj-eq-b:nth-child(14){animation:wf-t .75s ease infinite .39s}
+.aj-eq-b:nth-child(15){animation:wf-m .70s ease infinite .56s}
+.aj-eq-b:nth-child(16){animation:wf-s .85s ease infinite .46s}
+.aj-eq-b:nth-child(17){animation:wf-t .65s ease infinite .63s}
+.aj-eq-b:nth-child(18){animation:wf-m .80s ease infinite .53s}
+.aj-eq-b:nth-child(19){animation:wf-s .90s ease infinite .70s}
+.aj-eq-b:nth-child(20){animation:wf-t .70s ease infinite .60s}
+.aj-eq-b:nth-child(21){animation:wf-m .75s ease infinite .67s}
+.aj-eq-b:nth-child(22){animation:wf-s .85s ease infinite .77s}
+.aj-eq-b:nth-child(23){animation:wf-t .65s ease infinite .84s}
+.aj-eq-b:nth-child(24){animation:wf-m .95s ease infinite .74s}
+.aj-eq-b:nth-child(25){animation:wf-s .80s ease infinite .91s}
+.aj-eq-b:nth-child(26){animation:wf-t .70s ease infinite .81s}
+.aj-eq-b:nth-child(27){animation:wf-m .75s ease infinite .88s}
+.aj-eq-b:nth-child(28){animation:wf-s .90s ease infinite .95s}
 </style>
 </head>
 <body>
@@ -427,9 +452,13 @@ body {
         <div style="display:flex;align-items:center;flex:1;gap:6px;">
           <div class="aj-chat-name">Deepak Chopra</div>
           <div class="aj-eq">
-            <div class="aj-eq-b"></div><div class="aj-eq-b"></div>
-            <div class="aj-eq-b"></div><div class="aj-eq-b"></div>
-            <div class="aj-eq-b"></div>
+            <div class="aj-eq-b"></div><div class="aj-eq-b"></div><div class="aj-eq-b"></div><div class="aj-eq-b"></div>
+            <div class="aj-eq-b"></div><div class="aj-eq-b"></div><div class="aj-eq-b"></div><div class="aj-eq-b"></div>
+            <div class="aj-eq-b"></div><div class="aj-eq-b"></div><div class="aj-eq-b"></div><div class="aj-eq-b"></div>
+            <div class="aj-eq-b"></div><div class="aj-eq-b"></div><div class="aj-eq-b"></div><div class="aj-eq-b"></div>
+            <div class="aj-eq-b"></div><div class="aj-eq-b"></div><div class="aj-eq-b"></div><div class="aj-eq-b"></div>
+            <div class="aj-eq-b"></div><div class="aj-eq-b"></div><div class="aj-eq-b"></div><div class="aj-eq-b"></div>
+            <div class="aj-eq-b"></div><div class="aj-eq-b"></div><div class="aj-eq-b"></div><div class="aj-eq-b"></div>
           </div>
         </div>
         <div class="q-pill" id="qbadge2">3 free</div>
