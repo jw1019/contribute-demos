@@ -8,7 +8,7 @@
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-font-smoothing:antialiased; }
 
 :root {
-  --cream:     #F0EAE0;
+  --cream:     #F8F5F3;
   --cream-mid: #E8E1D6;
   --white:     #FFFFFF;
   --black:     #1A1A1A;
@@ -196,9 +196,9 @@ body {
 .pw-skip { text-align:center; color:var(--chat-muted); font-size:12.5px; cursor:pointer; padding:4px; }
 
 /* ══ AiJiv Chat Style ══ */
-#s3 { background:#F0EAE4 !important; display:flex !important; flex-direction:column !important; overflow:hidden !important; }
+#s3 { background:#F8F5F3 !important; display:flex !important; flex-direction:column !important; overflow:hidden !important; }
 
-.aj-hdr { display:flex; align-items:center; justify-content:space-between; padding:48px 20px 10px; background:#F0EAE4; flex-shrink:0; }
+.aj-hdr { display:flex; align-items:center; justify-content:space-between; padding:48px 20px 10px; background:#F8F5F3; flex-shrink:0; }
 .aj-back { background:none; border:none; font-size:28px; font-weight:300; color:#1A1A2E; cursor:pointer; padding:0 8px 0 0; line-height:1; flex-shrink:0; opacity:0.7; }
 .aj-back:hover { opacity:1; }
 
@@ -210,14 +210,14 @@ body {
 .aj-name { font-size:22px; font-weight:700; color:#1A1A2E; margin-bottom:8px; }
 .aj-bio  { font-size:13.5px; color:#888; line-height:1.55; }
 
-.aj-rule { height:1px; background:#DDD5CB; margin:4px 20px 20px; }
+.aj-rule { height:1px; background:#EDE5DA; margin:4px 20px 20px; }
 
 .aj-bubble-wrap { padding:0 16px 12px; }
 .aj-bubble { background:#fff; border-radius:16px; padding:14px 16px; font-size:14.5px; line-height:1.58; color:#1A1A2E; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
 
 .aj-chips { display:grid; grid-template-columns:1fr 1fr; gap:8px; padding:0 16px 20px; }
 .aj-chip  { background:#fff; border:none; border-radius:20px; padding:8px 12px; font-size:12px; color:#555; cursor:pointer; text-align:left; line-height:1.35; font-family:inherit; transition:all 0.15s; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
-.aj-chip:hover { background:#F0EAE4; }
+.aj-chip:hover { background:#F8F5F3; }
 
 #chatThread { display:flex; flex-direction:column; }
 #s3 .mrow { max-width:88%; margin:8px 16px 12px; }
@@ -232,17 +232,17 @@ body {
 .aj-about-text  { font-size:13px; color:#666; line-height:1.6; }
 .aj-powered { text-align:center; font-size:12px; color:#7B88CC; padding:6px 0 24px; }
 
-.aj-foot  { background:#F0EAE4; border-top:1px solid #DDD5CB; padding:10px 16px 28px; display:flex; align-items:center; gap:10px; flex-shrink:0; }
+.aj-foot  { background:#F8F5F3; border-top:1px solid #EDE5DA; padding:10px 16px 28px; display:flex; align-items:center; gap:10px; flex-shrink:0; }
 .aj-input { flex:1; background:#fff; border:none; border-radius:24px; padding:11px 16px; font-size:14px; color:#1A1A2E; outline:none; resize:none; line-height:1.4; font-family:inherit; }
 .aj-input::placeholder { color:#9A9490; }
 .aj-send  { width:42px; height:42px; border-radius:50%; background:#4F6EF7; border:none; color:white; font-size:20px; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:opacity 0.15s; }
 .aj-send:active { opacity:0.8; }
-.aj-pause { display:none; width:42px; height:42px; border-radius:50%; background:#fff; border:1.5px solid #DDD5CB; color:#555; cursor:pointer; align-items:center; justify-content:center; flex-shrink:0; line-height:0; transition:all 0.2s; }
+.aj-pause { display:none; width:42px; height:42px; border-radius:50%; background:#fff; border:1.5px solid #EDE5DA; color:#555; cursor:pointer; align-items:center; justify-content:center; flex-shrink:0; line-height:0; transition:all 0.2s; }
 #s3.ai-speaking .aj-pause { display:flex; }
 .aj-pause.paused { background:#4F6EF7; border-color:#4F6EF7; color:white; }
 
 /* Chat-mode takeover */
-.aj-chat-bar-new { display:none; align-items:center; gap:10px; padding:44px 16px 12px; background:#F0EAE4; flex-shrink:0; border-bottom:1px solid #DDD5CB; }
+.aj-chat-bar-new { display:none; align-items:center; gap:10px; padding:44px 16px 12px; background:#F8F5F3; flex-shrink:0; border-bottom:1px solid #EDE5DA; }
 #s3.chatting .aj-hdr          { display:none; }
 #s3.chatting .aj-chat-bar-new { display:flex; }
 #s3.chatting .aj-profile,
@@ -256,13 +256,13 @@ body {
 .aj-chat-name  { font-size:15px; font-weight:700; color:#1A1A2E; flex:1; }
 
 
-.aj-cta { background:#F0EAE4; border-top:1px solid #DDD5CB; padding:10px 16px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
+.aj-cta { background:#F8F5F3; border-top:1px solid #EDE5DA; padding:10px 16px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
 .aj-cta-text { font-size:12px; color:#888; }
 .aj-cta-btn { font-size:12px; font-weight:700; color:#1A1A2E; background:none; border:1.5px solid #1A1A2E; border-radius:20px; padding:6px 14px; cursor:pointer; font-family:inherit; transition:all 0.15s; }
 .aj-cta-btn:hover { background:#1A1A2E; color:white; }
 
 /* ══ Voice Feature ══ */
-.aj-mic { width:42px; height:42px; border-radius:50%; background:#fff; border:1.5px solid #DDD5CB; color:#555; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:all 0.2s; line-height:0; }
+.aj-mic { width:42px; height:42px; border-radius:50%; background:#fff; border:1.5px solid #EDE5DA; color:#555; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:all 0.2s; line-height:0; }
 .aj-mic:hover { border-color:#1A1A2E; color:#1A1A2E; }
 .aj-mic.recording { background:#FF3B30; border-color:#FF3B30; color:white; animation:mic-pulse 1s ease infinite; }
 @keyframes mic-pulse { 0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,59,48,0.4);} 50%{transform:scale(1.08);box-shadow:0 0 0 8px rgba(255,59,48,0);} }
