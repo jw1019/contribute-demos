@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AiJiv — Creator Onboarding</title>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --indigo:   #5B4FCF;
+  --indigo-dk:#4840B0;
+  --indigo-lt:#EEF0FD;
+  --black:    #1A1A2E;
+  --gray-dk:  #555568;
+  --gray-md:  #888899;
+  --gray-lt:  #E8E8EF;
+  --cream:    #F8F5F3;
+  --border:   #EDE5DA;
+  --white:    #ffffff;
+  --green:    #2E9E6B;
+  --green-lt: #E6F7EF;
+  --red:      #E03E3E;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--cream);
+  color: var(--black);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Nav ── */
+.nav {
+  height: 60px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 40px;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+.nav-logo {
+  width: 38px; height: 38px; border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  cursor: pointer;
+}
+.nav-actions { display: flex; align-items: center; gap: 12px; }
+.nav-link { font-size: 13px; color: var(--gray-dk); cursor: pointer; }
+.nav-btn { height: 34px; padding: 0 18px; background: var(--indigo); color: white; border: none; border-radius: 17px; font-size: 13px; font-weight: 600; cursor: pointer; }
+
+/* ── Main ── */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px 60px;
+}
+
+/* ── Step Header ── */
+.step-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+.step-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--indigo);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+.step-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--black);
+  letter-spacing: -0.4px;
+}
+.step-sub {
+  font-size: 14px;
+  color: var(--gray-dk);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+/* ── Progress Bar ── */
+.progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 36px;
+}
+.prog-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--gray-md);
+  font-weight: 500;
+}
+.prog-step.active { color: var(--indigo); }
+.prog-step.done   { color: var(--green); }
+.prog-dot {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--gray-lt);
+  color: var(--gray-md);
+  font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.prog-step.active .prog-dot { background: var(--indigo); color: white; }
+.prog-step.done   .prog-dot { background: var(--green-lt); color: var(--green); }
+.prog-line {
+  width: 40px; height: 2px;
+  background: var(--gray-lt);
+  border-radius: 2px;
+}
+.prog-line.done { background: var(--green); }
+
+/* ── Card ── */
+.card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 36px;
+  width: 100%;
+  max-width: 460px;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.07);
+}
+
+/* ── Screens ── */
+.screen { display: none; flex-direction: column; align-items: center; width: 100%; }
+.screen.active { display: flex; }
+
+/* ── Form Elements ── */
+.field-group { margin-bottom: 20px; width: 100%; }
+.field-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--black);
+  margin-bottom: 7px;
+  letter-spacing: 0.2px;
+}
+.field-hint { font-size: 11px; color: var(--gray-md); margin-bottom: 7px; }
+
+.input-wrap {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--white);
+  transition: border-color 0.15s;
+}
+.input-wrap:focus-within { border-color: var(--indigo); }
+.input-prefix {
+  padding: 0 12px;
+  font-size: 14px;
+  color: var(--gray-md);
+  background: var(--cream);
+  border-right: 1.5px solid var(--border);
+  height: 46px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+input[type="text"], input[type="url"], textarea {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--black);
+  padding: 12px 14px;
+  background: transparent;
+  line-height: 1.4;
+}
+input[type="text"].standalone, input[type="url"].standalone {
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  width: 100%;
+  transition: border-color 0.15s;
+}
+input[type="text"].standalone:focus, input[type="url"].standalone:focus { border-color: var(--indigo); outline: none; }
+textarea {
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  resize: none;
+  height: 100px;
+  transition: border-color 0.15s;
+}
+textarea:focus { border-color: var(--indigo); }
+
+.char-count { font-size: 11px; color: var(--gray-md); text-align: right; margin-top: 4px; }
+
+.info-box {
+  background: var(--indigo-lt);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 12px;
+  color: var(--indigo);
+  line-height: 1.5;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.info-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+/* ── Cover Image Upload ── */
+.cover-upload {
+  width: 100%;
+  height: 180px;
+  border-radius: 12px;
+  border: 2px dashed var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 16px;
+  background: var(--cream);
+}
+.cover-upload:hover { border-color: var(--indigo); background: var(--indigo-lt); }
+.cover-upload.has-image { border-style: solid; border-color: var(--border); }
+.cover-upload img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.cover-upload.has-image img { opacity: 1; }
+.cover-upload-label {
+  font-size: 13px; color: var(--gray-md);
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  transition: opacity 0.3s;
+}
+.cover-upload.has-image .cover-upload-label { opacity: 0; pointer-events: none; }
+.cover-icon { font-size: 24px; }
+
+/* ── Profile Row ── */
+.profile-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.avatar-upload {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  border: 2px dashed var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  background: var(--cream);
+  transition: border-color 0.15s;
+}
+.avatar-upload:hover { border-color: var(--indigo); }
+.avatar-upload img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  opacity: 0; transition: opacity 0.3s;
+}
+.avatar-upload.has-image { border-style: solid; border-color: transparent; }
+.avatar-upload.has-image img { opacity: 1; }
+.avatar-icon { font-size: 22px; color: var(--gray-md); }
+.avatar-hint { font-size: 11px; color: var(--gray-md); margin-top: 5px; text-align: center; }
+.profile-fields { flex: 1; }
+
+/* ── Contribution Amounts ── */
+.amounts-row {
+  display: flex;
+  gap: 10px;
+}
+.amt-btn {
+  flex: 1;
+  height: 64px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  background: var(--white);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  position: relative;
+}
+.amt-btn:hover { border-color: var(--indigo); background: var(--indigo-lt); }
+.amt-btn.active { border-color: var(--indigo); background: var(--indigo-lt); }
+.amt-val { font-size: 18px; font-weight: 700; color: var(--black); margin-bottom: 3px; }
+.amt-sub { font-size: 10px; color: var(--gray-md); }
+.amt-badge {
+  position: absolute;
+  top: -8px;
+  font-size: 9px;
+  font-weight: 700;
+  background: var(--indigo);
+  color: white;
+  padding: 2px 7px;
+  border-radius: 8px;
+}
+
+/* ── Toggle ── */
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 20px;
+  background: var(--white);
+  cursor: pointer;
+}
+.toggle-info { flex: 1; margin-right: 12px; }
+.toggle-title { font-size: 14px; font-weight: 600; color: var(--black); }
+.toggle-desc  { font-size: 12px; color: var(--gray-md); margin-top: 2px; line-height: 1.35; }
+.toggle {
+  width: 42px; height: 24px;
+  background: var(--gray-lt);
+  border-radius: 12px;
+  position: relative;
+  transition: background 0.2s;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.toggle.on { background: var(--indigo); }
+.toggle::after {
+  content: '';
+  position: absolute;
+  left: 3px; top: 3px;
+  width: 18px; height: 18px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+}
+.toggle.on::after { transform: translateX(18px); }
+
+/* ── AI Section ── */
+.ai-section {
+  display: none;
+  margin-top: 4px;
+}
+.ai-section.visible { display: block; }
+
+.social-field {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  background: var(--white);
+  transition: border-color 0.15s;
+}
+.social-field:focus-within { border-color: var(--indigo); }
+.social-icon {
+  width: 52px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 19px;
+  flex-shrink: 0;
+  color: var(--gray-md);
+  background: var(--white);
+  padding-left: 8px;
+}
+.social-icon[data-lucide] { width: 19px; height: 19px; }
+.social-icon img, .social-icon svg { width: 19px; height: 19px; }
+.social-field input {
+  padding: 10px 12px;
+  font-size: 13px;
+}
+
+/* ── Divider ── */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 24px 0;
+}
+.section-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gray-md);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 14px;
+}
+
+/* ── Gallery ── */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.gallery-item {
+  aspect-ratio: 1;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  overflow: hidden;
+  position: relative;
+  background: var(--cream);
+}
+.gallery-item.has-image { border-color: transparent; }
+.gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+.gallery-remove {
+  position: absolute; top: 4px; right: 4px;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: rgba(0,0,0,0.55);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.gallery-add {
+  aspect-ratio: 1;
+  border-radius: 10px;
+  border: 1.5px dashed var(--border);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 4px; cursor: pointer;
+  font-size: 10px; color: var(--gray-md);
+  background: white;
+  transition: border-color 0.15s;
+}
+.gallery-add:hover { border-color: var(--indigo); }
+
+/* ── Buttons ── */
+.btn-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 28px;
+}
+.btn-back {
+  height: 44px;
+  padding: 0 20px;
+  border: 1.5px solid var(--border);
+  border-radius: 22px;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gray-dk);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-back:hover { background: var(--cream); }
+.btn-next {
+  height: 44px;
+  padding: 0 28px;
+  background: var(--indigo);
+  color: white;
+  border: none;
+  border-radius: 22px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-next:hover { background: var(--indigo-dk); }
+.btn-next-full {
+  width: 100%;
+  margin-top: 28px;
+  height: 50px;
+  background: var(--indigo);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-next-full:hover { background: var(--indigo-dk); }
+
+/* ── Step 4: Preview ── */
+.preview-phone {
+  width: 320px;
+  background: #1A1A2E;
+  border-radius: 36px;
+  padding: 10px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  margin: 0 auto 28px;
+}
+.preview-inner {
+  background: #F8F5F3;
+  border-radius: 28px;
+  overflow: hidden;
+  height: 580px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* sbar */
+.prev-sbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 16px 4px;
+  font-size: 11px; font-weight: 600; color: #1A1A2E;
+  flex-shrink: 0;
+}
+.prev-sbar-icons { display: flex; align-items: center; gap: 5px; font-size: 10px; }
+
+/* ph row */
+.prev-ph {
+  padding: 4px 16px 10px;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-shrink: 0;
+}
+.prev-icon-btn {
+  width: 30px; height: 30px; border-radius: 50%;
+  border: 1.5px solid #EDE5DA;
+  background: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+}
+
+/* artwork */
+.prev-artwork {
+  margin: 0;
+  border-radius: 0;
+  overflow: hidden;
+  height: 200px;
+  flex-shrink: 0;
+  position: relative;
+  background: linear-gradient(145deg, #C8D080 0%, #A8B860 28%, #7A9648 55%, #5A7838 100%);
+}
+.prev-artwork img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+.prev-play {
+  position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+  background: rgba(0,0,0,0.55); color: white; border-radius: 14px;
+  font-size: 10px; font-weight: 600; padding: 4px 10px; white-space: nowrap;
+}
+
+/* card body */
+.prev-card-body {
+  background: white;
+  margin: 0;
+  border-radius: 0;
+  padding: 10px 16px 16px;
+  flex-shrink: 0;
+}
+.prev-creator-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 0 8px;
+}
+.prev-av {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: #1A1A2E;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 12px; font-weight: 800;
+  flex-shrink: 0;
+}
+.prev-creator-meta { flex: 1; }
+.prev-creator-name { font-size: 14px; font-weight: 700; color: #1A1A2E; }
+.prev-creator-handle { font-size: 11px; color: #888; margin-top: 1px; }
+.prev-creator-links { display: flex; gap: 6px; }
+.prev-creator-link {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 1px solid #EDE5DA;
+  display: flex; align-items: center; justify-content: center; font-size: 11px;
+}
+.prev-bio { font-size: 12px; color: #555; line-height: 1.6; margin-bottom: 12px; }
+.prev-section-label { font-size: 10px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+.prev-gallery { display: grid; grid-template-columns: repeat(3,1fr); gap: 4px; margin-bottom: 20px; border-radius: 8px; overflow: hidden; }
+.prev-gitem { aspect-ratio: 1; overflow: hidden; }
+.prev-gitem img { width: 100%; height: 100%; object-fit: cover; }
+.prev-gitem-css { width: 100%; height: 100%; }
+.prev-contrib-label { font-size: 10px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; margin-top: 4px; }
+.prev-amounts { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; margin-bottom: 16px; }
+.prev-amt {
+  border: 1.5px solid #EDE5DA; border-radius: 10px;
+  background: white; padding: 8px 2px; text-align: center; cursor: pointer;
+  transition: all 0.15s; position: relative;
+}
+.prev-amt.sel {
+  border-color: #7B5EA7; background: #EEF0FD;
+}
+.prev-amt-popular {
+  position: absolute; top: -9px; left: 50%; transform: translateX(-50%);
+  background: #7B5EA7; color: white; font-size: 8px; font-weight: 700;
+  border-radius: 6px; padding: 2px 6px; white-space: nowrap;
+}
+.prev-amt-val { font-size: 15px; font-weight: 800; color: #1A1A2E; }
+.prev-amt-freq { font-size: 9px; color: #888; margin-top: 2px; }
+.prev-btn-contribute {
+  width: 100%; height: 38px; background: #1A1A2E; color: white;
+  border: none; border-radius: 19px; font-size: 12px; font-weight: 700;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px;
+}
+
+/* ── Success Screen ── */
+.success-icon {
+  width: 72px; height: 72px;
+  background: var(--green-lt);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px;
+  margin: 0 auto 20px;
+}
+.success-title { font-size: 22px; font-weight: 800; text-align: center; margin-bottom: 8px; }
+.success-sub { font-size: 14px; color: var(--gray-dk); text-align: center; line-height: 1.5; margin-bottom: 28px; }
+.link-pill {
+  background: var(--cream);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--indigo);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.copy-btn {
+  font-size: 12px;
+  color: var(--indigo);
+  cursor: pointer;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+/* ── Footer ── */
+.footer {
+  text-align: center;
+  font-size: 12px;
+  color: var(--gray-md);
+  padding: 24px;
+}
+.footer a { color: var(--gray-md); text-decoration: none; margin: 0 8px; }
+.footer a:hover { color: var(--indigo); }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav-logo"><i data-lucide="heart" style="width:17px;height:17px;stroke:#1A1A2E;fill:none;"></i></div>
+  <div class="nav-actions">
+    <span class="nav-link">Help</span>
+    <span class="nav-link">Sign in</span>
+  </div>
+</nav>
+
+<!-- Main -->
+<main class="main">
+
+  <!-- ══ SCREEN 1: Claim Link ══ -->
+  <div class="screen active" id="s1">
+    <div class="step-header">
+      <div class="step-label">Step 1 of 3</div>
+      <div class="step-title">Claim your link</div>
+      <div class="step-sub">Choose a custom URL where your supporters can find you</div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="prog-step active"><div class="prog-dot">1</div>Your Link</div>
+      <div class="prog-line"></div>
+      <div class="prog-step"><div class="prog-dot">2</div>Profile</div>
+      <div class="prog-line"></div>
+      <div class="prog-step"><div class="prog-dot">3</div>Your AI</div>
+    </div>
+
+    <div class="card">
+      <div class="info-box">
+        <i data-lucide="info" class="info-icon" style="width:15px;height:15px;flex-shrink:0;stroke:var(--indigo);"></i>
+        <span>Choose carefully — you won't be able to change your URL once it's claimed.</span>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Your AiJiv URL</label>
+        <div class="input-wrap">
+          <div class="input-prefix">aijiv.com/</div>
+          <input type="text" id="linkInput" value="andrewwong" placeholder="yourcreatorname" oninput="updateLinkPreview()">
+        </div>
+        <div id="linkStatus" style="font-size:12px;color:#2E9E6B;margin-top:6px;display:flex;align-items:center;gap:4px;">
+          ✓ &nbsp;<span id="linkStatusText">contribute.to/andrewwong is available</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Email address</label>
+        <input type="text" class="standalone" value="andrew@andrewwong.com" placeholder="you@example.com">
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Password</label>
+        <input type="text" class="standalone" value="••••••••••" placeholder="Min. 8 characters">
+      </div>
+
+      <button class="btn-next-full" onclick="goTo(2)">Claim My Link</button>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 2: Profile ══ -->
+  <div class="screen" id="s2">
+    <div class="step-header">
+      <div class="step-label">Step 2 of 3</div>
+      <div class="step-title">Build your profile</div>
+      <div class="step-sub">Add your cover image, photo, and a short bio</div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="prog-step done"><div class="prog-dot">✓</div>Your Link</div>
+      <div class="prog-line done"></div>
+      <div class="prog-step active"><div class="prog-dot">2</div>Profile</div>
+      <div class="prog-line"></div>
+      <div class="prog-step"><div class="prog-dot">3</div>Your AI</div>
+    </div>
+
+    <div class="card">
+      <!-- Cover -->
+      <label class="field-label" style="margin-bottom:8px;">Cover image</label>
+      <div class="cover-upload has-image" id="coverUpload" onclick="toggleCover()">
+        <img id="coverImg" src="https://cdn.boldjourney.com/wp-content/uploads/2024/07/c-1720482802523-personal_andrew_wong_self-portrait.jpg" alt="Cover">
+        <div class="cover-upload-label">
+          <i data-lucide="image" class="cover-icon" style="width:28px;height:28px;stroke:var(--gray-md);"></i>
+          <span>Click to upload cover image</span>
+          <span style="font-size:11px;color:var(--gray-md)">Recommended: 1200 × 630px</span>
+        </div>
+      </div>
+
+      <!-- Avatar + Name -->
+      <div class="profile-row">
+        <div style="display:flex;flex-direction:column;align-items:center;">
+          <div class="avatar-upload has-image" id="avatarUpload" onclick="toggleAvatar()">
+            <img id="avatarImg" src="https://cdn.boldjourney.com/wp-content/uploads/2024/07/c-1720482802523-personal_andrew_wong_self-portrait.jpg" alt="Profile">
+            <i data-lucide="user" class="avatar-icon" style="width:22px;height:22px;stroke:var(--gray-md);"></i>
+          </div>
+          <div class="avatar-hint">Profile photo</div>
+        </div>
+        <div class="profile-fields">
+          <div class="field-group" style="margin-bottom:12px;">
+            <label class="field-label">Display name</label>
+            <input type="text" class="standalone" id="nameInput" value="Andrew Wong" placeholder="Your name">
+          </div>
+          <div class="field-group" style="margin-bottom:0;">
+            <label class="field-label">Creator handle</label>
+            <div class="input-wrap">
+              <div class="input-prefix">@</div>
+              <input type="text" value="andrewwong" placeholder="yourhandle">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bio -->
+      <div class="field-group">
+        <label class="field-label">Bio <span style="font-weight:400;color:var(--gray-md)">(max 200 chars)</span></label>
+        <textarea id="bioInput" oninput="updateCharCount()">Interdisciplinary artist exploring cultural identity, displacement, and the tension between belonging and loss. Born in Hong Kong, based in the US.</textarea>
+        <div class="char-count"><span id="charCount">62</span> characters left</div>
+      </div>
+
+      <!-- Gallery -->
+      <div class="field-group" style="margin-bottom:0;">
+        <label class="field-label">Gallery</label>
+        <div class="field-hint" style="margin-bottom:10px;">Add photos or artwork to showcase your work</div>
+        <div id="galleryGrid" class="gallery-grid">
+          <div class="gallery-item has-image">
+            <img src="https://cdn.boldjourney.com/wp-content/uploads/2024/07/c-1720482936470-andrew_wong_the-emperor.jpg" alt="">
+            <div class="gallery-remove" onclick="removeGalleryItem(this)"><i data-lucide="x" style="width:10px;height:10px;stroke:white;"></i></div>
+          </div>
+          <div class="gallery-item has-image">
+            <img src="https://cdn.boldjourney.com/wp-content/uploads/2024/07/c-1720482936470-andrew_wong_opera-singer.jpg" alt="">
+            <div class="gallery-remove" onclick="removeGalleryItem(this)"><i data-lucide="x" style="width:10px;height:10px;stroke:white;"></i></div>
+          </div>
+          <div class="gallery-item has-image" style="background:linear-gradient(160deg,#A8B860,#5A7838);">
+            <div class="gallery-remove" onclick="removeGalleryItem(this)"><i data-lucide="x" style="width:10px;height:10px;stroke:white;"></i></div>
+          </div>
+          <div class="gallery-add" onclick="addGalleryItem()">
+            <i data-lucide="plus" style="width:20px;height:20px;stroke:var(--gray-md);"></i>
+            <span>Add media</span>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--gray-md);margin-top:8px;">Images, videos, or artwork — up to 12 items</div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-back" onclick="goTo(1)">Back</button>
+        <button class="btn-next" onclick="goTo(3)">Next: Set Up Your AI</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 3: AiJiv + Contributions ══ -->
+  <div class="screen" id="s3">
+    <div class="step-header">
+      <div class="step-label">Step 3 of 3</div>
+      <div class="step-title">Build your AI</div>
+      <div class="step-sub">Let supporters chat with your AI and choose how they contribute</div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="prog-step done"><div class="prog-dot">✓</div>Your Link</div>
+      <div class="prog-line done"></div>
+      <div class="prog-step done"><div class="prog-dot">✓</div>Profile</div>
+      <div class="prog-line done"></div>
+      <div class="prog-step active"><div class="prog-dot">3</div>Your AI</div>
+    </div>
+
+    <div class="card">
+
+      <!-- AI Toggle -->
+      <div class="section-title">Build your AI</div>
+      <div class="toggle-row" onclick="toggleAI()">
+        <div class="toggle-info">
+          <div class="toggle-title">Enable AiJiv</div>
+          <div class="toggle-desc">Your books, your episodes, your years of thinking — AiJiv turns all of it into an intelligent presence that engages, teaches, and earns on your behalf.</div>
+        </div>
+        <div class="toggle on" id="aiToggle"></div>
+      </div>
+
+      <div class="ai-section visible" id="aiSection">
+        <div class="info-box">
+          <i data-lucide="sparkles" class="info-icon" style="width:15px;height:15px;flex-shrink:0;stroke:var(--indigo);"></i>
+          <span>Help train your AI by adding links to your internet presence below. The more context, the better your AI will represent you.</span>
+        </div>
+
+        <div class="section-title">Add Your Links</div>
+
+        <div class="social-field">
+          <i data-lucide="globe" class="social-icon" style="width:19px;height:19px;stroke:var(--gray-dk);"></i>
+          <input type="url" placeholder="Personal website" value="https://andrewwong.art">
+        </div>
+        <div class="social-field">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/8/81/LinkedIn_icon.svg" class="social-icon" style="width:19px;height:19px;" alt="LinkedIn">
+          <input type="url" placeholder="LinkedIn profile" value="https://linkedin.com/in/andrewwong">
+        </div>
+        <div class="social-field">
+          <img src="https://cdn.simpleicons.org/instagram/E1306C" class="social-icon" style="width:19px;height:19px;" alt="Instagram">
+          <input type="url" placeholder="Instagram URL" value="https://instagram.com/andrewwongart">
+        </div>
+        <div class="social-field">
+          <img src="https://cdn.simpleicons.org/x/000000" class="social-icon" style="width:19px;height:19px;" alt="X">
+          <input type="url" placeholder="X / Twitter URL" value="">
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Contribution Amounts -->
+      <div class="section-title">Contribution Amounts</div>
+      <div class="field-group">
+        <div class="field-hint" style="margin-bottom:20px;">Choose 3 suggested amounts for your supporters</div>
+        <div class="amounts-row">
+          <div class="amt-btn" onclick="setAmt(this,'1')">
+            <div class="amt-val">$1</div>
+            <div class="amt-sub">one-time</div>
+          </div>
+          <div class="amt-btn active" onclick="setAmt(this,'3')">
+            <div class="amt-badge">Popular</div>
+            <div class="amt-val">$3</div>
+            <div class="amt-sub">one-time</div>
+          </div>
+          <div class="amt-btn" onclick="setAmt(this,'5')">
+            <div class="amt-val">$5</div>
+            <div class="amt-sub">one-time</div>
+          </div>
+          <div class="amt-btn" onclick="setAmt(this,'10')">
+            <div class="amt-val">$10</div>
+            <div class="amt-sub">one-time</div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--gray-md);margin-top:8px;">Select up to 3 amounts</div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-back" onclick="goTo(2)">Back</button>
+        <button class="btn-next" onclick="goTo(4)">Preview My Page</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 4: Preview & Done ══ -->
+  <div class="screen" id="s4">
+    <div class="step-header">
+      <div class="step-label">You're all set! 🎉</div>
+      <div class="step-title">Here's your page</div>
+      <div class="step-sub">Share your link and start receiving contributions</div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="prog-step done"><div class="prog-dot">✓</div>Your Link</div>
+      <div class="prog-line done"></div>
+      <div class="prog-step done"><div class="prog-dot">✓</div>Profile</div>
+      <div class="prog-line done"></div>
+      <div class="prog-step done"><div class="prog-dot">✓</div>Your AI</div>
+    </div>
+
+    <div class="card" style="padding:0;overflow:hidden;">
+
+      <!-- Cover image -->
+      <div style="position:relative;height:200px;background:linear-gradient(145deg,#C8D080,#5A7838);overflow:hidden;">
+        <img src="https://cdn.boldjourney.com/wp-content/uploads/2024/07/c-1720482802523-personal_andrew_wong_self-portrait.jpg" alt="Andrew Wong" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+        <div style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.55);color:white;border-radius:16px;font-size:12px;font-weight:600;padding:5px 14px;white-space:nowrap;display:flex;align-items:center;gap:5px;">
+          <i data-lucide="play" style="width:10px;height:10px;stroke:white;fill:white;"></i>Play Video
+        </div>
+      </div>
+
+      <!-- Creator info -->
+      <div style="padding:20px 28px 0;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+          <div style="width:48px;height:48px;border-radius:50%;background:#1A1A2E;display:flex;align-items:center;justify-content:center;color:white;font-size:14px;font-weight:800;flex-shrink:0;">AW</div>
+          <div style="flex:1;">
+            <div style="font-size:16px;font-weight:700;color:#1A1A2E;">Andrew Wong</div>
+            <div style="font-size:13px;color:#888;margin-top:2px;">@andrewwong</div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <div style="width:32px;height:32px;border-radius:50%;border:1.5px solid #EDE5DA;display:flex;align-items:center;justify-content:center;">
+              <i data-lucide="globe" style="width:14px;height:14px;stroke:#555;"></i>
+            </div>
+            <div style="width:32px;height:32px;border-radius:50%;border:1.5px solid #EDE5DA;display:flex;align-items:center;justify-content:center;">
+              <i data-lucide="instagram" style="width:14px;height:14px;stroke:#555;"></i>
+            </div>
+          </div>
+        </div>
+
+        <p style="font-size:13px;color:#555;line-height:1.6;margin-bottom:16px;">Interdisciplinary artist exploring cultural identity, displacement, and the tension between belonging and loss. <strong>Read More</strong></p>
+
+        <div style="font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">Gallery</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:20px;border-radius:10px;overflow:hidden;">
+          <div style="aspect-ratio:1;overflow:hidden;"><img src="https://cdn.boldjourney.com/wp-content/uploads/2024/07/c-1720482936470-andrew_wong_the-emperor.jpg" style="width:100%;height:100%;object-fit:cover;"></div>
+          <div style="aspect-ratio:1;overflow:hidden;"><img src="https://cdn.boldjourney.com/wp-content/uploads/2024/07/c-1720482936470-andrew_wong_opera-singer.jpg" style="width:100%;height:100%;object-fit:cover;"></div>
+          <div style="aspect-ratio:1;background:linear-gradient(160deg,#A8B860,#5A7838);position:relative;overflow:hidden;">
+            <div style="position:absolute;top:0;bottom:0;left:0;width:10px;background:#8C2818;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div style="height:1px;background:#EDE5DA;margin:0 28px;"></div>
+
+      <!-- Contribution amounts -->
+      <div style="padding:20px 28px 28px;">
+        <div style="font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px;">Support Andrew</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;">
+          <div style="border:1.5px solid #EDE5DA;border-radius:12px;padding:10px 4px;text-align:center;background:white;">
+            <div style="font-size:17px;font-weight:800;color:#1A1A2E;">$1</div>
+            <div style="font-size:10px;color:#888;margin-top:3px;">one-time</div>
+          </div>
+          <div style="border:1.5px solid #7B5EA7;border-radius:12px;padding:10px 4px;text-align:center;background:#EEF0FD;position:relative;">
+            <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#7B5EA7;color:white;font-size:9px;font-weight:700;border-radius:6px;padding:2px 7px;white-space:nowrap;">Popular</div>
+            <div style="font-size:17px;font-weight:800;color:#1A1A2E;">$3</div>
+            <div style="font-size:10px;color:#888;margin-top:3px;">one-time</div>
+          </div>
+          <div style="border:1.5px solid #EDE5DA;border-radius:12px;padding:10px 4px;text-align:center;background:white;">
+            <div style="font-size:17px;font-weight:800;color:#1A1A2E;">$5</div>
+            <div style="font-size:10px;color:#888;margin-top:3px;">one-time</div>
+          </div>
+          <div style="border:1.5px solid #EDE5DA;border-radius:12px;padding:10px 4px;text-align:center;background:white;">
+            <div style="font-size:17px;font-weight:800;color:#1A1A2E;">$10</div>
+            <div style="font-size:10px;color:#888;margin-top:3px;">one-time</div>
+          </div>
+        </div>
+        <button style="width:100%;height:48px;background:#1A1A2E;color:white;border:none;border-radius:24px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;">
+          <i data-lucide="heart" style="width:14px;height:14px;stroke:white;fill:white;"></i>Contribute
+        </button>
+      </div>
+
+    </div>
+
+    <div class="link-pill" style="max-width:460px;width:100%;margin-top:16px;">
+      <span style="display:flex;align-items:center;gap:6px;"><i data-lucide="link" style="width:14px;height:14px;stroke:currentColor;"></i>contribute.to/andrewwong</span>
+      <div style="display:flex;gap:12px;">
+        <span style="font-size:12px;font-weight:600;color:var(--gray-dk);text-decoration:underline;cursor:pointer;" onclick="copyLink()">Copy link</span>
+        <span style="font-size:12px;font-weight:600;color:var(--gray-dk);text-decoration:underline;cursor:pointer;" onclick="window.open('contribute-demo-v3.html','_blank')">View live page</span>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;max-width:460px;width:100%;margin-top:16px;">
+      <button class="btn-back" style="flex:1;height:48px;" onclick="goTo(3)">
+        Edit
+      </button>
+      <button class="btn-next" style="flex:2;justify-content:center;height:48px;border-radius:24px;" onclick="window.open('contribute-demo-v3.html','_blank')">
+        Publish My Page
+      </button>
+    </div>
+
+    <div style="font-size:12px;color:var(--gray-md);margin-top:20px;text-align:center;max-width:420px;">
+      You can always update your profile, AI settings, and contribution amounts from your dashboard.
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <a href="#">Terms</a>
+  <a href="#">Privacy</a>
+  <a href="#">Help</a>
+  <span>©2026 Contribute.to</span>
+</footer>
+
+<script>
+function goTo(n) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('s' + n).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateLinkPreview() {
+  const val = document.getElementById('linkInput').value.toLowerCase().replace(/[^a-z0-9\-]/g,'');
+  document.getElementById('linkStatusText').textContent = `aijiv.com/${val || '...'} is available`;
+}
+
+function updateCharCount() {
+  const bio = document.getElementById('bioInput').value;
+  const left = 200 - bio.length;
+  document.getElementById('charCount').textContent = Math.max(0, left);
+}
+
+function toggleCover() {
+  const el = document.getElementById('coverUpload');
+  if (el.classList.contains('has-image')) {
+    el.classList.remove('has-image');
+  } else {
+    el.classList.add('has-image');
+  }
+}
+
+function toggleAvatar() {
+  const el = document.getElementById('avatarUpload');
+  if (el.classList.contains('has-image')) {
+    el.classList.remove('has-image');
+  } else {
+    el.classList.add('has-image');
+  }
+}
+
+let aiEnabled = true;
+function toggleAI() {
+  aiEnabled = !aiEnabled;
+  document.getElementById('aiToggle').classList.toggle('on', aiEnabled);
+  document.getElementById('aiSection').classList.toggle('visible', aiEnabled);
+}
+
+let selectedAmts = new Set(['3']);
+function setAmt(el, val) {
+  if (selectedAmts.has(val)) {
+    selectedAmts.delete(val);
+    el.classList.remove('active');
+  } else {
+    if (selectedAmts.size >= 3) {
+      // remove first selected
+      const first = [...selectedAmts][0];
+      selectedAmts.delete(first);
+      document.querySelectorAll('.amt-btn').forEach(b => {
+        if (b.querySelector('.amt-val').textContent === '$' + first) b.classList.remove('active');
+      });
+    }
+    selectedAmts.add(val);
+    el.classList.add('active');
+  }
+}
+
+function copyLink() {
+  navigator.clipboard?.writeText('contribute.to/andrewwong').catch(() => {});
+  const btn = document.querySelector('.copy-btn');
+  const orig = btn.textContent;
+  btn.textContent = 'Copied!';
+  setTimeout(() => btn.textContent = orig, 1500);
+}
+
+// init char count
+updateCharCount();
+
+// Gallery helpers
+function removeGalleryItem(btn) {
+  btn.parentElement.remove();
+}
+function addGalleryItem() {
+  // demo: just shows a placeholder added item
+  const grid = document.getElementById('galleryGrid');
+  const addBtn = grid.querySelector('.gallery-add');
+  const item = document.createElement('div');
+  item.className = 'gallery-item has-image';
+  item.style.background = 'linear-gradient(145deg,#C8D080,#5A7838)';
+  item.innerHTML = '<div class="gallery-remove" onclick="removeGalleryItem(this)"><i data-lucide="x" style="width:10px;height:10px;stroke:white;"></i></div>';
+  grid.insertBefore(item, addBtn);
+  lucide.createIcons();
+}
+
+// Init Lucide icons
+lucide.createIcons();
+</script>
+</body>
+</html>
