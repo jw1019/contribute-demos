@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contribute — Turn Your Passion Into a Living</title>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --indigo:   #5B4FCF;
+  --indigo-dk:#4840B0;
+  --indigo-lt:#EEF0FD;
+  --black:    #0F0F1A;
+  --gray-dk:  #555568;
+  --gray-md:  #888899;
+  --gray-lt:  #E8E8EF;
+  --cream:    #F8F5F3;
+  --border:   #EDE5DA;
+  --white:    #ffffff;
+  --green:    #2E9E6B;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--white);
+  color: var(--black);
+  line-height: 1.6;
+}
+
+/* ── Nav ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  height: 68px; background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+  padding: 0 60px; gap: 40px;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 18px; font-weight: 800; color: var(--black);
+  text-decoration: none; letter-spacing: -0.3px; flex-shrink: 0;
+}
+.nav-logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--indigo); margin-top: 1px; }
+.nav-links { display: flex; gap: 28px; flex: 1; }
+.nav-links a { font-size: 14px; color: var(--gray-dk); text-decoration: none; font-weight: 500; }
+.nav-links a:hover { color: var(--black); }
+.nav-cta { display: flex; align-items: center; gap: 12px; }
+.btn-ghost {
+  height: 38px; padding: 0 20px;
+  background: transparent; color: var(--black);
+  border: 1.5px solid var(--border); border-radius: 19px;
+  font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none;
+  display: flex; align-items: center;
+}
+.btn-primary {
+  height: 38px; padding: 0 22px;
+  background: var(--indigo); color: white;
+  border: none; border-radius: 19px;
+  font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none;
+  display: flex; align-items: center;
+}
+.btn-primary:hover { background: var(--indigo-dk); }
+
+/* ── Hero wrapper with background image ── */
+.hero-section {
+  position: relative; overflow: hidden;
+  background: var(--cream);
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Coral_reef_at_palmyra.jpg/1280px-Coral_reef_at_palmyra.jpg');
+  background-size: cover; background-position: center 55%;
+  opacity: 0.07;
+  pointer-events: none;
+}
+
+/* ── Hero ── */
+.hero {
+  max-width: 1100px; margin: 0 auto;
+  padding: 100px 60px 80px;
+  display: grid; grid-template-columns: 1fr 420px; gap: 80px; align-items: center;
+  position: relative;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--indigo-lt); color: var(--indigo);
+  border-radius: 20px; padding: 5px 14px;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
+  text-transform: uppercase; margin-bottom: 24px;
+}
+.hero h1 {
+  font-size: 56px; font-weight: 900;
+  line-height: 1.08; letter-spacing: -1.5px;
+  color: var(--black); margin-bottom: 22px;
+}
+.hero h1 span { color: var(--indigo); }
+.hero-sub {
+  font-size: 18px; color: var(--gray-dk);
+  line-height: 1.7; margin-bottom: 36px; max-width: 480px;
+}
+.hero-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.btn-hero {
+  height: 54px; padding: 0 32px;
+  background: var(--indigo); color: white;
+  border: none; border-radius: 27px;
+  font-size: 16px; font-weight: 700; cursor: pointer; text-decoration: none;
+  display: flex; align-items: center; gap: 8px;
+  transition: background 0.15s, transform 0.1s;
+  box-shadow: 0 4px 20px rgba(91,79,207,0.35);
+}
+.btn-hero:hover { background: var(--indigo-dk); transform: translateY(-1px); }
+.btn-hero-ghost {
+  height: 54px; padding: 0 28px;
+  background: transparent; color: var(--black);
+  border: 1.5px solid var(--border); border-radius: 27px;
+  font-size: 15px; font-weight: 600; cursor: pointer; text-decoration: none;
+  display: flex; align-items: center; gap: 8px;
+  transition: border-color 0.15s;
+}
+.btn-hero-ghost:hover { border-color: var(--gray-md); }
+.hero-trust {
+  margin-top: 28px; font-size: 13px; color: var(--gray-md);
+  display: flex; align-items: center; gap: 8px;
+}
+.hero-trust-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--gray-lt); }
+
+/* ── Hero Card ── */
+.hero-card {
+  background: var(--white); border-radius: 24px;
+  box-shadow: 0 4px 40px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04);
+  overflow: hidden; flex-shrink: 0;
+}
+.hero-card-cover {
+  height: 180px; position: relative; overflow: hidden;
+  background: linear-gradient(135deg, #1A1200 0%, #4A2D00 40%, #8B5E00 70%, #C8962A 100%);
+}
+.hero-card-cover-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.25) 100%);
+}
+.hero-card-body { padding: 20px 24px 24px; }
+.hero-card-creator {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
+}
+.hero-card-av {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: #2C1A00; color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800; flex-shrink: 0;
+  border: 2.5px solid white; margin-top: -28px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.hero-card-name { font-size: 16px; font-weight: 800; color: var(--black); }
+.hero-card-handle { font-size: 12px; color: var(--gray-md); }
+.hero-card-bio { font-size: 13px; color: var(--gray-dk); line-height: 1.6; margin-bottom: 16px; }
+.hero-card-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gray-md); margin-bottom: 10px; }
+.hero-card-amounts { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 14px; }
+.hero-card-amt {
+  border: 1.5px solid var(--border); border-radius: 12px;
+  padding: 10px 4px; text-align: center;
+}
+.hero-card-amt.sel { border-color: var(--indigo); background: var(--indigo-lt); }
+.hero-card-amt-val { font-size: 16px; font-weight: 800; color: var(--black); }
+.hero-card-amt-label { font-size: 10px; color: var(--gray-md); }
+.hero-card-btn {
+  width: 100%; height: 44px;
+  background: var(--black); color: white; border: none;
+  border-radius: 22px; font-size: 14px; font-weight: 700;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.hero-card-pill {
+  margin-top: 12px; padding: 9px 14px;
+  background: var(--cream); border-radius: 12px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 11px; font-weight: 600; color: var(--indigo);
+}
+.hero-card-pill-copy { color: var(--gray-dk); cursor: pointer; text-decoration: underline; font-size: 11px; }
+
+/* ── Features ── */
+.features-section {
+  background: var(--cream);
+  padding: 100px 60px;
+}
+.features-inner { max-width: 1100px; margin: 0 auto; }
+.section-eyebrow {
+  font-size: 12px; font-weight: 700; color: var(--indigo);
+  text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px;
+}
+.section-title {
+  font-size: 42px; font-weight: 900; letter-spacing: -1px;
+  color: var(--black); margin-bottom: 16px; line-height: 1.15;
+}
+.section-sub {
+  font-size: 17px; color: var(--gray-dk);
+  max-width: 560px; line-height: 1.7; margin-bottom: 64px;
+}
+.features-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; }
+.feature-card {
+  background: var(--white); border-radius: 24px; padding: 36px;
+  border: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 18px;
+}
+.feature-icon {
+  width: 52px; height: 52px; border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+}
+.feature-icon.blue  { background: var(--indigo-lt); }
+.feature-icon.green { background: #E6F7EF; }
+.feature-icon.gold  { background: #FDF3E0; }
+.feature-num {
+  font-size: 11px; font-weight: 700; color: var(--gray-md);
+  text-transform: uppercase; letter-spacing: 0.8px;
+}
+.feature-name { font-size: 22px; font-weight: 800; color: var(--black); letter-spacing: -0.3px; }
+.feature-desc { font-size: 15px; color: var(--gray-dk); line-height: 1.7; }
+.feature-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 600;
+  border-radius: 20px; padding: 4px 12px; align-self: flex-start;
+  margin-top: auto;
+}
+.feature-tag.blue  { background: var(--indigo-lt); color: var(--indigo); }
+.feature-tag.green { background: #E6F7EF; color: var(--green); }
+.feature-tag.gold  { background: #FDF3E0; color: #B07B10; }
+
+/* ── How It Works ── */
+.how-section { padding: 100px 60px; max-width: 1100px; margin: 0 auto; }
+.steps-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 24px; margin-top: 56px; position: relative; }
+.steps-grid::before {
+  content: '';
+  position: absolute; top: 28px; left: calc(12.5% + 14px); right: calc(12.5% + 14px);
+  height: 1.5px; background: var(--border);
+}
+.step-item { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; }
+.step-num {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--white); border: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 800; color: var(--indigo);
+  position: relative; z-index: 1;
+}
+.step-name { font-size: 15px; font-weight: 700; color: var(--black); }
+.step-desc { font-size: 13px; color: var(--gray-dk); line-height: 1.6; }
+
+/* ── AiJiv Deep Dive ── */
+.aijiv-section {
+  background: var(--black); padding: 100px 60px;
+  overflow: hidden; position: relative;
+}
+.aijiv-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 420px; gap: 80px; align-items: center;
+}
+.aijiv-glow {
+  position: absolute; top: -200px; right: -200px;
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(91,79,207,0.25) 0%, transparent 70%);
+  pointer-events: none;
+}
+.aijiv-eyebrow { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
+.aijiv-title { font-size: 44px; font-weight: 900; letter-spacing: -1px; color: white; line-height: 1.1; margin-bottom: 20px; }
+.aijiv-title span { color: #7C72E0; }
+.aijiv-desc { font-size: 17px; color: rgba(255,255,255,0.65); line-height: 1.75; margin-bottom: 36px; }
+.aijiv-features { display: flex; flex-direction: column; gap: 18px; }
+.aijiv-feature {
+  display: flex; align-items: flex-start; gap: 14px;
+}
+.aijiv-feature-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: rgba(91,79,207,0.25); border: 1px solid rgba(91,79,207,0.4);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.aijiv-feature-text .name { font-size: 15px; font-weight: 700; color: white; margin-bottom: 2px; }
+.aijiv-feature-text .desc { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.5; }
+
+/* ── AiJiv Chat Preview ── */
+.chat-preview {
+  background: #16162A; border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  overflow: hidden;
+}
+.chat-header {
+  padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,0.08);
+  display: flex; align-items: center; gap: 10px;
+}
+.chat-header-av {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--indigo); display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 800; color: white;
+}
+.chat-header-name { font-size: 14px; font-weight: 700; color: white; }
+.chat-header-sub { font-size: 11px; color: rgba(255,255,255,0.4); }
+.chat-indicator { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #5FE0A0; margin-left: auto; }
+.chat-indicator-dot { width: 6px; height: 6px; border-radius: 50%; background: #5FE0A0; }
+.chat-body { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+.chat-msg {
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.chat-msg.user { flex-direction: row-reverse; }
+.chat-av {
+  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 800; color: white;
+}
+.chat-av.ai { background: var(--indigo); }
+.chat-av.user { background: #2A2A40; color: rgba(255,255,255,0.6); }
+.chat-bubble {
+  max-width: 260px; padding: 10px 14px;
+  border-radius: 16px; font-size: 13px; line-height: 1.55;
+}
+.chat-bubble.ai { background: #22224A; color: rgba(255,255,255,0.85); border-bottom-left-radius: 4px; }
+.chat-bubble.user { background: var(--indigo); color: white; border-bottom-right-radius: 4px; }
+.chat-paywall {
+  margin: 4px 0; background: rgba(91,79,207,0.15);
+  border: 1px solid rgba(91,79,207,0.35); border-radius: 14px;
+  padding: 14px 16px; text-align: center;
+}
+.chat-paywall-title { font-size: 13px; font-weight: 700; color: white; margin-bottom: 4px; }
+.chat-paywall-sub { font-size: 11px; color: rgba(255,255,255,0.45); margin-bottom: 12px; }
+.chat-paywall-btn {
+  width: 100%; height: 36px; background: var(--indigo);
+  border: none; border-radius: 18px; color: white;
+  font-size: 12px; font-weight: 700; cursor: pointer;
+}
+.chat-input-bar {
+  padding: 12px 16px; border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex; gap: 8px; align-items: center;
+}
+.chat-input-bar input {
+  flex: 1; background: #22224A; border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px; padding: 8px 14px; color: rgba(255,255,255,0.6);
+  font-size: 12px; outline: none;
+}
+.chat-send {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--indigo); border: none;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+}
+
+/* ── Social Proof ── */
+.proof-section { padding: 80px 60px; background: var(--cream); }
+.proof-inner { max-width: 1100px; margin: 0 auto; }
+.proof-top { text-align: center; margin-bottom: 56px; }
+.proof-title { font-size: 36px; font-weight: 900; letter-spacing: -0.8px; color: var(--black); margin-bottom: 12px; }
+.proof-sub { font-size: 16px; color: var(--gray-dk); }
+.proof-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+.proof-card {
+  background: var(--white); border-radius: 20px; padding: 28px;
+  border: 1px solid var(--border);
+}
+.proof-quote { font-size: 15px; color: var(--gray-dk); line-height: 1.7; margin-bottom: 20px; font-style: italic; }
+.proof-author { display: flex; align-items: center; gap: 12px; }
+.proof-av {
+  width: 40px; height: 40px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800; color: white; flex-shrink: 0;
+}
+.proof-name { font-size: 14px; font-weight: 700; color: var(--black); }
+.proof-role { font-size: 12px; color: var(--gray-md); }
+
+/* ── CTA ── */
+.cta-section {
+  padding: 100px 60px;
+  background: linear-gradient(135deg, #3A30A8 0%, #5B4FCF 50%, #7C6FE8 100%);
+  text-align: center; position: relative; overflow: hidden;
+}
+.cta-glow {
+  position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+  width: 800px; height: 400px;
+  background: radial-gradient(ellipse, rgba(255,255,255,0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+.cta-inner { max-width: 640px; margin: 0 auto; position: relative; }
+.cta-eyebrow { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+.cta-title { font-size: 48px; font-weight: 900; color: white; letter-spacing: -1.2px; line-height: 1.1; margin-bottom: 18px; }
+.cta-sub { font-size: 18px; color: rgba(255,255,255,0.75); line-height: 1.65; margin-bottom: 36px; }
+.btn-cta {
+  height: 58px; padding: 0 36px;
+  background: white; color: var(--indigo);
+  border: none; border-radius: 29px;
+  font-size: 16px; font-weight: 800; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  transition: transform 0.1s; text-decoration: none;
+}
+.btn-cta:hover { transform: translateY(-2px); }
+.cta-note { margin-top: 20px; font-size: 13px; color: rgba(255,255,255,0.5); }
+
+/* ── Footer ── */
+footer {
+  padding: 48px 60px;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 24px;
+}
+.footer-logo { font-size: 16px; font-weight: 800; color: var(--black); display: flex; align-items: center; gap: 8px; }
+.footer-links { display: flex; gap: 24px; }
+.footer-links a { font-size: 13px; color: var(--gray-md); text-decoration: none; }
+.footer-links a:hover { color: var(--gray-dk); }
+.footer-copy { font-size: 12px; color: var(--gray-md); }
+
+/* ── Responsive ── */
+@media (max-width: 960px) {
+  nav { padding: 0 28px; gap: 20px; }
+  .nav-links { display: none; }
+  .hero { grid-template-columns: 1fr; padding: 60px 28px; gap: 48px; }
+  .hero h1 { font-size: 40px; }
+  .hero-card { max-width: 420px; }
+  .features-section { padding: 64px 28px; }
+  .features-grid { grid-template-columns: 1fr; }
+  .how-section { padding: 64px 28px; }
+  .steps-grid { grid-template-columns: repeat(2,1fr); }
+  .steps-grid::before { display: none; }
+  .aijiv-section { padding: 64px 28px; }
+  .aijiv-inner { grid-template-columns: 1fr; }
+  .aijiv-title { font-size: 34px; }
+  .proof-section { padding: 64px 28px; }
+  .proof-grid { grid-template-columns: 1fr; }
+  .cta-section { padding: 64px 28px; }
+  .cta-title { font-size: 36px; }
+  footer { padding: 32px 28px; flex-direction: column; align-items: flex-start; }
+  .section-title { font-size: 32px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <a class="nav-logo" href="#">
+    <i data-lucide="heart-handshake" style="width:22px;height:22px;stroke:var(--indigo);fill:none;flex-shrink:0;"></i>
+    Contribute
+  </a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#aijiv">AiJiv</a>
+    <a href="#how">How it works</a>
+    <a href="#testimonials">Stories</a>
+  </div>
+  <div class="nav-cta">
+    <a class="btn-ghost" href="#">Sign in</a>
+    <a class="btn-primary" href="un-artists-onboarding.html">Get Started</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<div class="hero-section">
+<div class="hero-bg"></div>
+<section class="hero">
+  <div>
+    <div class="hero-badge">
+      <i data-lucide="sparkles" style="width:13px;height:13px;stroke:var(--indigo);fill:none;"></i>
+      Turn your passion into a living
+    </div>
+    <h1>Your work.<br>Your audience.<br><span>Your income.</span></h1>
+    <p class="hero-sub">Contribute gives creators, artists, and educators three powerful tools to monetize their knowledge — contributions, an AI version of yourself, and a paywall that works while you sleep.</p>
+    <div class="hero-actions">
+      <a class="btn-hero" href="un-artists-onboarding.html">
+        Get your Contribute card
+        <i data-lucide="arrow-right" style="width:16px;height:16px;stroke:white;"></i>
+      </a>
+      <a class="btn-hero-ghost" href="#features">
+        <i data-lucide="play" style="width:14px;height:14px;stroke:currentColor;fill:currentColor;"></i>
+        See how it works
+      </a>
+    </div>
+    <div class="hero-trust">
+      <i data-lucide="check-circle" style="width:14px;height:14px;stroke:var(--green);"></i>
+      Free to start
+      <div class="hero-trust-dot"></div>
+      No credit card required
+      <div class="hero-trust-dot"></div>
+      Set up in minutes
+    </div>
+  </div>
+
+  <!-- Creator card preview -->
+  <div class="hero-card">
+    <!-- Cover: coral reef photo -->
+    <div class="hero-card-cover" style="background:#003A60;overflow:hidden;">
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Coral_reef_at_palmyra.jpg/1280px-Coral_reef_at_palmyra.jpg"
+        alt="Coral reef"
+        style="width:100%;height:100%;object-fit:cover;object-position:center 60%;display:block;position:absolute;inset:0;"
+        onerror="this.src='https://images.unsplash.com/photo-1546026423-cc4642628d2b?auto=format&fit=crop&w=840&h=360&q=80';this.onerror=null;">
+      <div class="hero-card-cover-overlay"></div>
+      <!-- Org type badge -->
+      <div style="position:absolute;top:14px;left:14px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:4px 12px;font-size:11px;color:white;font-weight:600;letter-spacing:0.3px;">
+        <i data-lucide="waves" style="width:11px;height:11px;stroke:white;flex-shrink:0;"></i> Conservation
+      </div>
+      <!-- Verified badge -->
+      <div style="position:absolute;top:14px;right:14px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:4px 10px;display:flex;align-items:center;gap:5px;font-size:11px;color:white;font-weight:600;">
+        <i data-lucide="shield-check" style="width:11px;height:11px;stroke:#5FE0A0;"></i>
+        Verified Nonprofit
+      </div>
+    </div>
+
+    <div class="hero-card-body">
+      <!-- Org info row -->
+      <div class="hero-card-creator" style="align-items:flex-end;margin-bottom:12px;">
+        <div class="hero-card-av" style="background:linear-gradient(135deg,#004E7C,#0088BB);font-size:13px;font-weight:900;letter-spacing:-0.5px;">RF</div>
+        <div style="flex:1;">
+          <div class="hero-card-name">The Reef Fund</div>
+          <div class="hero-card-handle">@reeffund · Sydney · Maldives</div>
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:4px;">
+          <div style="width:28px;height:28px;border-radius:50%;border:1.5px solid #EDE5DA;display:flex;align-items:center;justify-content:center;">
+            <i data-lucide="instagram" style="width:12px;height:12px;stroke:#888;"></i>
+          </div>
+          <div style="width:28px;height:28px;border-radius:50%;border:1.5px solid #EDE5DA;display:flex;align-items:center;justify-content:center;">
+            <i data-lucide="globe" style="width:12px;height:12px;stroke:#888;"></i>
+          </div>
+        </div>
+      </div>
+
+      <p class="hero-card-bio">Restoring coral reefs across 14 countries. 2.3M sq ft of reef restored since 2018. Every contribution funds active restoration in the field.</p>
+
+      <!-- Gallery strip -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;border-radius:10px;overflow:hidden;margin-bottom:16px;">
+        <div style="aspect-ratio:1;overflow:hidden;background:#003A5A;">
+          <img src="https://images.unsplash.com/photo-1582967788606-a171c1080cb0?auto=format&fit=crop&w=200&h=200&q=70" alt="" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.style.background='linear-gradient(135deg,#003A5A,#006A8A)'">
+        </div>
+        <div style="aspect-ratio:1;overflow:hidden;background:#004A2A;">
+          <img src="https://images.unsplash.com/photo-1559827291-72ee739d0d9a?auto=format&fit=crop&w=200&h=200&q=70" alt="" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.style.background='linear-gradient(135deg,#004A2A,#007A4A)'">
+        </div>
+        <div style="aspect-ratio:1;overflow:hidden;background:#001A3A;">
+          <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=200&h=200&q=70" alt="" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.style.background='linear-gradient(135deg,#001A3A,#003A6A)'">
+        </div>
+      </div>
+
+      <!-- Impact stat strip -->
+      <div style="display:flex;gap:0;border:1px solid #EDE5DA;border-radius:12px;overflow:hidden;margin-bottom:16px;">
+        <div style="flex:1;padding:10px 8px;text-align:center;border-right:1px solid #EDE5DA;">
+          <div style="font-size:15px;font-weight:800;color:#0F0F1A;">2.3M</div>
+          <div style="font-size:10px;color:#888;margin-top:1px;">sq ft restored</div>
+        </div>
+        <div style="flex:1;padding:10px 8px;text-align:center;border-right:1px solid #EDE5DA;">
+          <div style="font-size:15px;font-weight:800;color:#0F0F1A;">14</div>
+          <div style="font-size:10px;color:#888;margin-top:1px;">countries</div>
+        </div>
+        <div style="flex:1;padding:10px 8px;text-align:center;">
+          <div style="font-size:15px;font-weight:800;color:#0F0F1A;">8,400</div>
+          <div style="font-size:10px;color:#888;margin-top:1px;">supporters</div>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div style="height:1px;background:#EDE5DA;margin-bottom:14px;"></div>
+
+      <div class="hero-card-label">Support The Reef Fund</div>
+      <div class="hero-card-amounts">
+        <div class="hero-card-amt">
+          <div class="hero-card-amt-val">$5</div>
+          <div class="hero-card-amt-label">once</div>
+        </div>
+        <div class="hero-card-amt sel">
+          <div class="hero-card-amt-val">$15</div>
+          <div class="hero-card-amt-label">once</div>
+        </div>
+        <div class="hero-card-amt">
+          <div class="hero-card-amt-val">$50</div>
+          <div class="hero-card-amt-label">once</div>
+        </div>
+        <div class="hero-card-amt">
+          <div class="hero-card-amt-val">$100</div>
+          <div class="hero-card-amt-label">once</div>
+        </div>
+      </div>
+      <button class="hero-card-btn" style="background:linear-gradient(135deg,#004E7C,#0088BB);">
+        <i data-lucide="heart" style="width:14px;height:14px;stroke:white;fill:white;"></i>
+        Contribute Now
+      </button>
+      <!-- AiJiv chat button -->
+      <button style="width:100%;height:42px;margin-top:10px;background:white;border:1.5px solid #EDE5DA;border-radius:21px;font-size:13px;font-weight:600;color:#555568;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:border-color 0.15s;" onmouseover="this.style.borderColor='#5B4FCF';this.style.color='#5B4FCF';" onmouseout="this.style.borderColor='#EDE5DA';this.style.color='#555568';">
+        <i data-lucide="message-circle" style="width:14px;height:14px;stroke:currentColor;"></i>
+        Ask about our impact
+      </button>
+      <div class="hero-card-pill">
+        <span style="display:flex;align-items:center;gap:6px;"><i data-lucide="link" style="width:12px;height:12px;stroke:var(--indigo);"></i> contribute.to/reeffund</span>
+        <span class="hero-card-pill-copy">Copy link</span>
+      </div>
+    </div>
+  </div>
+</section>
+</div><!-- /hero-section -->
+
+<!-- Features -->
+<section class="features-section" id="features">
+  <div class="features-inner">
+    <div class="section-eyebrow">Three tools, one platform</div>
+    <h2 class="section-title">Everything you need<br>to earn from your work</h2>
+    <p class="section-sub">Whether you're an artist, educator, activist, or expert — Contribute gives you a complete toolkit to build sustainable income from the audience you've already earned.</p>
+
+    <div class="features-grid">
+      <!-- Contributions -->
+      <div class="feature-card">
+        <div>
+          <div class="feature-num">Tool 01</div>
+        </div>
+        <div class="feature-icon blue">
+          <i data-lucide="heart" style="width:24px;height:24px;stroke:var(--indigo);fill:none;"></i>
+        </div>
+        <div>
+          <div class="feature-name">Contributions</div>
+          <p class="feature-desc">Let supporters directly fund your mission. Set flexible one-time or recurring amounts, share one link, and start receiving contributions from anyone, anywhere in the world.</p>
+        </div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--gray-dk);">
+          <li style="display:flex;align-items:center;gap:8px;"><i data-lucide="check" style="width:14px;height:14px;stroke:var(--green);flex-shrink:0;"></i> Custom contribution amounts</li>
+          <li style="display:flex;align-items:center;gap:8px;"><i data-lucide="check" style="width:14px;height:14px;stroke:var(--green);flex-shrink:0;"></i> One shareable link</li>
+          <li style="display:flex;align-items:center;gap:8px;"><i data-lucide="check" style="width:14px;height:14px;stroke:var(--green);flex-shrink:0;"></i> Supports causes, artists & orgs</li>
+        </ul>
+        <div class="feature-tag blue">
+          <i data-lucide="zap" style="width:12px;height:12px;stroke:currentColor;"></i>
+          Free to enable
+        </div>
+      </div>
+
+      <!-- AiJiv -->
+      <div class="feature-card">
+        <div>
+          <div class="feature-num">Tool 02</div>
+        </div>
+        <div class="feature-icon gold">
+          <i data-lucide="bot" style="width:24px;height:24px;stroke:#B07B10;fill:none;"></i>
+        </div>
+        <div>
+          <div class="feature-name">AiJiv</div>
+          <p class="feature-desc">Your cognitive presence. AiJiv internalises your reasoning patterns and frameworks — then deploys your knowledge as an intelligent presence that engages and earns, always on.</p>
+        </div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--gray-dk);">
+          <li style="display:flex;align-items:center;gap:8px;"><i data-lucide="check" style="width:14px;height:14px;stroke:var(--green);flex-shrink:0;"></i> Learns how you think, not just what you've said</li>
+          <li style="display:flex;align-items:center;gap:8px;"><i data-lucide="check" style="width:14px;height:14px;stroke:var(--green);flex-shrink:0;"></i> Answers questions you've never publicly addressed</li>
+          <li style="display:flex;align-items:center;gap:8px;"><i data-lucide="check" style="width:14px;height:14px;stroke:var(--green);flex-shrink:0;"></i> Compounds — gets smarter every conversation</li>
+        </ul>
+        <div class="feature-tag gold">
+          <i data-lucide="sparkles" style="width:12px;height:12px;stroke:currentColor;"></i>
+          Powered by AI
+        </div>
+      </div>
+
+      <!-- Paywall -->
+      <div class="feature-card">
+        <div>
+          <div class="feature-num">Tool 03</div>
+        </div>
+        <div class="feature-icon green">
+          <i data-lucide="lock" style="width:24px;height:24px;stroke:var(--green);fill:none;"></i>
+        </div>
+        <div>
+          <div class="feature-name">Paywall</div>
+          <p class="feature-desc">Offer a free taste, then gate deeper access. Set the number of free AiJiv chats, then let your supporters unlock unlimited conversations for a price you control.</p>
+        </div>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--gray-dk);">
+          <li style="display:flex;align-items:center;gap:8px;"><i data-lucide="check" style="width:14px;height:14px;stroke:var(--green);flex-shrink:0;"></i> You set the free chat limit</li>
+          <li style="display:flex;align-items:center;gap:8px;"><i data-lucide="check" style="width:14px;height:14px;stroke:var(--green);flex-shrink:0;"></i> You control the price</li>
+          <li style="display:flex;align-items:center;gap:8px;"><i data-lucide="check" style="width:14px;height:14px;stroke:var(--green);flex-shrink:0;"></i> Seamless upgrade flow</li>
+        </ul>
+        <div class="feature-tag green">
+          <i data-lucide="trending-up" style="width:12px;height:12px;stroke:currentColor;"></i>
+          Recurring revenue
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How it works -->
+<section class="how-section" id="how">
+  <div class="section-eyebrow">Get started in minutes</div>
+  <h2 class="section-title">From zero to earning,<br>in 4 simple steps</h2>
+  <div class="steps-grid">
+    <div class="step-item">
+      <div class="step-num">1</div>
+      <div class="step-name">Claim your link</div>
+      <p class="step-desc">Choose your unique contribute.to URL — your personal storefront.</p>
+    </div>
+    <div class="step-item">
+      <div class="step-num">2</div>
+      <div class="step-name">Build your profile</div>
+      <p class="step-desc">Add your photo, cover image, bio, and a gallery of your work.</p>
+    </div>
+    <div class="step-item">
+      <div class="step-num">3</div>
+      <div class="step-name">Set up your AI</div>
+      <p class="step-desc">Enable AiJiv, upload your content, and set your paywall terms.</p>
+    </div>
+    <div class="step-item">
+      <div class="step-num">4</div>
+      <div class="step-name">Share & earn</div>
+      <p class="step-desc">Share your link everywhere. Contributions and AI chats start flowing.</p>
+    </div>
+  </div>
+</section>
+
+<!-- AiJiv deep dive -->
+<section class="aijiv-section" id="aijiv">
+  <div class="aijiv-glow"></div>
+  <div class="aijiv-inner">
+    <div>
+      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(124,114,224,0.15);border:1px solid rgba(124,114,224,0.3);border-radius:20px;padding:5px 14px;margin-bottom:20px;">
+        <i data-lucide="bot" style="width:13px;height:13px;stroke:#7C72E0;"></i>
+        <span style="font-size:12px;font-weight:700;color:#7C72E0;text-transform:uppercase;letter-spacing:0.8px;">AiJiv — Powered by Contribute</span>
+      </div>
+      <h2 class="aijiv-title">Your Cognitive<br><span>Presence.</span></h2>
+      <p class="aijiv-desc">Most platforms store your content. AiJiv internalises how you think — turning years of knowledge into an intelligent presence that engages your audience, answers their questions, and earns on your behalf. Around the clock.</p>
+
+      <!-- 6-point grid -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;">
+        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 18px;">
+          <div style="font-size:11px;font-weight:700;color:#7C72E0;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:5px;">01</div>
+          <div style="font-size:14px;font-weight:700;color:white;margin-bottom:3px;">Internalises your reasoning</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.45);line-height:1.5;">Patterns and frameworks — not just words.</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 18px;">
+          <div style="font-size:11px;font-weight:700;color:#7C72E0;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:5px;">02</div>
+          <div style="font-size:14px;font-weight:700;color:white;margin-bottom:3px;">Learns how you think</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.45);line-height:1.5;">Not just what you've said — your perspective.</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 18px;">
+          <div style="font-size:11px;font-weight:700;color:#7C72E0;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:5px;">03</div>
+          <div style="font-size:14px;font-weight:700;color:white;margin-bottom:3px;">Authentically you</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.45);line-height:1.5;">Generates answers you would actually give.</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 18px;">
+          <div style="font-size:11px;font-weight:700;color:#7C72E0;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:5px;">04</div>
+          <div style="font-size:14px;font-weight:700;color:white;margin-bottom:3px;">Compounds over time</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.45);line-height:1.5;">Gets smarter with every conversation.</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 18px;">
+          <div style="font-size:11px;font-weight:700;color:#7C72E0;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:5px;">05</div>
+          <div style="font-size:14px;font-weight:700;color:white;margin-bottom:3px;">Answers the unasked</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.45);line-height:1.5;">Responds to questions you've never publicly addressed.</div>
+        </div>
+        <div style="background:rgba(124,114,224,0.15);border:1px solid rgba(124,114,224,0.3);border-radius:14px;padding:16px 18px;">
+          <div style="font-size:11px;font-weight:700;color:#7C72E0;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:5px;">06</div>
+          <div style="font-size:14px;font-weight:700;color:white;margin-bottom:3px;">Always on. Always earning.</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.55);line-height:1.5;">Your knowledge, understood. Deployed. With a paywall built in.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat preview -->
+    <div class="chat-preview">
+      <div class="chat-header">
+        <div class="chat-header-av">AF</div>
+        <div>
+          <div class="chat-header-name">André's AiJiv</div>
+          <div class="chat-header-sub">Trained on 15 years of work</div>
+        </div>
+        <div class="chat-indicator">
+          <div class="chat-indicator-dot"></div>
+          Live
+        </div>
+      </div>
+      <div class="chat-body">
+        <div class="chat-msg user">
+          <div class="chat-av user">Y</div>
+          <div class="chat-bubble user">How does Candomblé influence your photographic approach?</div>
+        </div>
+        <div class="chat-msg">
+          <div class="chat-av ai">AF</div>
+          <div class="chat-bubble ai">Candomblé taught me to see what's sacred in the everyday. When I enter a ritual space, I'm not documenting — I'm bearing witness. The orixás give permission to the eye...</div>
+        </div>
+        <div class="chat-msg user">
+          <div class="chat-av user">Y</div>
+          <div class="chat-bubble user">How do you approach photographing sacred spaces respectfully?</div>
+        </div>
+        <!-- Paywall -->
+        <div class="chat-paywall">
+          <div class="chat-paywall-title">You've used 3 free chats</div>
+          <div class="chat-paywall-sub">Unlock unlimited conversations with André's AiJiv</div>
+          <button class="chat-paywall-btn">Unlock for $5 / month</button>
+        </div>
+      </div>
+      <div class="chat-input-bar">
+        <input type="text" placeholder="Ask André anything…" disabled>
+        <button class="chat-send">
+          <i data-lucide="send" style="width:13px;height:13px;stroke:white;"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="proof-section" id="testimonials">
+  <div class="proof-inner">
+    <div class="proof-top">
+      <h2 class="proof-title">Creators love Contribute</h2>
+      <p class="proof-sub">From photographers and authors to educators and activists — here's what people are saying.</p>
+    </div>
+    <div class="proof-grid">
+      <div class="proof-card">
+        <p class="proof-quote">"We replaced three donation platforms with one Contribute link. Contributions went up 40% in the first month — and our AiJiv now answers donor questions we never had time to respond to."</p>
+        <div class="proof-author">
+          <div class="proof-av" style="background:linear-gradient(135deg,#004E7C,#0088BB);">RF</div>
+          <div>
+            <div class="proof-name">The Reef Fund</div>
+            <div class="proof-role">Marine Conservation Nonprofit · Sydney & Maldives</div>
+          </div>
+        </div>
+      </div>
+      <div class="proof-card">
+        <p class="proof-quote">"The paywall on AiJiv changed everything. I was giving away 10 years of knowledge for free. Now my audience pays for deep access, and they love it."</p>
+        <div class="proof-author">
+          <div class="proof-av" style="background:#1A4A2E;">MO</div>
+          <div>
+            <div class="proof-name">Maya Osei</div>
+            <div class="proof-role">Author & Educator · Accra, Ghana</div>
+          </div>
+        </div>
+      </div>
+      <div class="proof-card">
+        <p class="proof-quote">"Contribute let me turn my UN advocacy work into something sustainable. It's not about the money — it's about having the resources to keep doing the work."</p>
+        <div class="proof-author">
+          <div class="proof-av" style="background:#2C1A5E;">LR</div>
+          <div>
+            <div class="proof-name">Lena Ramírez</div>
+            <div class="proof-role">Human Rights Advocate · Geneva</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-glow"></div>
+  <div class="cta-inner">
+    <div class="cta-eyebrow">Start earning today</div>
+    <h2 class="cta-title">Get your Contribute card now</h2>
+    <p class="cta-sub">Claim your link, set up your profile, and start receiving support from your audience in minutes.</p>
+    <a class="btn-cta" href="un-artists-onboarding.html">
+      <i data-lucide="arrow-right" style="width:18px;height:18px;stroke:var(--indigo);"></i>
+      Get started — it's free
+    </a>
+    <div class="cta-note">No credit card required · Cancel anytime</div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-logo">
+    <i data-lucide="heart-handshake" style="width:20px;height:20px;stroke:var(--indigo);fill:none;"></i>
+    Contribute
+  </div>
+  <div class="footer-links">
+    <a href="#">Product</a>
+    <a href="#">Pricing</a>
+    <a href="#">For Artists</a>
+    <a href="#">AiJiv</a>
+    <a href="#">Terms</a>
+    <a href="#">Privacy</a>
+  </div>
+  <div class="footer-copy">©2026 Contribute.to</div>
+</footer>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

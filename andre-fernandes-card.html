@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>André Fernandes — Contribute Card</title>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+
+:root {
+  --indigo:      #5B4FCF;
+  --indigo-lt:   #EEF0FD;
+  --black:       #1A1A2E;
+  --gray-dk:     #555568;
+  --gray-md:     #888899;
+  --cream:       #F8F5F3;
+  --border:      #EDE5DA;
+  --white:       #ffffff;
+  --chat-blue:   #4F6EF7;
+  --chat-bubble: #F0F2FB;
+  --chat-border: #E6E6F2;
+  --chat-muted:  #9999BB;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--cream);
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 48px 24px;
+}
+
+/* ═══════════════════════════════
+   3D CARD FLIP WRAPPER
+   Two-level structure:
+   .card-clip  → position:relative + overflow:hidden (clips sheets)
+   .card-container → perspective only (no overflow, preserves 3D)
+═══════════════════════════════ */
+.card-clip {
+  position: relative;           /* containing block for sheets/backdrop */
+  overflow: hidden;             /* clips sheets to card bounds */
+  width: 100%; max-width: 400px;
+  border-radius: 24px;
+  box-shadow: 0 4px 40px rgba(0,0,0,0.13), 0 0 0 1px rgba(0,0,0,0.04);
+}
+
+.card-container {
+  perspective: 1400px;
+  width: 100%;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-inner.flipped { transform: rotateY(180deg); }
+
+.card-front,
+.card-back {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 0;             /* card-clip already has border-radius */
+  overflow: hidden;
+  width: 100%;
+}
+
+.card-front { background: var(--white); }
+
+.card-back {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  transform: rotateY(180deg);
+  background: var(--cream);
+  display: flex; flex-direction: column;
+}
+
+/* ═══════════════════════════════
+   CARD FRONT
+═══════════════════════════════ */
+.cover {
+  height: 188px; position: relative; overflow: hidden;
+  background: linear-gradient(145deg, #1A0A00 0%, #3A1800 40%, #6A3000 70%, #C8962A 100%);
+}
+.cover img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center 30%;
+}
+.cover-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.35) 100%);
+}
+.yt-play {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.15s, opacity 0.15s;
+  opacity: 0.92;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+}
+.cover:hover .yt-play { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+
+.badge {
+  position: absolute;
+  background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 20px; padding: 4px 11px;
+  display: flex; align-items: center; gap: 5px;
+  font-size: 11px; color: white; font-weight: 600;
+}
+.card-body { padding: 20px 24px 24px; }
+
+.creator-row { display: flex; align-items: flex-end; gap: 12px; margin-bottom: 14px; }
+.creator-right { flex: 1; display: flex; align-items: center; gap: 8px; min-width: 0; }
+.card-av {
+  width: 52px; height: 52px; border-radius: 50%;
+  border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  margin-top: -28px; flex-shrink: 0; overflow: hidden;
+  background: linear-gradient(135deg, #2C1A00, #6A3800);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 900; color: white;
+}
+.card-av img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+.creator-meta { flex: 1; }
+.creator-name { font-size: 16px; font-weight: 800; color: var(--black); }
+.creator-handle { font-size: 12px; color: var(--gray-md); margin-top: 1px; }
+.social-icon {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  text-decoration: none; flex-shrink: 0;
+  transition: border-color 0.15s;
+}
+.social-icon:hover { border-color: var(--gray-md); }
+}
+.card-bio { font-size: 13px; color: var(--gray-dk); line-height: 1.65; margin-bottom: 14px; }
+
+.gallery-strip { display: grid; grid-template-columns: repeat(3,1fr); gap: 5px; border-radius: 10px; overflow: hidden; margin-bottom: 14px; }
+.gallery-cell { aspect-ratio: 1; overflow: hidden; background: #0D0D0D; }
+.gallery-cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.stats-strip { display: flex; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 14px; }
+.stat { flex: 1; padding: 10px 8px; text-align: center; }
+.stat + .stat { border-left: 1px solid var(--border); }
+.stat-num { font-size: 14px; font-weight: 800; color: var(--black); }
+.stat-label { font-size: 10px; color: var(--gray-md); margin-top: 2px; }
+
+.divider { height: 1px; background: var(--border); margin-bottom: 14px; }
+
+.amounts-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gray-md); margin-bottom: 10px; }
+.amounts-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 7px; margin-bottom: 13px; }
+.amt-tile { border: 1.5px solid var(--border); border-radius: 12px; padding: 10px 4px; text-align: center; cursor: pointer; transition: border-color 0.15s, background 0.15s; }
+.amt-tile:hover { border-color: var(--indigo); }
+.amt-tile.sel { border-color: var(--indigo); background: var(--indigo-lt); }
+.amt-val { font-size: 16px; font-weight: 800; color: var(--black); }
+.amt-label { font-size: 10px; color: var(--gray-md); }
+
+.btn-contribute {
+  width: 100%; height: 44px; background: var(--black); color: white; border: none;
+  border-radius: 22px; font-size: 14px; font-weight: 700; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.btn-aijiv {
+  width: 100%; height: 42px; margin-top: 9px;
+  background: white; border: 1.5px solid var(--border);
+  border-radius: 21px; font-size: 13px; font-weight: 600; color: var(--gray-dk);
+  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px;
+  transition: border-color 0.15s, color 0.15s;
+}
+.btn-aijiv:hover { border-color: var(--indigo); color: var(--indigo); }
+
+.link-pill {
+  margin-top: 12px; padding: 9px 14px; background: var(--cream); border-radius: 12px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 11px; font-weight: 600; color: var(--indigo);
+}
+.link-pill-copy { color: var(--gray-dk); cursor: pointer; text-decoration: underline; font-size: 11px; }
+
+/* ═══════════════════════════════
+   CARD BACK — AIJIV CHAT
+═══════════════════════════════ */
+.chat-hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px 12px; background: white;
+  border-bottom: 1px solid var(--chat-border); flex-shrink: 0;
+}
+.chat-back-btn {
+  background: none; border: none; font-size: 26px; font-weight: 300;
+  color: var(--black); cursor: pointer; padding: 0; line-height: 1; opacity: 0.65;
+  transition: opacity 0.15s;
+}
+.chat-back-btn:hover { opacity: 1; }
+.chat-hdr-mid { display: flex; align-items: center; gap: 9px; flex: 1; padding: 0 10px; }
+.chat-av-sm {
+  width: 34px; height: 34px; border-radius: 50%; overflow: hidden;
+  background: #2C1A00; flex-shrink: 0; position: relative;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 800; color: white;
+}
+.chat-av-sm img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+.chat-av-sm::after {
+  content: ''; position: absolute; bottom: 0; right: 0;
+  width: 9px; height: 9px; border-radius: 50%;
+  background: #6FCF97; border: 1.5px solid white;
+}
+.chat-hdr-name { font-size: 14px; font-weight: 700; color: var(--black); }
+.chat-hdr-sub { font-size: 10px; color: var(--chat-muted); }
+.q-pill {
+  background: var(--chat-bubble); border: 1px solid var(--chat-border);
+  color: var(--chat-blue); border-radius: 10px; padding: 4px 10px;
+  font-size: 11px; font-weight: 700; flex-shrink: 0;
+}
+.q-pill.warn { background: #FFF3E8; border-color: #F0C090; color: #C07030; }
+
+.chat-scroll { flex: 1; overflow-y: auto; overflow-x: hidden; }
+.chat-scroll::-webkit-scrollbar { display: none; }
+
+.chat-profile { text-align: center; padding: 20px 24px 14px; }
+.chat-profile-av {
+  width: 72px; height: 72px; border-radius: 50%; overflow: hidden;
+  margin: 0 auto 12px; border: 3px solid white;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  background: #2C1A00;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 900; color: white; position: relative;
+}
+.chat-profile-av img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+.chat-profile-av::before, .chat-profile-av::after {
+  content: ''; position: absolute; border-radius: 50%;
+  border: 2px solid rgba(79,110,247,0.4); opacity: 0; pointer-events: none;
+}
+.chat-profile-av::before { inset: -10px; }
+.chat-profile-av::after  { inset: -20px; }
+.ai-active .chat-profile-av::before { animation: ring 1.8s ease-out infinite 0s; }
+.ai-active .chat-profile-av::after  { animation: ring 1.8s ease-out infinite 0.6s; }
+@keyframes ring { 0%{opacity:.65;transform:scale(.92)} 100%{opacity:0;transform:scale(1.3)} }
+
+.chat-profile-name { font-size: 20px; font-weight: 700; color: var(--black); margin-bottom: 6px; }
+.chat-profile-bio { font-size: 13px; color: var(--gray-md); line-height: 1.55; }
+.chat-rule { height: 1px; background: var(--border); margin: 4px 20px 18px; }
+
+.chat-greeting-wrap { padding: 0 16px 12px; }
+.chat-greeting {
+  background: white; border-radius: 16px; padding: 13px 15px;
+  font-size: 13.5px; line-height: 1.6; color: var(--black);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.chat-chips { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; padding: 0 16px 18px; }
+.chat-chip {
+  background: white; border: none; border-radius: 20px; padding: 8px 12px;
+  font-size: 12px; color: #555; cursor: pointer; text-align: left;
+  line-height: 1.35; font-family: inherit;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07); transition: background 0.15s;
+}
+.chat-chip:hover { background: var(--cream); }
+
+#chatThread { display: flex; flex-direction: column; }
+
+.mrow { display: flex; gap: 8px; max-width: 88%; margin: 4px 16px 10px; }
+.mrow.ai  { align-self: flex-start; }
+.mrow.usr { align-self: flex-end; flex-direction: row-reverse; margin-left: auto; }
+.mav-ai {
+  width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0; margin-top: 3px;
+  overflow: hidden; background: #2C1A00;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 800; color: white;
+}
+.mav-ai img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+.mav-u {
+  width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0; margin-top: 3px;
+  background: #DDDDF0; display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 700; color: var(--chat-blue);
+}
+.mbub { padding: 9px 12px; border-radius: 16px; font-size: 13px; line-height: 1.55; }
+.mrow.ai  .mbub { background: white; color: var(--black); border-radius: 4px 16px 16px 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.mrow.usr .mbub { background: var(--chat-blue); color: white; border-radius: 16px 4px 16px 16px; }
+
+.unlock-banner {
+  text-align: center; font-size: 12px; font-weight: 700; color: #2E7D52;
+  background: #E8F5EE; border: 1px solid #A8D8BA; border-radius: 20px;
+  padding: 7px 16px; margin: 4px auto 8px; max-width: 220px;
+}
+
+.typing-dots { display: flex; gap: 4px; align-items: center; padding: 2px 0; }
+.td { width: 6px; height: 6px; border-radius: 50%; background: var(--chat-muted); animation: td 1.2s infinite; }
+.td:nth-child(2){animation-delay:.16s} .td:nth-child(3){animation-delay:.32s}
+@keyframes td{0%,55%,100%{transform:translateY(0);opacity:.4}27%{transform:translateY(-5px);opacity:1}}
+
+.chat-cta-strip {
+  border-top: 1px solid var(--chat-border); background: white;
+  padding: 9px 16px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+}
+.chat-cta-text { font-size: 12px; color: var(--chat-muted); }
+.chat-cta-btn {
+  background: var(--chat-blue); color: white; border: none;
+  border-radius: 10px; padding: 5px 14px;
+  font-size: 12px; font-weight: 700; font-family: inherit; cursor: pointer;
+}
+.chat-foot {
+  padding: 9px 16px 20px; flex-shrink: 0;
+  background: white; border-top: 1px solid var(--chat-border);
+  display: flex; align-items: center; gap: 8px;
+}
+.chat-input {
+  flex: 1; background: var(--chat-bubble); border: 1px solid var(--chat-border);
+  border-radius: 24px; padding: 10px 15px; color: var(--black);
+  font-size: 13.5px; font-family: inherit; outline: none; resize: none; line-height: 1.4;
+  transition: border-color 0.2s;
+}
+.chat-input::placeholder { color: var(--chat-muted); }
+.chat-input:focus { border-color: var(--chat-blue); }
+.chat-send {
+  width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+  background: var(--chat-blue); border: none; color: white;
+  font-size: 18px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.chat-send:active { opacity: 0.8; }
+
+/* ═══════════════════════════════
+   BACKDROP + SHEETS
+   — position: absolute inside .card-clip
+     (which has overflow:hidden) → fully
+     contained within the card frame
+═══════════════════════════════ */
+.backdrop {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0);
+  pointer-events: none;
+  transition: background 0.3s;
+  z-index: 10;
+}
+.backdrop.on { background: rgba(0,0,0,0.48); pointer-events: all; }
+
+.sheet {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  border-radius: 22px 22px 0 0;
+  transform: translateY(100%);
+  transition: transform 0.38s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: 11;
+  max-height: 88%;
+  overflow-y: auto;
+}
+.sheet.on { transform: translateY(0); }
+.sheet::-webkit-scrollbar { display: none; }
+.sheet-handle { width: 34px; height: 4px; border-radius: 2px; background: var(--border); margin: 12px auto 0; }
+
+/* Contribute sheet */
+#sh-contrib { background: var(--white); padding: 0 24px 40px; box-shadow: 0 -6px 40px rgba(0,0,0,0.18); }
+.sh-title { font-size: 20px; font-weight: 800; color: var(--black); text-align: center; margin: 18px 0 5px; }
+.sh-sub { font-size: 13px; color: var(--gray-md); text-align: center; margin-bottom: 20px; }
+.sh-amounts { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 18px; }
+.sh-amt { height: 44px; border-radius: 22px; border: 1.5px solid var(--border); background: white; font-size: 14px; font-weight: 700; font-family: inherit; cursor: pointer; color: var(--gray-dk); transition: all 0.15s; }
+.sh-amt.on { background: var(--indigo); color: white; border-color: var(--indigo); }
+.sh-cta { width: 100%; height: 50px; background: var(--black); color: white; border: none; border-radius: 25px; font-size: 15px; font-weight: 700; font-family: inherit; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 16px; }
+.matcher-row { display: flex; align-items: center; gap: 10px; background: var(--cream); border-radius: 12px; padding: 11px 14px; }
+.matcher-av { width: 32px; height: 32px; border-radius: 50%; background: var(--black); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: white; flex-shrink: 0; }
+.matcher-text { font-size: 12px; color: var(--gray-dk); line-height: 1.45; }
+.matcher-text strong { color: var(--black); }
+.be-matcher { text-align: center; font-size: 12px; color: var(--indigo); font-weight: 600; cursor: pointer; margin-top: 12px; }
+
+/* Paywall sheet */
+#sh-pay { background: var(--white); padding: 0 24px 40px; box-shadow: 0 -6px 40px rgba(0,0,0,0.18); }
+.pw-title { margin-top: 28px; font-size: 20px; font-weight: 800; color: var(--black); text-align: center; margin-bottom: 6px; }
+.pw-sub { color: var(--chat-muted); font-size: 13px; text-align: center; line-height: 1.5; margin-bottom: 20px; }
+.pw-opts { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+.pw-opt { background: var(--chat-bubble); border: 1.5px solid var(--chat-border); border-radius: 14px; padding: 13px 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.18s; }
+.pw-opt:hover { border-color: var(--chat-blue); }
+.pw-opt.on { border-color: var(--chat-blue); background: #EAEAF8; }
+.pw-opt-label { font-size: 13.5px; font-weight: 700; color: var(--black); margin-bottom: 2px; }
+.pw-opt-sub { font-size: 11.5px; color: var(--chat-muted); }
+.pw-opt-price { font-size: 18px; font-weight: 800; color: var(--black); text-align: right; }
+.pw-opt-price span { font-size: 10.5px; font-weight: 400; color: var(--chat-muted); display: block; }
+.pw-cta { width: 100%; height: 50px; background: var(--chat-blue); color: white; border: none; border-radius: 25px; font-size: 15px; font-weight: 700; font-family: inherit; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 10px; }
+.pw-skip { text-align: center; color: var(--chat-muted); font-size: 12.5px; cursor: pointer; padding: 4px; }
+.pw-skip:hover { color: var(--black); }
+
+@keyframes up { from{opacity:0;transform:translateY(7px)} to{opacity:1;transform:translateY(0)} }
+.anim { animation: up 0.35s ease forwards; }
+</style>
+</head>
+<body>
+
+<div class="card-clip">
+<div class="card-container">
+  <div class="card-inner" id="cardInner">
+
+    <!-- ── FRONT ── -->
+    <div class="card-front">
+      <div class="cover" onclick="window.open('https://www.youtube.com/watch?v=xJvB_AC0O4E','_blank')" style="cursor:pointer;">
+        <img src="https://img.youtube.com/vi/xJvB_AC0O4E/maxresdefault.jpg" alt="André Fernandes" onerror="this.style.display='none'">
+        <div class="cover-overlay"></div>
+        <!-- Play button -->
+        <div class="yt-play">
+          <svg viewBox="0 0 68 48" width="56" height="40"><path d="M66.5 7.8C65.7 4.8 63.3 2.4 60.3 1.6 55 0 34 0 34 0S13 0 7.7 1.6C4.7 2.4 2.3 4.8 1.5 7.8 0 13.1 0 24 0 24s0 10.9 1.5 16.2c.8 3 3.2 5.4 6.2 6.2C13 48 34 48 34 48s21 0 26.3-1.6c3-.8 5.4-3.2 6.2-6.2C68 34.9 68 24 68 24S68 13.1 66.5 7.8z" fill="rgba(0,0,0,0.72)"/><polygon points="45,24 27,14 27,34" fill="white"/></svg>
+        </div>
+        <div class="badge" style="top:14px;left:14px;" onclick="event.stopPropagation()">
+          <i data-lucide="camera" style="width:11px;height:11px;stroke:white;"></i> Photography
+        </div>
+        <div class="badge" style="top:14px;right:14px;" onclick="event.stopPropagation()">
+          <i data-lucide="award" style="width:11px;height:11px;stroke:#F5C842;"></i> UN Award 2024
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="creator-row">
+          <div class="card-av">
+            <img src="https://aloalobahia.com/wp-content/uploads/2024/12/Andre-Fernandes_Foto_Mai-Katz-2-2.jpg" onerror="this.style.display='none'">
+          </div>
+          <div class="creator-right">
+            <div class="creator-meta">
+              <div class="creator-name">André Fernandes</div>
+              <div class="creator-handle">@andrefernandes.af · Salvador, Bahia</div>
+            </div>
+            <div style="display:flex;gap:6px;flex-shrink:0;">
+              <a href="https://andrefernandes.com.br" target="_blank" class="social-icon" title="Website">
+                <i data-lucide="globe" style="width:12px;height:12px;stroke:#888;"></i>
+              </a>
+              <a href="https://instagram.com/andrefernandes.af" target="_blank" class="social-icon" title="Instagram">
+                <i data-lucide="instagram" style="width:12px;height:12px;stroke:#888;"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <p class="card-bio">Bahian photographer documenting Afro-Brazilian spirituality and Candomblé for 15+ years. Only Brazilian among 8 artists recognised by the United Nations in 2024.</p>
+
+        <div class="gallery-strip">
+          <div class="gallery-cell">
+            <img src="https://fotocitando.com.br/wp-content/uploads/2024/11/6744839fc1304966744535-682x1024.jpeg" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#1A0A00,#4A2800)'">
+          </div>
+          <div class="gallery-cell">
+            <img src="https://almapreta.com.br/images/2024/11/Fotografo-Andre-Fernandes-representa-o-Brasil-em-premiacao-internacional-com-ensaio-sobre-Orixas.jpg" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#0A0A1A,#2C1A00)'">
+          </div>
+          <div class="gallery-cell">
+            <img src="https://fotocitando.com.br/wp-content/uploads/2024/11/WhatsApp-Image-2024-11-25-at-10.09.14-e1732643278475.jpeg" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#3A1800,#6A3800)'">
+          </div>
+        </div>
+
+        <div class="stats-strip">
+          <div class="stat"><div class="stat-num">30+</div><div class="stat-label">years active</div></div>
+          <div class="stat"><div class="stat-num">8</div><div class="stat-label">exhibitions</div></div>
+          <div class="stat"><div class="stat-num">247</div><div class="stat-label">supporters</div></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="amounts-label">Support André</div>
+        <div class="amounts-grid">
+          <div class="amt-tile" onclick="selectAmt(this,1)"><div class="amt-val">$1</div><div class="amt-label">once</div></div>
+          <div class="amt-tile" onclick="selectAmt(this,3)"><div class="amt-val">$3</div><div class="amt-label">once</div></div>
+          <div class="amt-tile sel" onclick="selectAmt(this,5)"><div class="amt-val">$5</div><div class="amt-label">once</div></div>
+          <div class="amt-tile" onclick="selectAmt(this,10)"><div class="amt-val">$10</div><div class="amt-label">once</div></div>
+        </div>
+
+        <button class="btn-contribute" id="contributeBtn" onclick="openContrib()">
+          <i data-lucide="heart" style="width:14px;height:14px;stroke:white;fill:white;"></i>
+          Support André — $5
+        </button>
+
+        <button class="btn-aijiv" onclick="flipToChat()">
+          <i data-lucide="message-circle" style="width:14px;height:14px;stroke:currentColor;"></i>
+          Ask me anything
+        </button>
+
+        <div class="link-pill">
+          <span style="display:flex;align-items:center;gap:6px;">
+            <i data-lucide="link" style="width:12px;height:12px;stroke:var(--indigo);"></i>
+            contribute.to/andrefernandes
+          </span>
+          <span class="link-pill-copy" onclick="navigator.clipboard?.writeText('contribute.to/andrefernandes');this.textContent='Copied!';setTimeout(()=>this.textContent='Copy link',1500)">Copy link</span>
+        </div>
+      </div>
+    </div><!-- /card-front -->
+
+    <!-- ── BACK (AiJiv chat) ── -->
+    <div class="card-back" id="cardBack">
+      <div class="chat-hdr">
+        <button class="chat-back-btn" onclick="flipToCard()">‹</button>
+        <div class="chat-hdr-mid">
+          <div class="chat-av-sm">
+            <img src="https://aloalobahia.com/wp-content/uploads/2024/12/Andre-Fernandes_Foto_Mai-Katz-2-2.jpg" onerror="this.style.display='none'">
+          </div>
+          <div>
+            <div class="chat-hdr-name">André Fernandes</div>
+            <div class="chat-hdr-sub">AiJiv · Powered by Contribute</div>
+          </div>
+        </div>
+        <div class="q-pill" id="qbadge">3 free</div>
+      </div>
+
+      <div class="chat-scroll" id="chatScroll">
+        <div class="chat-profile" id="chatProfileSection">
+          <div class="chat-profile-av" id="chatProfileAv">
+            <img src="https://aloalobahia.com/wp-content/uploads/2024/12/Andre-Fernandes_Foto_Mai-Katz-2-2.jpg" onerror="this.style.display='none'">
+          </div>
+          <div class="chat-profile-name">André Fernandes</div>
+          <p class="chat-profile-bio">Documenting Afro-Brazilian culture and Candomblé through photography since 1994. UN International Award for Minority Artists, 2024.</p>
+        </div>
+        <div class="chat-rule"></div>
+        <div class="chat-greeting-wrap">
+          <div class="chat-greeting">
+            Olá — I'm André. I've spent 30 years photographing the sacred world of Candomblé. Ask me anything about my work, the Orixás, or what it means to document ancestral memory.
+          </div>
+        </div>
+        <div class="chat-chips" id="ajChips">
+          <button class="chat-chip" onclick="sendChip(this)">Tell me about Candomblé</button>
+          <button class="chat-chip" onclick="sendChip(this)">Your UN recognition</button>
+          <button class="chat-chip" onclick="sendChip(this)">The Orixás series</button>
+          <button class="chat-chip" onclick="sendChip(this)">Afro-Brazilian identity</button>
+        </div>
+        <div id="chatThread"></div>
+      </div>
+
+      <div class="chat-cta-strip">
+        <div class="chat-cta-text">Support André's mission</div>
+        <button class="chat-cta-btn" onclick="openContrib()">Contribute ♡</button>
+      </div>
+      <div class="chat-foot">
+        <textarea class="chat-input" id="chatInput" placeholder="Ask André anything…" rows="1" onkeydown="onChatKey(event)"></textarea>
+        <button class="chat-send" onclick="sendChat()">↑</button>
+      </div>
+    </div><!-- /card-back -->
+
+  </div><!-- /card-inner -->
+</div><!-- /card-container -->
+
+<!-- ── Backdrop + Sheets inside card-clip (clipped by overflow:hidden) ── -->
+<div id="bd" class="backdrop" onclick="closeSheets()"></div>
+
+  <div id="sh-contrib" class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sh-title">Support André</div>
+    <div class="sh-sub">Your contribution helps fund his ongoing work</div>
+    <div class="sh-amounts">
+      <button class="sh-amt on" onclick="pickContribAmt(this)">$5</button>
+      <button class="sh-amt" onclick="pickContribAmt(this)">$10</button>
+      <button class="sh-amt" onclick="pickContribAmt(this)">$20</button>
+      <button class="sh-amt" onclick="pickContribAmt(this)">Custom</button>
+    </div>
+    <button class="sh-cta">
+      <i data-lucide="heart" style="width:16px;height:16px;stroke:white;fill:white;"></i>
+      Contribute $5
+    </button>
+    <div class="matcher-row">
+      <div class="matcher-av">M</div>
+      <div class="matcher-text">Your contribution will be matched by <strong>Maria Santos</strong> — doubling the impact.</div>
+    </div>
+    <div class="be-matcher">Be a matcher · Double all contributions →</div>
+  </div>
+
+  <div id="sh-pay" class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="pw-title">You've used 3 free questions</div>
+    <div class="pw-sub">Unlock more to keep the conversation going with André's AI</div>
+    <div class="pw-opts">
+      <div class="pw-opt on" onclick="pickPw(this)">
+        <div><div class="pw-opt-label">Unlock 10 more questions</div><div class="pw-opt-sub">One-time micropayment</div></div>
+        <div class="pw-opt-price">$1<span>one-time</span></div>
+      </div>
+      <div class="pw-opt" onclick="pickPw(this)">
+        <div><div class="pw-opt-label">Unlimited + Support André</div><div class="pw-opt-sub">Contributes directly to his work</div></div>
+        <div class="pw-opt-price">$5<span>one-time</span></div>
+      </div>
+      <div class="pw-opt" onclick="pickPw(this)">
+        <div><div class="pw-opt-label">Monthly supporter</div><div class="pw-opt-sub">Unlimited chat + ongoing impact</div></div>
+        <div class="pw-opt-price">$3<span>/month</span></div>
+      </div>
+    </div>
+    <button class="pw-cta" onclick="unlockChat()">
+      <i data-lucide="unlock" style="width:16px;height:16px;stroke:white;"></i>
+      Unlock Now
+    </button>
+    <div class="pw-skip" onclick="closeSheets()">Not now</div>
+  </div>
+
+</div><!-- /card-clip -->
+
+<script>
+lucide.createIcons();
+
+/* ── Amount selection ── */
+let selectedAmt = 5;
+function selectAmt(el, val) {
+  document.querySelectorAll('.amt-tile').forEach(t => t.classList.remove('sel'));
+  el.classList.add('sel');
+  selectedAmt = val;
+  const btn = document.getElementById('contributeBtn');
+  btn.innerHTML = `<i data-lucide="heart" style="width:14px;height:14px;stroke:white;fill:white;"></i> Support André — $${val}`;
+  lucide.createIcons();
+}
+
+/* ── Card flip ── */
+function flipToChat() {
+  const inner = document.getElementById('cardInner');
+  const back  = document.getElementById('cardBack');
+  back.style.height = inner.offsetHeight + 'px';
+  inner.classList.add('flipped');
+  setTimeout(() => document.getElementById('chatInput').focus(), 600);
+}
+function flipToCard() {
+  document.getElementById('cardInner').classList.remove('flipped');
+}
+
+/* ── Sheets ── */
+function openContrib() {
+  document.getElementById('bd').classList.add('on');
+  document.getElementById('sh-contrib').classList.add('on');
+}
+function closeSheets() {
+  document.getElementById('bd').classList.remove('on');
+  document.getElementById('sh-contrib').classList.remove('on');
+  document.getElementById('sh-pay').classList.remove('on');
+}
+function pickContribAmt(btn) {
+  document.querySelectorAll('.sh-amt').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  const lbl = btn.textContent === 'Custom' ? '' : ` ${btn.textContent}`;
+  document.querySelector('.sh-cta').innerHTML = `<i data-lucide="heart" style="width:16px;height:16px;stroke:white;fill:white;"></i> Contribute${lbl}`;
+  lucide.createIcons();
+}
+
+/* ── AiJiv chat ── */
+let qUsed = 0;
+const Q_LIMIT = 3;
+let unlocked = false;
+let rIdx = 0;
+
+const REPLIES = [
+  "Candomblé is not simply a religion — it is a living archive of African memory that survived slavery. Each ceremony, each garment, each rhythm carries the knowledge of our ancestors. My role as a photographer is to make that archive visible to those who cannot enter the terreiro.",
+  "The UN recognition was humbling. To be the only Brazilian among eight artists chosen globally — it reminded me that the struggle for Afro-Brazilian dignity is part of a much larger human rights story. The world needed to see the Orixás not as folklore, but as philosophy.",
+  "The Orixás series took two years at the Terreiro Ilê Axé Alaketu in Salvador. I worked closely with Babalorixá Indarê Sá to earn the right to document each divinity. These aren't costumes — they are sacred presences. Every photograph required permission, patience, and deep respect.",
+  "Afro-Brazilian identity is not something we inherited passively. It is something we must actively defend. Photography is one form of that defense — to say: this exists, it is beautiful, it is sacred, and it will not be erased.",
+  "My process begins with listening. I spend weeks — sometimes months — inside a community before I ever raise a camera. Trust is the foundation of documentary photography. Without it, you are just extracting images, not telling stories.",
+];
+
+function scrollBottom() {
+  const s = document.getElementById('chatScroll');
+  s.scrollTop = s.scrollHeight;
+}
+
+function addBubble(role, text) {
+  const thread = document.getElementById('chatThread');
+  const row = document.createElement('div');
+  row.className = `mrow ${role} anim`;
+  if (role === 'ai') {
+    row.innerHTML = `<div class="mav-ai"><img src="https://aloalobahia.com/wp-content/uploads/2024/12/Andre-Fernandes_Foto_Mai-Katz-2-2.jpg" onerror="this.style.display='none'"></div><div class="mbub">${text}</div>`;
+  } else {
+    row.innerHTML = `<div class="mav-u">Y</div><div class="mbub">${text}</div>`;
+  }
+  thread.appendChild(row);
+  scrollBottom();
+}
+
+function addTyping() {
+  const thread = document.getElementById('chatThread');
+  const row = document.createElement('div');
+  row.className = 'mrow ai anim'; row.id = 'typingRow';
+  row.innerHTML = `<div class="mav-ai"><img src="https://aloalobahia.com/wp-content/uploads/2024/12/Andre-Fernandes_Foto_Mai-Katz-2-2.jpg" onerror="this.style.display='none'"></div><div class="mbub"><div class="typing-dots"><div class="td"></div><div class="td"></div><div class="td"></div></div></div>`;
+  thread.appendChild(row);
+  document.getElementById('chatProfileAv').parentElement.classList.add('ai-active');
+  scrollBottom();
+}
+
+function removeTyping() {
+  const t = document.getElementById('typingRow');
+  if (t) t.remove();
+  document.getElementById('chatProfileAv').parentElement.classList.remove('ai-active');
+}
+
+function updateQBadge() {
+  const remaining = Math.max(0, Q_LIMIT - qUsed);
+  const badge = document.getElementById('qbadge');
+  if (remaining === 0 && !unlocked) { badge.textContent = '0 left'; badge.classList.add('warn'); }
+  else if (unlocked) { badge.textContent = '∞ unlimited'; badge.classList.remove('warn'); }
+  else { badge.textContent = `${remaining} free`; badge.classList.remove('warn'); }
+}
+
+function sendChip(btn) {
+  const text = btn.textContent;
+  document.getElementById('ajChips').style.display = 'none';
+  document.getElementById('chatProfileSection').style.display = 'none';
+  document.querySelector('.chat-rule').style.display = 'none';
+  document.querySelector('.chat-greeting-wrap').style.display = 'none';
+  doSend(text);
+}
+
+function sendChat() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  document.getElementById('chatProfileSection').style.display = 'none';
+  document.querySelector('.chat-rule').style.display = 'none';
+  document.querySelector('.chat-greeting-wrap').style.display = 'none';
+  document.getElementById('ajChips').style.display = 'none';
+  doSend(text);
+}
+
+function onChatKey(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
+}
+
+function doSend(text) {
+  if (!unlocked && qUsed >= Q_LIMIT) { openPaywall(); return; }
+  addBubble('usr', text);
+  qUsed++;
+  updateQBadge();
+  addTyping();
+  setTimeout(() => {
+    removeTyping();
+    addBubble('ai', REPLIES[rIdx % REPLIES.length]);
+    rIdx++;
+    if (!unlocked && qUsed >= Q_LIMIT) setTimeout(openPaywall, 700);
+  }, 1100 + Math.random() * 700);
+}
+
+function openPaywall() {
+  document.getElementById('bd').classList.add('on');
+  document.getElementById('sh-pay').classList.add('on');
+}
+
+function unlockChat() {
+  unlocked = true;
+  closeSheets();
+  updateQBadge();
+  const thread = document.getElementById('chatThread');
+  const banner = document.createElement('div');
+  banner.className = 'unlock-banner anim';
+  banner.textContent = '✓ Chat unlocked — ask anything';
+  thread.appendChild(banner);
+  scrollBottom();
+}
+
+function pickPw(el) {
+  document.querySelectorAll('.pw-opt').forEach(o => o.classList.remove('on'));
+  el.classList.add('on');
+}
+</script>
+</body>
+</html>

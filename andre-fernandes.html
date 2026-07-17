@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>André Fernandes — contribute.to/andrefernandes</title>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --indigo:   #5B4FCF;
+  --indigo-dk:#4840B0;
+  --indigo-lt:#EEF0FD;
+  --black:    #0F0F1A;
+  --gray-dk:  #444455;
+  --gray-md:  #888899;
+  --gray-lt:  #E8E8EF;
+  --cream:    #F8F5F3;
+  --border:   #EDE5DA;
+  --white:    #ffffff;
+  --green:    #2E9E6B;
+  --gold:     #C8962A;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--cream);
+  color: var(--black);
+  min-height: 100vh;
+}
+
+/* ── Top nav bar ── */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 52px; background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+  padding: 0 24px; justify-content: space-between;
+}
+.topbar-logo {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 14px; font-weight: 800; color: var(--black);
+  text-decoration: none;
+}
+.topbar-url {
+  font-size: 12px; color: var(--gray-md); font-weight: 500;
+  display: flex; align-items: center; gap: 5px;
+}
+.topbar-actions { display: flex; align-items: center; gap: 10px; }
+.btn-sm {
+  height: 32px; padding: 0 16px; border-radius: 16px;
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  display: flex; align-items: center; gap: 6px; text-decoration: none;
+  border: none;
+}
+.btn-sm.ghost { background: transparent; color: var(--gray-dk); border: 1.5px solid var(--border); }
+.btn-sm.primary { background: var(--indigo); color: white; }
+
+/* ── Page layout ── */
+.page { padding-top: 52px; }
+
+/* ── Cover ── */
+.cover {
+  width: 100%; height: 460px; position: relative; overflow: hidden;
+  background: linear-gradient(145deg, #1A0A00 0%, #3A1800 40%, #6A3000 70%, #C8962A 100%);
+}
+.cover img {
+  width: 100%; height: 100%; object-fit: cover;
+  object-position: center 30%;
+  display: block;
+}
+.cover-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.5) 100%);
+}
+.cover-award {
+  position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 24px; padding: 7px 18px;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: rgba(255,255,255,0.9); font-weight: 600;
+  white-space: nowrap;
+}
+.cover-play {
+  position: absolute; bottom: 24px; right: 24px;
+  background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 24px; padding: 7px 16px;
+  display: flex; align-items: center; gap: 7px;
+  font-size: 12px; color: white; font-weight: 600; cursor: pointer;
+  text-decoration: none;
+}
+
+/* ── Profile section ── */
+.profile-section {
+  max-width: 880px; margin: 0 auto;
+  padding: 0 24px;
+}
+.profile-top {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  padding: 0 0 24px;
+  border-bottom: 1px solid var(--border);
+  gap: 16px; flex-wrap: wrap;
+}
+.profile-left { display: flex; align-items: flex-end; gap: 20px; }
+.avatar-wrap { margin-top: -56px; position: relative; flex-shrink: 0; }
+.avatar {
+  width: 100px; height: 100px; border-radius: 50%;
+  border: 4px solid white; overflow: hidden;
+  background: #2C1A00;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+.avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+.avatar-fallback {
+  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+  font-size: 28px; font-weight: 900; color: white;
+  background: linear-gradient(135deg, #2C1A00, #6A3800);
+}
+.verified-badge {
+  position: absolute; bottom: 2px; right: 2px;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--indigo); border: 2px solid white;
+  display: flex; align-items: center; justify-content: center;
+}
+.profile-name-wrap { padding-bottom: 4px; }
+.profile-name { font-size: 26px; font-weight: 900; color: var(--black); letter-spacing: -0.5px; line-height: 1.1; }
+.profile-handle { font-size: 14px; color: var(--gray-md); margin-top: 3px; display: flex; align-items: center; gap: 6px; }
+.profile-location { display: flex; align-items: center; gap: 4px; font-size: 13px; color: var(--gray-md); margin-top: 4px; }
+.profile-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.btn-follow {
+  height: 38px; padding: 0 22px;
+  background: var(--black); color: white;
+  border: none; border-radius: 19px;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+}
+.btn-share {
+  width: 38px; height: 38px; border-radius: 50%;
+  border: 1.5px solid var(--border); background: white;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+}
+
+/* ── Main grid ── */
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 32px;
+  max-width: 880px; margin: 0 auto;
+  padding: 32px 24px 80px;
+  align-items: start;
+}
+
+/* ── Left column ── */
+.bio-section { margin-bottom: 32px; }
+.bio-text {
+  font-size: 15px; color: var(--gray-dk); line-height: 1.8;
+  margin-bottom: 16px;
+}
+.bio-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.bio-tag {
+  font-size: 12px; font-weight: 600; color: var(--gray-dk);
+  background: var(--white); border: 1.5px solid var(--border);
+  border-radius: 20px; padding: 4px 12px;
+}
+
+.section-label {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--gray-md); margin-bottom: 14px;
+}
+
+/* ── Gallery ── */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  border-radius: 14px; overflow: hidden;
+  margin-bottom: 32px;
+}
+.gallery-cell { aspect-ratio: 1; overflow: hidden; position: relative; background: #1A0A00; cursor: pointer; }
+.gallery-cell img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; display: block; }
+.gallery-cell:hover img { transform: scale(1.05); }
+.gallery-cell.tall { grid-row: span 2; aspect-ratio: auto; }
+.gallery-overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,0);
+  transition: background 0.2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.gallery-cell:hover .gallery-overlay { background: rgba(0,0,0,0.2); }
+
+/* Social proof strip */
+.social-strip {
+  display: flex; align-items: center; gap: 20px;
+  padding: 16px 0; border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 32px;
+}
+.social-stat { text-align: center; flex: 1; }
+.social-stat-num { font-size: 18px; font-weight: 800; color: var(--black); }
+.social-stat-label { font-size: 11px; color: var(--gray-md); margin-top: 2px; }
+.social-stat + .social-stat { border-left: 1px solid var(--border); }
+
+/* AiJiv chat card */
+.aijiv-card {
+  background: var(--black); border-radius: 20px;
+  overflow: hidden; margin-bottom: 32px;
+}
+.aijiv-header {
+  padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.08);
+  display: flex; align-items: center; gap: 10px;
+}
+.aijiv-av {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--indigo);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 800; color: white; flex-shrink: 0;
+}
+.aijiv-title { font-size: 14px; font-weight: 700; color: white; }
+.aijiv-sub { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 1px; }
+.aijiv-live {
+  margin-left: auto; display: flex; align-items: center; gap: 5px;
+  font-size: 11px; color: #5FE0A0; font-weight: 600;
+}
+.aijiv-live-dot { width: 6px; height: 6px; border-radius: 50%; background: #5FE0A0; }
+.chat-messages { padding: 16px 16px 0; display: flex; flex-direction: column; gap: 10px; }
+.chat-msg { display: flex; gap: 8px; align-items: flex-start; }
+.chat-msg.user { flex-direction: row-reverse; }
+.chat-avatar {
+  width: 26px; height: 26px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 800; color: white; flex-shrink: 0;
+}
+.chat-avatar.ai { background: var(--indigo); }
+.chat-avatar.user { background: #2A2A40; color: rgba(255,255,255,0.5); }
+.chat-bubble {
+  max-width: 220px; padding: 9px 13px;
+  border-radius: 14px; font-size: 12px; line-height: 1.55; color: white;
+}
+.chat-bubble.ai { background: #1E1E38; border-bottom-left-radius: 3px; }
+.chat-bubble.user { background: var(--indigo); border-bottom-right-radius: 3px; }
+.chat-input-row {
+  padding: 12px 16px 16px;
+  display: flex; gap: 8px; align-items: center;
+}
+.chat-input-row input {
+  flex: 1; height: 36px; background: #1E1E38;
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 18px;
+  padding: 0 14px; color: rgba(255,255,255,0.6);
+  font-size: 12px; outline: none;
+}
+.chat-send-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--indigo); border: none;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* ── Right column (sticky support card) ── */
+.support-card {
+  background: white; border-radius: 20px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  position: sticky; top: 72px;
+}
+.support-card-top { padding: 24px 24px 0; }
+.support-label {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--gray-md); margin-bottom: 14px;
+}
+.amounts-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; margin-bottom: 16px; }
+.amt-tile {
+  border: 1.5px solid var(--border); border-radius: 14px;
+  padding: 14px 8px; text-align: center; cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  position: relative;
+}
+.amt-tile:hover { border-color: var(--indigo); }
+.amt-tile.active { border-color: var(--indigo); background: var(--indigo-lt); }
+.amt-popular {
+  position: absolute; top: -9px; left: 50%; transform: translateX(-50%);
+  background: var(--indigo); color: white; font-size: 9px; font-weight: 700;
+  border-radius: 5px; padding: 2px 7px; white-space: nowrap;
+}
+.amt-val { font-size: 22px; font-weight: 900; color: var(--black); }
+.amt-label { font-size: 10px; color: var(--gray-md); margin-top: 3px; }
+.custom-input-wrap {
+  border: 1.5px solid var(--border); border-radius: 12px;
+  overflow: hidden; display: flex; margin-bottom: 16px;
+  transition: border-color 0.15s;
+}
+.custom-input-wrap:focus-within { border-color: var(--indigo); }
+.custom-prefix {
+  padding: 0 12px; background: var(--cream); border-right: 1.5px solid var(--border);
+  font-size: 15px; font-weight: 700; color: var(--gray-md);
+  display: flex; align-items: center;
+}
+.custom-input-wrap input {
+  flex: 1; border: none; outline: none;
+  padding: 12px 14px; font-size: 15px; color: var(--black); font-weight: 600;
+  background: transparent;
+}
+.btn-contribute {
+  width: 100%; height: 52px; background: var(--black); color: white;
+  border: none; font-size: 16px; font-weight: 700; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.support-card-bottom {
+  padding: 16px 24px 20px;
+  border-top: 1px solid var(--border);
+  background: var(--cream);
+}
+.supporter-row {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+}
+.supporter-avatars { display: flex; }
+.supporter-av {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 2px solid white; margin-left: -8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 700; color: white; flex-shrink: 0;
+}
+.supporter-av:first-child { margin-left: 0; }
+.supporter-text { font-size: 12px; color: var(--gray-dk); line-height: 1.4; }
+.supporter-text strong { color: var(--black); }
+
+.share-row {
+  display: flex; gap: 8px;
+}
+.share-btn {
+  flex: 1; height: 36px; border: 1.5px solid var(--border);
+  border-radius: 18px; background: white; font-size: 12px;
+  font-weight: 600; color: var(--gray-dk); cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+  transition: border-color 0.15s;
+}
+.share-btn:hover { border-color: var(--gray-md); }
+
+/* ── Exhibitions strip ── */
+.exhibitions { margin-bottom: 32px; }
+.exhibition-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 0; border-bottom: 1px solid var(--border);
+}
+.exhibition-item:first-child { border-top: 1px solid var(--border); }
+.exhibition-year {
+  font-size: 12px; font-weight: 700; color: var(--indigo);
+  width: 36px; flex-shrink: 0;
+}
+.exhibition-name { font-size: 14px; font-weight: 700; color: var(--black); }
+.exhibition-place { font-size: 12px; color: var(--gray-md); margin-top: 2px; }
+.exhibition-badge {
+  margin-left: auto; font-size: 10px; font-weight: 600;
+  border-radius: 20px; padding: 3px 10px; white-space: nowrap; flex-shrink: 0;
+}
+.exhibition-badge.un { background: #EEF0FD; color: var(--indigo); }
+.exhibition-badge.solo { background: #E6F7EF; color: var(--green); }
+
+/* ── Footer ── */
+.page-footer {
+  border-top: 1px solid var(--border); padding: 24px;
+  text-align: center;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  font-size: 12px; color: var(--gray-md);
+}
+
+/* ── Responsive ── */
+@media (max-width: 720px) {
+  .cover { height: 280px; }
+  .main-grid { grid-template-columns: 1fr; }
+  .support-card { position: static; }
+  .avatar { width: 80px; height: 80px; }
+  .profile-name { font-size: 20px; }
+  .gallery-grid { grid-template-columns: repeat(2,1fr); }
+  .topbar-url { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<nav class="topbar">
+  <a class="topbar-logo" href="contribute-landing.html">
+    <i data-lucide="heart-handshake" style="width:20px;height:20px;stroke:var(--indigo);"></i>
+    Contribute
+  </a>
+  <div class="topbar-url">
+    <i data-lucide="link" style="width:12px;height:12px;stroke:currentColor;"></i>
+    contribute.to/andrefernandes
+  </div>
+  <div class="topbar-actions">
+    <a class="btn-sm ghost" href="#" onclick="navigator.clipboard?.writeText('contribute.to/andrefernandes');this.textContent='Copied!';setTimeout(()=>this.textContent='Share',1500);return false">
+      <i data-lucide="share-2" style="width:12px;height:12px;stroke:currentColor;"></i>
+      Share
+    </a>
+    <a class="btn-sm primary" href="#">
+      <i data-lucide="heart" style="width:12px;height:12px;stroke:white;fill:white;"></i>
+      Contribute
+    </a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- Cover -->
+  <div class="cover">
+    <img
+      src="https://img.youtube.com/vi/xJvB_AC0O4E/maxresdefault.jpg"
+      alt="André Fernandes"
+      onerror="this.style.display='none'">
+    <div class="cover-overlay"></div>
+    <div class="cover-award">
+      <i data-lucide="award" style="width:13px;height:13px;stroke:#C8962A;"></i>
+      UN International Award for Minority Artists · 2024
+    </div>
+    <a class="cover-play" href="https://www.youtube.com/watch?v=xJvB_AC0O4E" target="_blank">
+      <i data-lucide="play" style="width:12px;height:12px;stroke:white;fill:white;"></i>
+      Watch film
+    </a>
+  </div>
+
+  <!-- Profile top -->
+  <div class="profile-section">
+    <div class="profile-top">
+      <div class="profile-left">
+        <div class="avatar-wrap">
+          <div class="avatar">
+            <img
+              src="https://aloalobahia.com/wp-content/uploads/2024/12/Andre-Fernandes_Foto_Mai-Katz-2-2.jpg"
+              alt="André Fernandes"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div class="avatar-fallback" style="display:none;">AF</div>
+          </div>
+          <div class="verified-badge">
+            <i data-lucide="check" style="width:11px;height:11px;stroke:white;stroke-width:3;"></i>
+          </div>
+        </div>
+        <div class="profile-name-wrap">
+          <div class="profile-name">André Fernandes</div>
+          <div class="profile-handle">
+            <i data-lucide="instagram" style="width:13px;height:13px;stroke:currentColor;"></i>
+            @andrefernandes.af
+          </div>
+          <div class="profile-location">
+            <i data-lucide="map-pin" style="width:12px;height:12px;stroke:currentColor;"></i>
+            Salvador, Bahia, Brazil
+          </div>
+        </div>
+      </div>
+      <div class="profile-actions">
+        <button class="btn-share">
+          <i data-lucide="share-2" style="width:15px;height:15px;stroke:var(--gray-dk);"></i>
+        </button>
+        <button class="btn-follow">Follow</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main grid -->
+  <div class="main-grid">
+
+    <!-- LEFT COLUMN -->
+    <div>
+
+      <!-- Bio -->
+      <div class="bio-section">
+        <p class="bio-text">
+          I photograph to expand the visibility of and respect for Afro-Brazilian cultures. For over 15 years I have documented the sacred rituals, ornamentation, and spiritual beauty of Candomblé — a practice that connects us to our African ancestors and demands to be seen, understood, and honoured.
+        </p>
+        <p class="bio-text">
+          My series <em>Orixás</em>, photographed at the Terreiro Ilê Axé Alaketu in Salvador, spent two years in production and was recognised by the United Nations in 2024 as part of the International Art Contest for Minority Artists. It has since been exhibited in Geneva, Asunción, and across Brazil.
+        </p>
+        <div class="bio-tags">
+          <span class="bio-tag">Documentary Photography</span>
+          <span class="bio-tag">Afro-Brazilian Culture</span>
+          <span class="bio-tag">Candomblé</span>
+          <span class="bio-tag">Ancestral Memory</span>
+          <span class="bio-tag">Human Rights</span>
+        </div>
+      </div>
+
+      <!-- Stats strip -->
+      <div class="social-strip">
+        <div class="social-stat">
+          <div class="social-stat-num">30+</div>
+          <div class="social-stat-label">years as photographer</div>
+        </div>
+        <div class="social-stat">
+          <div class="social-stat-num">8</div>
+          <div class="social-stat-label">solo exhibitions</div>
+        </div>
+        <div class="social-stat">
+          <div class="social-stat-num">5</div>
+          <div class="social-stat-label">countries exhibited</div>
+        </div>
+        <div class="social-stat">
+          <div class="social-stat-num">2024</div>
+          <div class="social-stat-label">UN Award</div>
+        </div>
+      </div>
+
+      <!-- Gallery -->
+      <div class="section-label">Gallery</div>
+      <div class="gallery-grid">
+        <!-- Tall left — Orixás series portrait (vertical format) -->
+        <div class="gallery-cell tall" style="grid-row:span 2;background:#0D0D0D;">
+          <img
+            src="https://fotocitando.com.br/wp-content/uploads/2024/11/6744839fc1304966744535-682x1024.jpeg"
+            alt="Orixás — André Fernandes"
+            onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#1A0A00,#4A2800)'">
+          <div class="gallery-overlay"></div>
+        </div>
+        <!-- UN Award event — Geneva 2024 -->
+        <div class="gallery-cell" style="background:#0D0D0D;">
+          <img
+            src="https://fotocitando.com.br/wp-content/uploads/2024/11/WhatsApp-Image-2024-11-25-at-10.09.14-e1732643278475.jpeg"
+            alt="UN Award Geneva 2024"
+            onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#1A0A00,#2A1A0A)'">
+          <div class="gallery-overlay"></div>
+        </div>
+        <!-- Geneva exhibition — Almapreta -->
+        <div class="gallery-cell" style="background:#1A0A00;">
+          <img
+            src="https://almapreta.com.br/images/2024/11/Fotografo-Andre-Fernandes-representa-o-Brasil-em-premiacao-internacional-com-ensaio-sobre-Orixas.jpg"
+            alt="Orixás Exhibition Geneva"
+            onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#0A0A1A,#1A0A2A)'">
+          <div class="gallery-overlay"></div>
+        </div>
+        <!-- Orixás series — December 2025 -->
+        <div class="gallery-cell" style="background:#0D0D0D;">
+          <img
+            src="https://i0.wp.com/jornalgrandebahia.com.br/wp-content/uploads/2025/12/Exposicao-Orixas-20251212.jpg?quality=85&ssl=1"
+            alt="Exposição Orixás"
+            onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#1A1205,#3A2A10)'">
+          <div class="gallery-overlay"></div>
+        </div>
+        <!-- Candomblé documentation — UN mention honrosa -->
+        <div class="gallery-cell" style="background:#0D0D0D;">
+          <img
+            src="https://i0.wp.com/jornalgrandebahia.com.br/wp-content/uploads/2024/12/Fotografo-brasileiro-recebe-mencao-honrosa-em-concurso-da-ONU-pelos-registros-do-Candomble-20241206.jpg?quality=85&ssl=1"
+            alt="Candomblé — André Fernandes"
+            onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#1A0A0A,#3A1010)'">
+          <div class="gallery-overlay"></div>
+        </div>
+      </div>
+
+      <!-- AiJiv chat preview -->
+      <div class="section-label">Ask André's AI</div>
+      <div class="aijiv-card">
+        <div class="aijiv-header">
+          <div class="aijiv-av">AF</div>
+          <div>
+            <div class="aijiv-title">André's AiJiv</div>
+            <div class="aijiv-sub">Trained on 15 years of work & interviews</div>
+          </div>
+          <div class="aijiv-live">
+            <div class="aijiv-live-dot"></div>
+            Active
+          </div>
+        </div>
+        <div class="chat-messages">
+          <div class="chat-msg user">
+            <div class="chat-avatar user">Y</div>
+            <div class="chat-bubble user">How does Candomblé shape your approach to photography?</div>
+          </div>
+          <div class="chat-msg">
+            <div class="chat-avatar ai">AF</div>
+            <div class="chat-bubble ai">Candomblé taught me that every object, gesture, and colour carries meaning. When I enter a terreiro, I'm not documenting ceremony — I'm bearing witness to a living theology. The camera becomes a vessel for ancestral memory.</div>
+          </div>
+          <div class="chat-msg user">
+            <div class="chat-avatar user">Y</div>
+            <div class="chat-bubble user">What does the UN recognition mean for Afro-Brazilian art?</div>
+          </div>
+          <div class="chat-msg">
+            <div class="chat-avatar ai">AF</div>
+            <div class="chat-bubble ai">It means the world is being asked to look — really look — at what Black Brazilian religiosity holds. Not as folklore. As philosophy, art, and human rights. That visibility is the first step toward respect.</div>
+          </div>
+        </div>
+        <div class="chat-input-row">
+          <input type="text" placeholder="Ask André anything about his work…">
+          <button class="chat-send-btn">
+            <i data-lucide="send" style="width:14px;height:14px;stroke:white;"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Exhibitions -->
+      <div class="section-label" style="margin-top:32px;">Exhibitions</div>
+      <div class="exhibitions">
+        <div class="exhibition-item">
+          <div class="exhibition-year">2026</div>
+          <div>
+            <div class="exhibition-name">Candomblé — Geneva</div>
+            <div class="exhibition-place">United Nations, Palais des Nations · Switzerland</div>
+          </div>
+          <span class="exhibition-badge un">UN Program</span>
+        </div>
+        <div class="exhibition-item">
+          <div class="exhibition-year">2025</div>
+          <div>
+            <div class="exhibition-name">Candomblé — Asunción</div>
+            <div class="exhibition-place">Instituto Guimarães Rosa · Paraguay</div>
+          </div>
+          <span class="exhibition-badge solo">Solo</span>
+        </div>
+        <div class="exhibition-item">
+          <div class="exhibition-year">2024</div>
+          <div>
+            <div class="exhibition-name">Orixás — Geneva</div>
+            <div class="exhibition-place">Ecolint Centre des Arts · Switzerland</div>
+          </div>
+          <span class="exhibition-badge un">UN Award</span>
+        </div>
+        <div class="exhibition-item">
+          <div class="exhibition-year">2023</div>
+          <div>
+            <div class="exhibition-name">Ojú Okan Orixás</div>
+            <div class="exhibition-place">Palacete das Artes · Salvador, Brazil</div>
+          </div>
+          <span class="exhibition-badge solo">Solo</span>
+        </div>
+        <div class="exhibition-item">
+          <div class="exhibition-year">2022</div>
+          <div>
+            <div class="exhibition-name">Orixás por André Fernandes</div>
+            <div class="exhibition-place">Salvador, Bahia, Brazil</div>
+          </div>
+          <span class="exhibition-badge solo">Solo</span>
+        </div>
+        <div class="exhibition-item">
+          <div class="exhibition-year">2011</div>
+          <div>
+            <div class="exhibition-name">Àtilende — O Nascimento de um Terreiro</div>
+            <div class="exhibition-place">Salvador, Bahia, Brazil</div>
+          </div>
+          <span class="exhibition-badge solo">Solo</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div>
+      <div class="support-card">
+        <div class="support-card-top">
+          <div class="support-label">Support André</div>
+          <div class="amounts-grid">
+            <div class="amt-tile" onclick="selectAmt(this, 1)">
+              <div class="amt-val">$1</div>
+              <div class="amt-label">one-time</div>
+            </div>
+            <div class="amt-tile" onclick="selectAmt(this, 3)">
+              <div class="amt-popular">Popular</div>
+              <div class="amt-val">$3</div>
+              <div class="amt-label">one-time</div>
+            </div>
+            <div class="amt-tile active" onclick="selectAmt(this, 5)">
+              <div class="amt-val">$5</div>
+              <div class="amt-label">one-time</div>
+            </div>
+            <div class="amt-tile" onclick="selectAmt(this, 10)">
+              <div class="amt-val">$10</div>
+              <div class="amt-label">one-time</div>
+            </div>
+          </div>
+          <div class="custom-input-wrap">
+            <div class="custom-prefix">$</div>
+            <input type="number" placeholder="Custom amount" min="1" oninput="clearAmtSelection()">
+          </div>
+          <button class="btn-contribute">
+            <i data-lucide="heart" style="width:16px;height:16px;stroke:white;fill:white;"></i>
+            Contribute $5
+          </button>
+        </div>
+        <div class="support-card-bottom">
+          <div class="supporter-row">
+            <div class="supporter-avatars">
+              <div class="supporter-av" style="background:#8B2500;">M</div>
+              <div class="supporter-av" style="background:#2C1A5E;">L</div>
+              <div class="supporter-av" style="background:#1A4A2E;">R</div>
+              <div class="supporter-av" style="background:#4A2800;">S</div>
+            </div>
+            <div class="supporter-text"><strong>247 people</strong> have supported André's work this month</div>
+          </div>
+          <div class="share-row">
+            <button class="share-btn" onclick="navigator.clipboard?.writeText('contribute.to/andrefernandes');this.innerHTML='<i data-lucide=\'check\' style=\'width:12px;height:12px;stroke:currentColor;\'></i> Copied!';lucide.createIcons();setTimeout(()=>{this.innerHTML='<i data-lucide=\'link\' style=\'width:12px;height:12px;stroke:currentColor;\'></i> Copy link';lucide.createIcons();},1500)">
+              <i data-lucide="link" style="width:12px;height:12px;stroke:currentColor;"></i>
+              Copy link
+            </button>
+            <button class="share-btn">
+              <i data-lucide="instagram" style="width:12px;height:12px;stroke:currentColor;"></i>
+              Share
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="page-footer">
+    <i data-lucide="heart-handshake" style="width:16px;height:16px;stroke:var(--indigo);"></i>
+    <span>Powered by <strong>Contribute</strong> · contribute.to/andrefernandes</span>
+  </div>
+
+</div>
+
+<script>
+lucide.createIcons();
+
+let selectedAmt = 5;
+
+function selectAmt(el, val) {
+  document.querySelectorAll('.amt-tile').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  selectedAmt = val;
+  document.querySelector('.btn-contribute').innerHTML = `
+    <i data-lucide="heart" style="width:16px;height:16px;stroke:white;fill:white;"></i>
+    Contribute $${val}`;
+  lucide.createIcons();
+  document.querySelector('.custom-input-wrap input').value = '';
+}
+
+function clearAmtSelection() {
+  document.querySelectorAll('.amt-tile').forEach(t => t.classList.remove('active'));
+  const val = document.querySelector('.custom-input-wrap input').value;
+  document.querySelector('.btn-contribute').innerHTML = `
+    <i data-lucide="heart" style="width:16px;height:16px;stroke:white;fill:white;"></i>
+    Contribute${val ? ' $'+val : ''}`;
+  lucide.createIcons();
+}
+</script>
+</body>
+</html>
