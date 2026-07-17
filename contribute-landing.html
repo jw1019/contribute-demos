@@ -457,8 +457,8 @@ footer {
       <i data-lucide="sparkles" style="width:13px;height:13px;stroke:var(--indigo);fill:none;"></i>
       Turn your passion into a living
     </div>
-    <h1>Your work.<br>Your audience.<br><span>Your impact.</span></h1>
-    <p class="hero-sub">Contribute gives creators, artists, and educators three powerful tools to raise support for what they do — contributions, an AI version of yourself, and a paywall that works while you sleep.</p>
+    <h1><span>Fund your work.</span></h1>
+    <p class="hero-sub">Accept contributions, offer paid access, and let your audience connect with your AI — all from one simple page.</p>
     <div class="hero-actions">
       <a class="btn-hero" href="un-artists-onboarding.html">
         Get your Contribute card
@@ -481,88 +481,48 @@ footer {
 
   <!-- Creator card preview -->
   <div class="hero-card">
-    <!-- Cover: coral reef illustration -->
-    <div class="hero-card-cover" style="background:#012840;overflow:hidden;">
+    <!-- Cover: abstract ocean gradient -->
+    <div class="hero-card-cover" style="background:#041E35;overflow:hidden;">
       <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;" preserveAspectRatio="xMidYMid slice">
         <defs>
-          <linearGradient id="cvWater" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#0A5A8C"/>
-            <stop offset="100%" stop-color="#012840"/>
+          <linearGradient id="cvBg" x1="0" y1="0" x2="0.3" y2="1">
+            <stop offset="0%" stop-color="#083D6B"/>
+            <stop offset="100%" stop-color="#021322"/>
           </linearGradient>
-          <linearGradient id="cvRay" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.18"/>
-            <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+          <radialGradient id="cvGlow" cx="38%" cy="0%" r="75%">
+            <stop offset="0%" stop-color="#1470A8" stop-opacity="0.55"/>
+            <stop offset="100%" stop-color="#021322" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="cvWave1" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#0A5A8C" stop-opacity="0"/>
+            <stop offset="35%" stop-color="#0F7AB0" stop-opacity="0.45"/>
+            <stop offset="100%" stop-color="#0A5A8C" stop-opacity="0"/>
           </linearGradient>
-          <linearGradient id="cvFloor" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#013560"/>
-            <stop offset="100%" stop-color="#010F20"/>
+          <linearGradient id="cvWave2" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#1E8C6E" stop-opacity="0"/>
+            <stop offset="50%" stop-color="#22A882" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#1E8C6E" stop-opacity="0"/>
           </linearGradient>
         </defs>
-        <!-- Water background -->
-        <rect width="400" height="180" fill="url(#cvWater)"/>
-        <!-- Light rays from surface -->
-        <polygon points="90,0 114,0 68,180 44,180" fill="url(#cvRay)"/>
-        <polygon points="195,0 215,0 173,180 153,180" fill="url(#cvRay)"/>
-        <polygon points="315,0 331,0 298,180 282,180" fill="url(#cvRay)"/>
-        <!-- Sea floor -->
-        <ellipse cx="200" cy="194" rx="260" ry="32" fill="url(#cvFloor)"/>
-        <!-- Rock mounds -->
-        <ellipse cx="75" cy="184" rx="58" ry="12" fill="#011E38" opacity="0.8"/>
-        <ellipse cx="330" cy="186" rx="52" ry="11" fill="#011E38" opacity="0.7"/>
-        <!-- Left coral cluster — orange branching -->
-        <line x1="52" y1="180" x2="52" y2="128" stroke="#FF6B35" stroke-width="5" stroke-linecap="round"/>
-        <line x1="52" y1="148" x2="30" y2="112" stroke="#FF6B35" stroke-width="3.5" stroke-linecap="round"/>
-        <line x1="52" y1="138" x2="76" y2="110" stroke="#FF6B35" stroke-width="3.5" stroke-linecap="round"/>
-        <line x1="30" y1="112" x2="16" y2="88" stroke="#FF6B35" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="30" y1="112" x2="44" y2="90" stroke="#FF6B35" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="76" y1="110" x2="88" y2="88" stroke="#FF6B35" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="16" cy="88" r="5" fill="#FFAD80"/>
-        <circle cx="44" cy="90" r="5" fill="#FFAD80"/>
-        <circle cx="88" cy="88" r="5" fill="#FFAD80"/>
-        <circle cx="52" cy="128" r="6" fill="#FFAD80"/>
-        <!-- Pink fan coral -->
-        <path d="M115,180 Q99,148 108,116 Q115,100 122,116 Q131,148 115,180" fill="#E055A0" opacity="0.65"/>
-        <path d="M115,180 Q102,148 108,116" stroke="#E055A0" stroke-width="1" fill="none" opacity="0.4"/>
-        <path d="M115,180 Q128,148 122,116" stroke="#E055A0" stroke-width="1" fill="none" opacity="0.4"/>
-        <!-- Pink anemone / sea anemone -->
-        <circle cx="165" cy="172" r="10" fill="#FF5578" opacity="0.55"/>
-        <path d="M163,168 Q159,157 162,150" stroke="#FF5578" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M167,168 Q172,156 169,149" stroke="#FF5578" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M165,167 Q165,155 165,148" stroke="#FF5578" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <!-- Center seagrass cluster -->
-        <path d="M215,180 Q208,158 218,138" stroke="#1E8A4A" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <path d="M222,180 Q226,155 218,136" stroke="#28A05A" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <path d="M228,180 Q238,157 230,138" stroke="#1E8A4A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <!-- Right coral cluster — teal branching -->
-        <line x1="340" y1="180" x2="340" y2="132" stroke="#2AC8A0" stroke-width="4" stroke-linecap="round"/>
-        <line x1="340" y1="150" x2="320" y2="120" stroke="#2AC8A0" stroke-width="3" stroke-linecap="round"/>
-        <line x1="340" y1="142" x2="362" y2="116" stroke="#2AC8A0" stroke-width="3" stroke-linecap="round"/>
-        <circle cx="320" cy="120" r="4" fill="#7FFDE0"/>
-        <circle cx="362" cy="116" r="4" fill="#7FFDE0"/>
-        <!-- Pink soft coral right -->
-        <line x1="385" y1="180" x2="385" y2="146" stroke="#FF8CAA" stroke-width="3.5" stroke-linecap="round"/>
-        <line x1="385" y1="158" x2="372" y2="140" stroke="#FF8CAA" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="385" y1="158" x2="398" y2="142" stroke="#FF8CAA" stroke-width="2.5" stroke-linecap="round"/>
-        <!-- Fish 1 — yellow angelfish -->
-        <ellipse cx="240" cy="72" rx="14" ry="10" fill="#FFD430"/>
-        <polygon points="254,72 268,64 268,80" fill="#FFD430"/>
-        <line x1="243" y1="63" x2="243" y2="81" stroke="#E08800" stroke-width="2"/>
-        <line x1="249" y1="62" x2="249" y2="82" stroke="#E08800" stroke-width="2"/>
-        <circle cx="230" cy="68" r="2.5" fill="#0A0800"/>
-        <!-- Fish 2 — small blue -->
-        <ellipse cx="308" cy="48" rx="9" ry="6" fill="#5BC8F0" opacity="0.85"/>
-        <polygon points="317,48 326,43 326,53" fill="#5BC8F0" opacity="0.85"/>
-        <circle cx="301" cy="45" r="1.5" fill="#0A1A2A"/>
-        <!-- Tiny fish 3 -->
-        <ellipse cx="160" cy="38" rx="6" ry="4" fill="#FF9040" opacity="0.7"/>
-        <polygon points="166,38 173,35 173,41" fill="#FF9040" opacity="0.7"/>
-        <!-- Bubbles -->
-        <circle cx="56" cy="96" r="3.5" fill="white" fill-opacity="0.22" stroke="white" stroke-width="0.5" stroke-opacity="0.2"/>
-        <circle cx="50" cy="78" r="2.5" fill="white" fill-opacity="0.17"/>
-        <circle cx="58" cy="60" r="4" fill="white" fill-opacity="0.12"/>
-        <circle cx="300" cy="32" r="2.5" fill="white" fill-opacity="0.2"/>
-        <circle cx="305" cy="20" r="1.8" fill="white" fill-opacity="0.15"/>
-        <circle cx="170" cy="24" r="2" fill="white" fill-opacity="0.15"/>
+        <!-- Base -->
+        <rect width="400" height="180" fill="url(#cvBg)"/>
+        <!-- Ambient light from top -->
+        <rect width="400" height="180" fill="url(#cvGlow)"/>
+        <!-- Flowing wave layers -->
+        <path d="M-10,145 C60,110 130,130 200,108 C270,86 340,115 410,95 L410,185 L-10,185 Z" fill="url(#cvWave1)" opacity="0.8"/>
+        <path d="M-10,158 C80,130 160,148 240,132 C310,118 370,138 410,125 L410,185 L-10,185 Z" fill="#031828" opacity="0.7"/>
+        <!-- Mid depth band -->
+        <path d="M-10,95 C70,75 150,95 230,80 C310,65 370,82 410,70 C410,90 380,102 310,115 C240,128 160,110 80,122 C40,128 10,120 -10,115 Z" fill="url(#cvWave2)" opacity="0.5"/>
+        <!-- Subtle light shafts -->
+        <path d="M100,0 L118,0 L80,185 L62,185 Z" fill="white" opacity="0.025"/>
+        <path d="M220,0 L234,0 L204,185 L190,185 Z" fill="white" opacity="0.02"/>
+        <path d="M330,0 L342,0 L316,185 L304,185 Z" fill="white" opacity="0.018"/>
+        <!-- Surface shimmer dots -->
+        <circle cx="95" cy="18" r="1.5" fill="white" opacity="0.18"/>
+        <circle cx="200" cy="12" r="1" fill="white" opacity="0.14"/>
+        <circle cx="310" cy="22" r="1.5" fill="white" opacity="0.16"/>
+        <circle cx="155" cy="8" r="1" fill="white" opacity="0.12"/>
+        <circle cx="265" cy="16" r="1" fill="white" opacity="0.12"/>
       </svg>
       <div class="hero-card-cover-overlay"></div>
       <!-- Org type badge -->
@@ -598,113 +558,17 @@ footer {
         </div>
       </div>
 
-      <p class="hero-card-bio">Restoring coral reefs across 14 countries. 2.3M sq ft of reef restored since 2018. Every contribution funds active restoration in the field.</p>
+      <!-- Bio placeholder bars -->
+      <div style="margin-bottom:16px;">
+        <div style="height:8px;background:#EEEEF4;border-radius:4px;margin-bottom:7px;"></div>
+        <div style="height:8px;background:#EEEEF4;border-radius:4px;width:72%;"></div>
+      </div>
 
-      <!-- Gallery strip — illustrated -->
+      <!-- Gallery strip — grey placeholders -->
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;border-radius:10px;overflow:hidden;margin-bottom:16px;">
-        <!-- Cell 1: branching coral garden -->
-        <div style="aspect-ratio:1;overflow:hidden;background:#001830;">
-          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-            <defs>
-              <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#003A60"/>
-                <stop offset="100%" stop-color="#001220"/>
-              </linearGradient>
-            </defs>
-            <rect width="100" height="100" fill="url(#g1)"/>
-            <polygon points="46,0 54,0 60,100 40,100" fill="white" fill-opacity="0.03"/>
-            <!-- Orange branching coral -->
-            <line x1="28" y1="100" x2="28" y2="58" stroke="#FF6B35" stroke-width="4" stroke-linecap="round"/>
-            <line x1="28" y1="72" x2="12" y2="44" stroke="#FF6B35" stroke-width="3" stroke-linecap="round"/>
-            <line x1="28" y1="64" x2="46" y2="40" stroke="#FF6B35" stroke-width="3" stroke-linecap="round"/>
-            <line x1="12" y1="44" x2="4" y2="24" stroke="#FF6B35" stroke-width="2" stroke-linecap="round"/>
-            <line x1="12" y1="44" x2="22" y2="26" stroke="#FF6B35" stroke-width="2" stroke-linecap="round"/>
-            <circle cx="4" cy="24" r="4" fill="#FFAD80"/>
-            <circle cx="22" cy="26" r="4" fill="#FFAD80"/>
-            <circle cx="46" cy="40" r="4.5" fill="#FFAD80"/>
-            <circle cx="28" cy="58" r="5" fill="#FFAD80"/>
-            <!-- Pink fan coral right -->
-            <path d="M72,100 Q58,72 66,46 Q72,34 78,46 Q86,72 72,100" fill="#E055A0" opacity="0.6"/>
-            <!-- Teal small coral -->
-            <line x1="90" y1="100" x2="90" y2="68" stroke="#2AC8A0" stroke-width="3" stroke-linecap="round"/>
-            <line x1="90" y1="78" x2="80" y2="60" stroke="#2AC8A0" stroke-width="2" stroke-linecap="round"/>
-            <line x1="90" y1="78" x2="100" y2="62" stroke="#2AC8A0" stroke-width="2" stroke-linecap="round"/>
-            <!-- Sea floor -->
-            <ellipse cx="50" cy="104" rx="62" ry="10" fill="#000E1C"/>
-            <!-- Bubbles -->
-            <circle cx="18" cy="32" r="2" fill="white" fill-opacity="0.22"/>
-            <circle cx="21" cy="19" r="1.4" fill="white" fill-opacity="0.16"/>
-          </svg>
-        </div>
-        <!-- Cell 2: sea turtle -->
-        <div style="aspect-ratio:1;overflow:hidden;background:#003050;">
-          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-            <defs>
-              <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#005080"/>
-                <stop offset="100%" stop-color="#001E38"/>
-              </linearGradient>
-            </defs>
-            <rect width="100" height="100" fill="url(#g2)"/>
-            <polygon points="54,0 64,0 72,100 52,100" fill="white" fill-opacity="0.04"/>
-            <!-- Shell -->
-            <ellipse cx="50" cy="52" rx="24" ry="18" fill="#2D8B4E"/>
-            <!-- Shell hexagon pattern -->
-            <ellipse cx="50" cy="52" rx="17" ry="12" fill="none" stroke="#1A6334" stroke-width="1.5"/>
-            <line x1="50" y1="40" x2="50" y2="64" stroke="#1A6334" stroke-width="1" opacity="0.7"/>
-            <line x1="37" y1="46" x2="63" y2="58" stroke="#1A6334" stroke-width="1" opacity="0.7"/>
-            <line x1="37" y1="58" x2="63" y2="46" stroke="#1A6334" stroke-width="1" opacity="0.7"/>
-            <!-- Head -->
-            <ellipse cx="74" cy="50" rx="9" ry="7" fill="#38A860"/>
-            <circle cx="80" cy="47" r="2.5" fill="#080E08"/>
-            <circle cx="81" cy="46.5" r="0.9" fill="white"/>
-            <!-- Flippers -->
-            <path d="M38,40 Q22,30 14,35 Q20,46 38,48 Z" fill="#2D8B4E"/>
-            <path d="M38,62 Q22,72 14,67 Q20,56 38,54 Z" fill="#2D8B4E"/>
-            <path d="M62,40 Q74,28 82,34 Q76,44 62,46 Z" fill="#2D8B4E" opacity="0.7"/>
-            <path d="M62,62 Q74,74 82,68 Q76,58 62,56 Z" fill="#2D8B4E" opacity="0.7"/>
-            <!-- Bubbles -->
-            <circle cx="86" cy="34" r="2.5" fill="white" fill-opacity="0.28"/>
-            <circle cx="91" cy="23" r="1.8" fill="white" fill-opacity="0.2"/>
-            <circle cx="89" cy="13" r="1.2" fill="white" fill-opacity="0.15"/>
-          </svg>
-        </div>
-        <!-- Cell 3: clownfish + anemone -->
-        <div style="aspect-ratio:1;overflow:hidden;background:#001A32;">
-          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-            <defs>
-              <linearGradient id="g3" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#003A5A"/>
-                <stop offset="100%" stop-color="#000E1C"/>
-              </linearGradient>
-            </defs>
-            <rect width="100" height="100" fill="url(#g3)"/>
-            <polygon points="38,0 48,0 56,100 36,100" fill="white" fill-opacity="0.04"/>
-            <!-- Anemone base -->
-            <ellipse cx="42" cy="96" rx="28" ry="7" fill="#000A14"/>
-            <!-- Anemone tentacles -->
-            <path d="M28,90 Q24,76 30,68" stroke="#FF4488" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-            <path d="M35,90 Q31,74 36,66" stroke="#FF5599" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-            <path d="M42,90 Q42,74 46,65" stroke="#FF4488" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-            <path d="M50,90 Q53,75 56,68" stroke="#FF5599" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-            <!-- Large clownfish -->
-            <ellipse cx="44" cy="48" rx="16" ry="11" fill="#FF6800"/>
-            <polygon points="60,48 72,41 72,55" fill="#FF6800"/>
-            <line x1="47" y1="38" x2="47" y2="58" stroke="white" stroke-width="2.5"/>
-            <line x1="53" y1="37" x2="53" y2="59" stroke="white" stroke-width="2.5"/>
-            <circle cx="32" cy="44" r="3" fill="#080400"/>
-            <circle cx="31" cy="43" r="1" fill="white"/>
-            <!-- Small clownfish upper -->
-            <ellipse cx="72" cy="26" rx="10" ry="7" fill="#FF6800"/>
-            <polygon points="82,26 91,22 91,30" fill="#FF6800"/>
-            <line x1="74" y1="20" x2="74" y2="32" stroke="white" stroke-width="1.8"/>
-            <circle cx="65" cy="23" r="2" fill="#080400"/>
-            <!-- Bubbles -->
-            <circle cx="18" cy="58" r="2" fill="white" fill-opacity="0.24"/>
-            <circle cx="16" cy="44" r="1.5" fill="white" fill-opacity="0.18"/>
-            <circle cx="20" cy="32" r="1" fill="white" fill-opacity="0.14"/>
-          </svg>
-        </div>
+        <div style="aspect-ratio:1;background:#E4E4EE;"></div>
+        <div style="aspect-ratio:1;background:#DCDCE8;"></div>
+        <div style="aspect-ratio:1;background:#E4E4EE;"></div>
       </div>
 
       <!-- Impact stat strip -->
