@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contribute — Let your fans support your work</title>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --amber:    #F5A623;
+  --amber-dk: #D4850A;
+  --amber-lt: #FEF3C7;
+  --yellow:   #F5C21A;
+  --black:    #18140A;
+  --text:     #3A3218;
+  --muted:    #6B5E3A;
+  --lite:     #BEB08A;
+  --border:   #EEE5CC;
+  --bg:       #FFFCF5;
+  --white:    #FFFFFF;
+  --green:    #059669;
+  --red:      #E8445A;
+}
+html { scroll-behavior: smooth; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+/* ── Nav ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  height: 64px; background: rgba(255,252,245,0.94);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 52px; gap: 36px;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 9px;
+  font-size: 17px; font-weight: 800; color: var(--black);
+  text-decoration: none; flex-shrink: 0;
+}
+.nav-logo-icon {
+  width: 30px; height: 30px; border-radius: 10px;
+  background: var(--yellow); display: flex; align-items: center; justify-content: center;
+  border: 2px solid var(--black);
+}
+.nav-links { display: flex; gap: 26px; flex: 1; }
+.nav-links a { font-size: 14px; color: var(--muted); text-decoration: none; font-weight: 500; }
+.nav-links a:hover { color: var(--black); }
+.nav-cta { display: flex; align-items: center; gap: 10px; }
+.btn-ghost { height: 36px; padding: 0 18px; background: transparent; color: var(--text); border: 1.5px solid var(--border); border-radius: 18px; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; display: flex; align-items: center; }
+.btn-amber { height: 36px; padding: 0 20px; background: var(--yellow); color: var(--black); border: 2px solid var(--black); border-radius: 18px; font-size: 13px; font-weight: 800; cursor: pointer; text-decoration: none; display: flex; align-items: center; box-shadow: 2px 2px 0 var(--black); transition: transform 0.1s, box-shadow 0.1s; }
+.btn-amber:hover { transform: translate(-1px,-1px); box-shadow: 3px 3px 0 var(--black); }
+
+/* ── Hero ── */
+.hero {
+  max-width: 1080px; margin: 0 auto;
+  padding: 80px 52px 72px;
+  display: grid; grid-template-columns: 1fr 360px; gap: 80px; align-items: center;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--amber-lt); color: var(--amber-dk);
+  border: 1.5px solid #F5C21A; border-radius: 20px; padding: 5px 14px;
+  font-size: 12px; font-weight: 700; margin-bottom: 22px;
+}
+.hero h1 { font-size: 54px; font-weight: 900; line-height: 1.08; letter-spacing: -1.8px; color: var(--black); margin-bottom: 20px; }
+.hero h1 em { font-style: normal; -webkit-text-stroke: 2px var(--black); color: var(--yellow); }
+.hero-sub { font-size: 17px; color: var(--muted); line-height: 1.7; margin-bottom: 32px; max-width: 440px; }
+.hero-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.btn-hero {
+  height: 52px; padding: 0 30px;
+  background: var(--yellow); color: var(--black);
+  border: 2.5px solid var(--black); border-radius: 26px;
+  font-size: 15px; font-weight: 800; cursor: pointer; text-decoration: none;
+  display: flex; align-items: center; gap: 8px;
+  box-shadow: 3px 3px 0 var(--black);
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+.btn-hero:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--black); }
+.btn-hero-ghost { height: 52px; padding: 0 26px; background: transparent; color: var(--text); border: 1.5px solid var(--border); border-radius: 26px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+.hero-trust { margin-top: 24px; font-size: 13px; color: var(--lite); display: flex; align-items: center; gap: 10px; }
+.hero-trust span { color: var(--muted); font-weight: 500; }
+.sep { width: 3px; height: 3px; border-radius: 50%; background: var(--border); }
+
+/* ── Widget ── */
+.widget-outer { position: relative; padding: 32px 28px; }
+
+/* Floating chips */
+.chip {
+  position: absolute; background: var(--white);
+  border: 1.5px solid var(--border); border-radius: 20px;
+  padding: 10px 16px; font-size: 12px; font-weight: 700; color: var(--black);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  display: flex; align-items: center; gap: 8px; white-space: nowrap;
+  z-index: 2;
+}
+.chip-stat {
+  position: absolute; background: var(--white);
+  border: 1.5px solid var(--border); border-radius: 16px;
+  padding: 12px 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  z-index: 2;
+}
+.chip-stat-val { font-size: 20px; font-weight: 900; color: var(--black); }
+.chip-stat-lbl { font-size: 10px; color: var(--lite); font-weight: 600; margin-top: 1px; }
+
+.widget-card {
+  background: var(--white); border-radius: 28px;
+  border: 2.5px solid var(--black);
+  box-shadow: 5px 5px 0 var(--black);
+  overflow: hidden; position: relative; z-index: 1;
+}
+
+/* Sticker illustration cover */
+.widget-cover {
+  height: 200px; background: var(--yellow);
+  position: relative; overflow: hidden;
+  border-bottom: 2.5px solid var(--black);
+  display: flex; align-items: center; justify-content: center;
+}
+
+.widget-body { padding: 20px 22px 24px; }
+.widget-creator { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.widget-av {
+  width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+  background: linear-gradient(135deg, #FF8C42, var(--amber));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 900; color: white;
+  border: 2px solid var(--black);
+}
+.widget-name { font-size: 15px; font-weight: 800; color: var(--black); }
+.widget-handle { font-size: 11px; color: var(--lite); }
+
+.widget-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--lite); margin-bottom: 8px; }
+.widget-amounts { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; margin-bottom: 12px; }
+.widget-amt {
+  border: 2px solid var(--border); border-radius: 14px;
+  padding: 10px 4px; text-align: center; cursor: pointer;
+  transition: border-color 0.12s, background 0.12s, box-shadow 0.12s;
+}
+.widget-amt:hover { border-color: var(--black); }
+.widget-amt.sel { border-color: var(--black); background: var(--amber-lt); box-shadow: 2px 2px 0 var(--black); }
+.widget-amt-val { font-size: 15px; font-weight: 800; color: var(--black); }
+
+.widget-btn {
+  width: 100%; height: 46px;
+  background: var(--yellow); color: var(--black);
+  border: 2px solid var(--black); border-radius: 23px;
+  font-size: 14px; font-weight: 800; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  box-shadow: 3px 3px 0 var(--black);
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+.widget-btn:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--black); }
+
+.widget-supporters {
+  display: flex; align-items: center; gap: 8px; margin-top: 12px;
+  font-size: 12px; color: var(--muted); font-weight: 500;
+}
+.av-stack { display: flex; }
+.av-mini {
+  width: 22px; height: 22px; border-radius: 50%; border: 2px solid white; margin-left: -6px;
+  display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 800; color: white;
+}
+.av-mini:first-child { margin-left: 0; }
+
+/* Toast */
+.widget-toast {
+  position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
+  background: var(--black); color: white; border-radius: 20px;
+  padding: 8px 16px; font-size: 12px; font-weight: 600; white-space: nowrap;
+  display: flex; align-items: center; gap: 6px;
+  animation: toastIn 0.4s ease both;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  z-index: 10;
+}
+@keyframes toastIn { from { opacity:0; transform:translateX(-50%) translateY(8px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
+
+/* ── Strip ── */
+.strip {
+  background: var(--black); padding: 20px 52px;
+  display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap;
+}
+.strip-label { font-size: 13px; color: rgba(255,255,255,0.45); font-weight: 500; white-space: nowrap; }
+.strip-pill { padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 700; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.15); }
+
+/* ── Why ── */
+.why-section { max-width: 1080px; margin: 0 auto; padding: 96px 52px; }
+.eyebrow { font-size: 12px; font-weight: 700; color: var(--amber-dk); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+.section-title { font-size: 40px; font-weight: 900; letter-spacing: -1px; color: var(--black); margin-bottom: 14px; line-height: 1.15; }
+.section-sub { font-size: 16px; color: var(--muted); max-width: 500px; line-height: 1.7; margin-bottom: 52px; }
+.why-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+.why-card {
+  background: var(--white); border-radius: 24px; padding: 30px;
+  border: 2px solid var(--border);
+}
+.why-card:hover { border-color: var(--black); box-shadow: 4px 4px 0 var(--black); transform: translate(-2px,-2px); transition: all 0.15s; }
+.why-icon { font-size: 32px; margin-bottom: 16px; }
+.why-name { font-size: 19px; font-weight: 800; color: var(--black); margin-bottom: 8px; }
+.why-desc { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+/* ── Steps ── */
+.steps-section { background: var(--amber-lt); padding: 80px 52px; }
+.steps-inner { max-width: 1080px; margin: 0 auto; }
+.steps-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; margin-top: 48px; }
+.step-card { background: var(--white); border-radius: 24px; padding: 30px; border: 2px solid var(--black); box-shadow: 4px 4px 0 var(--black); }
+.step-num { width: 38px; height: 38px; border-radius: 12px; background: var(--yellow); color: var(--black); border: 2px solid var(--black); font-size: 16px; font-weight: 900; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; box-shadow: 2px 2px 0 var(--black); }
+.step-name { font-size: 18px; font-weight: 800; color: var(--black); margin-bottom: 8px; }
+.step-desc { font-size: 14px; color: var(--muted); line-height: 1.7; }
+.step-tag { display: inline-block; margin-top: 14px; font-size: 11px; font-weight: 700; color: var(--amber-dk); background: var(--amber-lt); border-radius: 12px; padding: 3px 10px; }
+
+/* ── Creator showcase ── */
+.showcase-section { max-width: 1080px; margin: 0 auto; padding: 96px 52px; }
+.creator-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-top: 48px; }
+.creator-card {
+  background: var(--white); border-radius: 20px; padding: 20px;
+  border: 2px solid var(--border); display: flex; align-items: center; gap: 12px;
+  cursor: pointer; transition: all 0.12s;
+}
+.creator-card:hover { border-color: var(--black); box-shadow: 3px 3px 0 var(--black); transform: translate(-1px,-1px); }
+.creator-av { width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; color: white; border: 2px solid var(--black); }
+.creator-name { font-size: 14px; font-weight: 700; color: var(--black); }
+.creator-type { font-size: 11px; color: var(--lite); margin-top: 1px; }
+.creator-stat { font-size: 12px; color: var(--green); font-weight: 700; margin-top: 4px; }
+
+/* ── Testimonials ── */
+.proof-section { background: var(--black); padding: 80px 52px; }
+.proof-inner { max-width: 1080px; margin: 0 auto; }
+.proof-eyebrow { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.35); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+.proof-title { font-size: 38px; font-weight: 900; color: white; letter-spacing: -0.8px; margin-bottom: 48px; }
+.proof-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+.proof-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 26px; }
+.proof-stars { color: var(--yellow); font-size: 15px; margin-bottom: 14px; }
+.proof-quote { font-size: 15px; color: rgba(255,255,255,0.8); line-height: 1.7; margin-bottom: 20px; }
+.proof-author { display: flex; align-items: center; gap: 10px; }
+.proof-av { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; color: white; }
+.proof-name { font-size: 13px; font-weight: 700; color: white; }
+.proof-role { font-size: 11px; color: rgba(255,255,255,0.35); }
+
+/* ── CTA ── */
+.cta-section { background: var(--yellow); padding: 96px 52px; text-align: center; border-top: 3px solid var(--black); border-bottom: 3px solid var(--black); }
+.cta-title { font-size: 48px; font-weight: 900; color: var(--black); letter-spacing: -1.5px; line-height: 1.08; margin-bottom: 16px; }
+.cta-sub { font-size: 18px; color: var(--muted); line-height: 1.6; margin-bottom: 36px; }
+.btn-cta { height: 58px; padding: 0 40px; background: var(--black); color: white; border: 2.5px solid var(--black); border-radius: 29px; font-size: 16px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; text-decoration: none; box-shadow: 4px 4px 0 rgba(0,0,0,0.25); transition: transform 0.1s, box-shadow 0.1s; }
+.btn-cta:hover { transform: translate(-1px,-1px); box-shadow: 5px 5px 0 rgba(0,0,0,0.2); }
+.cta-note { margin-top: 16px; font-size: 13px; color: var(--muted); }
+
+/* ── Footer ── */
+footer { background: var(--white); padding: 40px 52px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
+.footer-logo { font-size: 15px; font-weight: 800; color: var(--black); display: flex; align-items: center; gap: 8px; }
+.footer-links { display: flex; gap: 22px; }
+.footer-links a { font-size: 13px; color: var(--lite); text-decoration: none; }
+.footer-copy { font-size: 12px; color: var(--lite); }
+
+@media (max-width: 900px) {
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .hero { grid-template-columns: 1fr; padding: 56px 20px; gap: 48px; }
+  .hero h1 { font-size: 38px; }
+  .widget-outer { padding: 16px 8px; }
+  .chip, .chip-stat { display: none; }
+  .why-section, .showcase-section { padding: 64px 20px; }
+  .why-grid, .steps-grid, .creator-grid, .proof-grid { grid-template-columns: 1fr; }
+  .steps-section, .proof-section, .cta-section { padding: 64px 20px; }
+  footer { padding: 28px 20px; flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <a class="nav-logo" href="contribute-landing.html">
+    <div class="nav-logo-icon">
+      <i data-lucide="heart-handshake" style="width:14px;height:14px;stroke:var(--black);fill:none;"></i>
+    </div>
+    Contribute
+  </a>
+  <div class="nav-links">
+    <a href="#how">How it works</a>
+    <a href="#features">Features</a>
+    <a href="#creators">Creators</a>
+  </div>
+  <div class="nav-cta">
+    <a class="btn-ghost" href="#">Log in</a>
+    <a class="btn-amber" href="un-artists-onboarding.html">Start free →</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div>
+    <div class="hero-eyebrow">
+      💛 Loved by 50,000+ creators worldwide
+    </div>
+    <h1>Let your fans<br>fuel your <em>passion</em></h1>
+    <p class="hero-sub">The simplest way for creators, artists, and cause-makers to receive support from the people who love their work — no tech skills needed.</p>
+    <div class="hero-actions">
+      <a class="btn-hero" href="un-artists-onboarding.html">
+        Create your page
+        <i data-lucide="arrow-right" style="width:15px;height:15px;"></i>
+      </a>
+      <a class="btn-hero-ghost" href="#how">See how it works</a>
+    </div>
+    <div class="hero-trust">
+      <i data-lucide="check" style="width:13px;height:13px;stroke:var(--amber-dk);flex-shrink:0;"></i>
+      <span>Free to start</span>
+      <div class="sep"></div>
+      <span>No monthly fees</span>
+      <div class="sep"></div>
+      <span>Live in 2 minutes</span>
+    </div>
+  </div>
+
+  <!-- Widget with floating chips -->
+  <div class="widget-outer">
+    <!-- Chip: supporters (top-left) -->
+    <div class="chip" style="top:24px; left:-8px;">
+      <div style="display:flex;">
+        <div class="av-mini" style="background:#8B5CF6;margin-left:0;">T</div>
+        <div class="av-mini" style="background:#EC4899;">S</div>
+        <div class="av-mini" style="background:#0891B2;">J</div>
+      </div>
+      342 supporters
+    </div>
+    <!-- Chip stat: raised (bottom-left) -->
+    <div class="chip-stat" style="bottom:96px; left:-8px;">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px;">
+        <i data-lucide="landmark" style="width:12px;height:12px;stroke:var(--lite);"></i>
+        <span style="font-size:10px;color:var(--lite);font-weight:600;">RAISED</span>
+      </div>
+      <div class="chip-stat-val">$1,240</div>
+      <div class="chip-stat-lbl">this month</div>
+    </div>
+    <!-- Chip: payout (top-right) -->
+    <div class="chip" style="top:44px; right:-8px;">
+      ⚡ Instant payouts
+    </div>
+    <!-- Chip: rating (bottom-right) -->
+    <div class="chip-stat" style="bottom:80px; right:-8px; text-align:center;">
+      <div style="font-size:18px;margin-bottom:2px;">★★★★★</div>
+      <div style="font-size:10px;color:var(--lite);font-weight:600;">4.9 · 1,200+ reviews</div>
+    </div>
+
+    <!-- Widget card -->
+    <div class="widget-card">
+      <!-- Sticker illustration cover -->
+      <div class="widget-cover">
+        <!-- SVG illustration: bold sticker-style heart -->
+        <svg viewBox="0 0 360 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;" preserveAspectRatio="xMidYMid slice">
+
+          <!-- Sparkle — large, top-left -->
+          <path d="M 62,42 L 65,30 L 68,42 L 80,45 L 68,48 L 65,60 L 62,48 L 50,45 Z" fill="white" opacity="0.9"/>
+          <!-- Sparkle — medium, top-right -->
+          <path d="M 288,26 L 290,18 L 292,26 L 300,28 L 292,30 L 290,38 L 288,30 L 280,28 Z" fill="white" opacity="0.85"/>
+          <!-- Sparkle — small, right -->
+          <path d="M 330,85 L 331.5,79 L 333,85 L 339,86.5 L 333,88 L 331.5,94 L 330,88 L 324,86.5 Z" fill="white" opacity="0.7"/>
+          <!-- Sparkle — small, left -->
+          <path d="M 28,118 L 29.5,112 L 31,118 L 37,119.5 L 31,121 L 29.5,127 L 28,121 L 22,119.5 Z" fill="white" opacity="0.65"/>
+
+          <!-- Small floating heart — left -->
+          <path d="M 72,112 C 72,107 68.5,99.5 64,99.5 C 59,99.5 56,103.5 56,107 C 56,114 72,124 72,124 C 72,124 88,114 88,107 C 88,103.5 85,99.5 80,99.5 C 75.5,99.5 72,107 72,112 Z"
+                fill="#E8445A" stroke="#1A0800" stroke-width="2.5" stroke-linejoin="round"/>
+
+          <!-- Small floating heart — right -->
+          <path d="M 292,76 C 292,71 288.5,63.5 284,63.5 C 279,63.5 276,67.5 276,71 C 276,78 292,88 292,88 C 292,88 308,78 308,71 C 308,67.5 305,63.5 300,63.5 C 295.5,63.5 292,71 292,76 Z"
+                fill="#E8445A" stroke="#1A0800" stroke-width="2" stroke-linejoin="round" opacity="0.8"/>
+
+          <!-- MAIN HEART — shadow layer -->
+          <path d="M 180,143 C 145,122 108,107 108,83 C 108,60 127,47 148,47 C 162,47 174,54 180,65 C 186,54 198,47 212,47 C 233,47 252,60 252,83 C 252,107 215,122 180,143 Z"
+                fill="#A01828" opacity="0.25" transform="translate(5,6)"/>
+
+          <!-- MAIN HEART — body with thick outline -->
+          <path d="M 180,143 C 145,122 108,107 108,83 C 108,60 127,47 148,47 C 162,47 174,54 180,65 C 186,54 198,47 212,47 C 233,47 252,60 252,83 C 252,107 215,122 180,143 Z"
+                fill="#E8445A" stroke="#1A0800" stroke-width="5.5" stroke-linejoin="round"/>
+
+          <!-- HEART — inner highlight/shine -->
+          <path d="M 138,57 C 145,51 157,47 165,53 C 157,63 147,71 140,76 C 133,70 132,63 138,57 Z"
+                fill="white" opacity="0.38"/>
+
+          <!-- HEART — center sparkle -->
+          <path d="M 180,76 L 182,68 L 184,76 L 192,78 L 184,80 L 182,88 L 180,80 L 172,78 Z"
+                fill="white" opacity="0.92"/>
+        </svg>
+
+        <!-- Badge top-left (like .PDF in screenshot) -->
+        <div style="position:absolute;top:14px;left:14px;background:white;border:2px solid var(--black);border-radius:10px;padding:5px 12px;font-size:11px;font-weight:800;color:var(--black);box-shadow:2px 2px 0 var(--black);">
+          💛 Contribute
+        </div>
+      </div>
+
+      <!-- Widget body -->
+      <div class="widget-body">
+        <div class="widget-creator">
+          <div class="widget-av">MR</div>
+          <div>
+            <div class="widget-name">Maya Rivera</div>
+            <div class="widget-handle">@mayarivera · Illustrator</div>
+          </div>
+        </div>
+
+        <div class="widget-label">Support Maya's work</div>
+        <div class="widget-amounts">
+          <div class="widget-amt"><div class="widget-amt-val">$3</div></div>
+          <div class="widget-amt sel"><div class="widget-amt-val">$5</div></div>
+          <div class="widget-amt"><div class="widget-amt-val">$10</div></div>
+          <div class="widget-amt"><div class="widget-amt-val">✦</div></div>
+        </div>
+
+        <button class="widget-btn">
+          <i data-lucide="heart" style="width:14px;height:14px;fill:var(--black);stroke:none;flex-shrink:0;"></i>
+          Support Maya
+        </button>
+
+        <div class="widget-supporters">
+          <div class="av-stack">
+            <div class="av-mini" style="background:#8B5CF6;margin-left:0;">T</div>
+            <div class="av-mini" style="background:#EC4899;">S</div>
+            <div class="av-mini" style="background:#0891B2;">J</div>
+            <div class="av-mini" style="background:#059669;">M</div>
+          </div>
+          <span>Joined by <strong style="color:var(--black);">342 supporters</strong></span>
+        </div>
+      </div>
+
+      <!-- Toast notification -->
+      <div class="widget-toast" id="toast">
+        ❤️ Alex just supported · $5
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Creator strip -->
+<div class="strip">
+  <span class="strip-label">Creators using Contribute:</span>
+  <span class="strip-pill">🎨 Artists</span>
+  <span class="strip-pill">🎓 Educators</span>
+  <span class="strip-pill">🎵 Musicians</span>
+  <span class="strip-pill">✍️ Writers</span>
+  <span class="strip-pill">🎙️ Podcasters</span>
+  <span class="strip-pill">🌊 Activists</span>
+  <span class="strip-pill">📸 Photographers</span>
+</div>
+
+<!-- Why section -->
+<div class="why-section" id="features">
+  <div class="eyebrow">Why Contribute</div>
+  <h2 class="section-title">Everything you need,<br>nothing you don't</h2>
+  <p class="section-sub">Three tools built for creators who want to fund their work without the complexity.</p>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-icon">💛</div>
+      <div class="why-name">Instant contributions</div>
+      <div class="why-desc">One-time or monthly support, ready in seconds. Supporters pay with any card or Apple Pay — no account needed on their end.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🤖</div>
+      <div class="why-name">Your AI twin</div>
+      <div class="why-desc">AiJiv answers your fans 24/7 in your own voice. Turn every question into a deeper connection — and a reason to contribute more.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🔒</div>
+      <div class="why-name">Exclusive content</div>
+      <div class="why-desc">Reward your biggest supporters with members-only posts, early access, or behind-the-scenes content they can't find anywhere else.</div>
+    </div>
+  </div>
+</div>
+
+<!-- How it works -->
+<div class="steps-section" id="how">
+  <div class="steps-inner">
+    <div class="eyebrow">How it works</div>
+    <h2 class="section-title">Live in under 5 minutes</h2>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-name">Create your page</div>
+        <div class="step-desc">Add your name, photo, a short bio, and your cause. We'll guide you through every step — no tech skills needed.</div>
+        <div class="step-tag">⏱ ~2 minutes</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-name">Share your link</div>
+        <div class="step-desc">Drop your Contribute link in your bio, newsletter, or anywhere your audience hangs out. One link does everything.</div>
+        <div class="step-tag">📣 Anywhere you post</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-name">Receive support</div>
+        <div class="step-desc">Supporters contribute instantly — no friction, no fees from us. Funds land directly in your bank account.</div>
+        <div class="step-tag">💰 Instant payouts</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Creator showcase -->
+<div class="showcase-section" id="creators">
+  <div class="eyebrow">Creator stories</div>
+  <h2 class="section-title">From every kind of creator</h2>
+  <p class="section-sub">Illustrators, educators, activists, musicians — Contribute works for anyone with something to share and an audience who cares.</p>
+  <div class="creator-grid">
+    <div class="creator-card">
+      <div class="creator-av" style="background:#E8445A;">MR</div>
+      <div>
+        <div class="creator-name">Maya Rivera</div>
+        <div class="creator-type">Illustrator · Mexico City</div>
+        <div class="creator-stat">342 supporters · $1.2K/mo</div>
+      </div>
+    </div>
+    <div class="creator-card">
+      <div class="creator-av" style="background:#6366F1;">KT</div>
+      <div>
+        <div class="creator-name">Kai Thompson</div>
+        <div class="creator-type">Documentary filmmaker</div>
+        <div class="creator-stat">180 supporters · $820/mo</div>
+      </div>
+    </div>
+    <div class="creator-card">
+      <div class="creator-av" style="background:#0891B2;">RF</div>
+      <div>
+        <div class="creator-name">The Reef Fund</div>
+        <div class="creator-type">Ocean conservation · Sydney</div>
+        <div class="creator-stat">8,400 supporters · $12K/mo</div>
+      </div>
+    </div>
+    <div class="creator-card">
+      <div class="creator-av" style="background:#7C3AED;">PS</div>
+      <div>
+        <div class="creator-name">Priya Sharma</div>
+        <div class="creator-type">Science educator</div>
+        <div class="creator-stat">560 supporters · $2.1K/mo</div>
+      </div>
+    </div>
+    <div class="creator-card">
+      <div class="creator-av" style="background:#D97706;">AF</div>
+      <div>
+        <div class="creator-name">André Fernandes</div>
+        <div class="creator-type">Documentary photographer</div>
+        <div class="creator-stat">210 supporters · $780/mo</div>
+      </div>
+    </div>
+    <div class="creator-card">
+      <div class="creator-av" style="background:#059669;">LP</div>
+      <div>
+        <div class="creator-name">Luna Park</div>
+        <div class="creator-type">Indie musician · Seoul</div>
+        <div class="creator-stat">95 supporters · $340/mo</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Testimonials -->
+<div class="proof-section">
+  <div class="proof-inner">
+    <div class="proof-eyebrow">What creators say</div>
+    <h2 class="proof-title">Real creators, real impact</h2>
+    <div class="proof-grid">
+      <div class="proof-card">
+        <div class="proof-stars">★★★★★</div>
+        <p class="proof-quote">"I was nervous about asking for support, but my first month I raised $800. It genuinely changed how I think about my work — I create more freely now."</p>
+        <div class="proof-author">
+          <div class="proof-av" style="background:#E8445A;">MR</div>
+          <div>
+            <div class="proof-name">Maya Rivera</div>
+            <div class="proof-role">Illustrator</div>
+          </div>
+        </div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-stars">★★★★★</div>
+        <p class="proof-quote">"My supporters feel like co-creators now. AiJiv handles 90% of questions and they love talking to it. Setup took maybe 20 minutes."</p>
+        <div class="proof-author">
+          <div class="proof-av" style="background:#7C3AED;">PS</div>
+          <div>
+            <div class="proof-name">Priya Sharma</div>
+            <div class="proof-role">Science educator</div>
+          </div>
+        </div>
+      </div>
+      <div class="proof-card">
+        <div class="proof-stars">★★★★★</div>
+        <p class="proof-quote">"As a nonprofit, Contribute made it frictionless to accept donations without the overhead. We raised $40K last year and redirected every dollar to restoration."</p>
+        <div class="proof-author">
+          <div class="proof-av" style="background:#0891B2;">RF</div>
+          <div>
+            <div class="proof-name">The Reef Fund</div>
+            <div class="proof-role">Ocean conservation</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div style="font-size:52px;margin-bottom:16px;">💛</div>
+  <h2 class="cta-title">Your supporters<br>are waiting</h2>
+  <p class="cta-sub">Create your Contribute page in 2 minutes — free, forever.</p>
+  <a class="btn-cta" href="un-artists-onboarding.html">
+    Get started for free
+    <i data-lucide="arrow-right" style="width:16px;height:16px;stroke:white;"></i>
+  </a>
+  <p class="cta-note">No credit card · No monthly fees · Cancel anytime</p>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-logo">
+    <div style="width:26px;height:26px;border-radius:8px;background:var(--yellow);border:2px solid var(--black);display:flex;align-items:center;justify-content:center;">
+      <i data-lucide="heart-handshake" style="width:12px;height:12px;stroke:var(--black);fill:none;"></i>
+    </div>
+    Contribute
+  </div>
+  <div class="footer-links">
+    <a href="#">Features</a>
+    <a href="#">Creators</a>
+    <a href="#">Pricing</a>
+    <a href="#">Blog</a>
+    <a href="#">Help</a>
+  </div>
+  <div class="footer-copy">© 2026 Contribute. Made with 💛</div>
+</footer>
+
+<script>
+lucide.createIcons();
+
+// Amount selection
+document.querySelectorAll('.widget-amt').forEach(el => {
+  el.addEventListener('click', function() {
+    document.querySelectorAll('.widget-amt').forEach(e => e.classList.remove('sel'));
+    this.classList.add('sel');
+  });
+});
+
+// Toast cycling
+const toasts = [
+  '❤️ Alex just supported · $5',
+  '💛 Priya contributed · $10',
+  '❤️ Sam sent support · $3',
+  '💛 Jordan backed you · $15',
+  '❤️ Mia just contributed · $5',
+];
+let ti = 1;
+const toast = document.getElementById('toast');
+if (toast) {
+  setInterval(() => {
+    toast.style.animation = 'none';
+    toast.offsetHeight; // reflow
+    toast.textContent = toasts[ti % toasts.length];
+    toast.style.animation = 'toastIn 0.4s ease both';
+    ti++;
+  }, 3500);
+}
+</script>
+</body>
+</html>
