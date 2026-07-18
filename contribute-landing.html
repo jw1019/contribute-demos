@@ -33,12 +33,20 @@ body {
 
 /* ── Nav ── */
 nav {
-  position: sticky; top: 0; z-index: 100;
-  height: 68px; background: rgba(255,255,255,0.92);
-  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center;
-  padding: 0 60px; gap: 40px;
+  position: sticky; top: 16px; z-index: 100;
+  padding: 0 40px;
+  background: transparent;
+  pointer-events: none;
+}
+.nav-inner {
+  max-width: 1080px; margin: 0 auto;
+  height: 56px; padding: 0 20px;
+  background: rgba(255,255,255,0.97);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-radius: 40px;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.09), 0 0 0 1px rgba(0,0,0,0.05);
+  display: flex; align-items: center; gap: 36px;
+  pointer-events: all;
 }
 .nav-logo {
   display: flex; align-items: center; gap: 10px;
@@ -73,9 +81,9 @@ nav {
 }
 .hero-bg {
   position: absolute; inset: 0;
-  background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Coral_reef_at_palmyra.jpg/1280px-Coral_reef_at_palmyra.jpg');
-  background-size: cover; background-position: center 55%;
-  opacity: 0.07;
+  background:
+    radial-gradient(ellipse 72% 90% at 105% 0%, rgba(91,79,207,0.13) 0%, transparent 60%),
+    radial-gradient(ellipse 55% 65% at -5% 100%, rgba(91,79,207,0.08) 0%, transparent 60%);
   pointer-events: none;
 }
 
@@ -94,11 +102,15 @@ nav {
   text-transform: uppercase; margin-bottom: 24px;
 }
 .hero h1 {
-  font-size: 56px; font-weight: 900;
-  line-height: 1.08; letter-spacing: -1.5px;
+  font-size: 66px; font-weight: 900;
+  line-height: 1.06; letter-spacing: -2px;
   color: var(--black); margin-bottom: 22px;
 }
-.hero h1 span { color: var(--indigo); }
+.hero h1 span {
+  color: var(--indigo);
+  background: linear-gradient(to bottom, transparent 58%, rgba(91,79,207,0.14) 58%);
+  padding: 0 3px;
+}
 .hero-sub {
   font-size: 18px; color: var(--gray-dk);
   line-height: 1.7; margin-bottom: 36px; max-width: 480px;
@@ -432,19 +444,23 @@ footer {
 
 <!-- Nav -->
 <nav>
-  <a class="nav-logo" href="#">
-    <i data-lucide="heart-handshake" style="width:22px;height:22px;stroke:var(--indigo);fill:none;flex-shrink:0;"></i>
-    Contribute
-  </a>
-  <div class="nav-links">
-    <a href="#features">Features</a>
-    <a href="#aijiv">AiJiv</a>
-    <a href="#how">How it works</a>
-    <a href="#testimonials">Stories</a>
-  </div>
-  <div class="nav-cta">
-    <a class="btn-ghost" href="#">Sign in</a>
-    <a class="btn-primary" href="un-artists-onboarding.html">Get Started</a>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#">
+      <div style="width:30px;height:30px;background:var(--indigo-lt);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <i data-lucide="heart-handshake" style="width:16px;height:16px;stroke:var(--indigo);fill:none;"></i>
+      </div>
+      Contribute
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#aijiv">AiJiv</a>
+      <a href="#how">How it works</a>
+      <a href="#testimonials">Stories</a>
+    </div>
+    <div class="nav-cta">
+      <a class="btn-ghost" href="#">Sign in</a>
+      <a class="btn-primary" href="un-artists-onboarding.html">Start my page</a>
+    </div>
   </div>
 </nav>
 
@@ -455,9 +471,9 @@ footer {
   <div>
     <div class="hero-badge">
       <i data-lucide="sparkles" style="width:13px;height:13px;stroke:var(--indigo);fill:none;"></i>
-      Turn your passion into a living
+      50,000+ creators · $2M+ raised
     </div>
-    <h1><span>Fund your work.</span></h1>
+    <h1>Fund your<br><span>work.</span></h1>
     <p class="hero-sub">Accept contributions, offer paid access, and let your audience connect with your AI — all from one simple page.</p>
     <div class="hero-actions">
       <a class="btn-hero" href="un-artists-onboarding.html">
