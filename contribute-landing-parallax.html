@@ -55,17 +55,17 @@ button{font:inherit;cursor:pointer}
 .hero-note{margin-top:22px;display:flex;gap:20px;font-size:12px;color:var(--muted-2)}
 .hero-note span{display:inline-flex;align-items:center;gap:6px}
 
-/* ── Parallax 3-column story ── */
+/* ── Parallax 2-column story ── */
 .parallax-wrapper{
   display:grid;
-  grid-template-columns:1fr 400px 1fr;
+  grid-template-columns:1fr 1fr;
   background:#fff;
   border-top:1px solid var(--line);
   border-bottom:1px solid var(--line);
 }
 
-/* Left + right text columns */
-.pcol-left, .pcol-right{ min-width:0; }
+/* Left text column */
+.pcol-left{ min-width:0; padding:0 72px 0 calc((100vw - 1180px)/2 + 24px); }
 
 /* Each step occupies one viewport height */
 .pstep{
@@ -73,7 +73,6 @@ button{font:inherit;cursor:pointer}
   display:flex;
   flex-direction:column;
   justify-content:center;
-  padding:0 56px;
   opacity:0;
   transform:translateY(24px);
   transition:opacity .55s ease, transform .55s ease;
@@ -82,13 +81,13 @@ button{font:inherit;cursor:pointer}
 .pstep-spacer{height:100vh}
 
 .step-num{font-size:11px;font-weight:800;letter-spacing:.12em;color:var(--indigo);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.step-num::before{content:'';display:block;width:20px;height:2px;background:var(--indigo)}
-.step-h2{font-size:38px;line-height:1.12;letter-spacing:-1.6px;font-weight:700;margin-bottom:14px}
-.step-p{font-size:15px;line-height:1.75;color:var(--muted)}
-.step-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
-.step-tag{height:28px;padding:0 11px;border-radius:999px;background:var(--indigo-soft);color:var(--indigo);font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:5px}
+.step-num::before{content:'';display:block;width:22px;height:2px;background:var(--indigo)}
+.step-h2{font-size:42px;line-height:1.1;letter-spacing:-1.8px;font-weight:700;margin-bottom:14px}
+.step-p{font-size:16px;line-height:1.75;color:var(--muted);max-width:440px}
+.step-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.step-tag{height:30px;padding:0 12px;border-radius:999px;background:var(--indigo-soft);color:var(--indigo);font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:5px}
 
-/* Center sticky column */
+/* Right sticky demo panel */
 .pcol-center{
   position:sticky;
   top:0;
@@ -97,22 +96,21 @@ button{font:inherit;cursor:pointer}
   align-items:center;
   justify-content:center;
   border-left:1px solid var(--line);
-  border-right:1px solid var(--line);
-  background:var(--page);
-  align-self:start; /* needed for sticky inside grid */
+  background:#fff;
+  align-self:start;
 }
 
-/* Card mockups — centered in sticky panel */
+/* Card mockups */
 .mockup-frame{
   position:absolute;
   top:50%;left:50%;
   transform:translate(-50%,calc(-50% + 18px)) scale(.97);
-  width:370px;
+  width:420px;
   background:#fff;
   border:1px solid rgba(231,228,239,.95);
   border-radius:28px;
   overflow:hidden;
-  box-shadow:var(--shadow);
+  box-shadow:0 32px 80px rgba(31,27,67,.13),0 8px 24px rgba(31,27,67,.07);
   transition:opacity .48s ease, transform .48s ease;
   opacity:0;
   pointer-events:none;
@@ -132,56 +130,56 @@ button{font:inherit;cursor:pointer}
 }
 
 /* ── Mockup 1: Contribution card ── */
-.m1-cover{height:200px;position:relative;overflow:hidden;background:#1A4A72}
+.m1-cover{height:230px;position:relative;overflow:hidden;background:#1A4A72}
 .m1-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.m1-cover-badges{position:absolute;left:12px;right:12px;top:12px;display:flex;justify-content:space-between;z-index:2}
-.m1-chip{height:26px;padding:0 10px;border-radius:999px;background:rgba(7,24,42,.68);border:1px solid rgba(255,255,255,.18);color:#fff;font-size:10px;font-weight:700;display:inline-flex;align-items:center;gap:5px}
+.m1-cover-badges{position:absolute;left:16px;right:16px;top:14px;display:flex;justify-content:space-between;z-index:2}
+.m1-chip{height:28px;padding:0 12px;border-radius:999px;background:rgba(7,24,42,.68);border:1px solid rgba(255,255,255,.18);color:#fff;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:5px}
 .m1-chip i{color:#74e0ad}
-.m1-body{padding:18px 20px 20px}
-.m1-profile{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.m1-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#0a5f91,#0a94c5);border:2.5px solid #fff;color:#fff;display:grid;place-items:center;font-size:12px;font-weight:900;flex-shrink:0;box-shadow:0 3px 8px rgba(0,0,0,.15)}
-.m1-name{font-size:15px;font-weight:800;letter-spacing:-.2px}
-.m1-handle{font-size:11px;color:var(--muted-2);margin-top:1px}
-.m1-bio-bars{margin-bottom:12px}
-.m1-bar{height:7px;background:#EEEEF4;border-radius:4px;margin-bottom:6px}
-.m1-stats{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid #e8dfd4;border-radius:12px;overflow:hidden;margin-bottom:14px}
-.m1-stat{padding:8px 4px;text-align:center;display:flex;flex-direction:column;gap:2px}
+.m1-body{padding:22px 24px 24px}
+.m1-profile{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.m1-avatar{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#0a5f91,#0a94c5);border:2.5px solid #fff;color:#fff;display:grid;place-items:center;font-size:13px;font-weight:900;flex-shrink:0;box-shadow:0 3px 8px rgba(0,0,0,.15)}
+.m1-name{font-size:17px;font-weight:800;letter-spacing:-.3px}
+.m1-handle{font-size:12px;color:var(--muted-2);margin-top:2px}
+.m1-bio-bars{margin-bottom:14px}
+.m1-bar{height:8px;background:#EEEEF4;border-radius:4px;margin-bottom:7px}
+.m1-stats{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid #e8dfd4;border-radius:14px;overflow:hidden;margin-bottom:16px}
+.m1-stat{padding:10px 6px;text-align:center;display:flex;flex-direction:column;gap:3px}
 .m1-stat:not(:last-child){border-right:1px solid #e8dfd4}
-.m1-stat strong{font-size:13px;font-weight:900;line-height:1}
-.m1-stat span{font-size:8px;color:var(--muted-2);line-height:1}
-.m1-label{font-size:9px;font-weight:800;letter-spacing:.09em;color:var(--muted-2);text-transform:uppercase;margin-bottom:8px}
-.m1-amounts{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}
-.m1-amt{height:36px;border:1px solid #e7ded2;border-radius:10px;background:#fff;font-size:13px;font-weight:800;color:var(--ink);display:grid;place-items:center}
+.m1-stat strong{font-size:15px;font-weight:900;line-height:1}
+.m1-stat span{font-size:9px;color:var(--muted-2);line-height:1}
+.m1-label{font-size:10px;font-weight:800;letter-spacing:.09em;color:var(--muted-2);text-transform:uppercase;margin-bottom:10px}
+.m1-amounts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.m1-amt{height:42px;border:1px solid #e7ded2;border-radius:12px;background:#fff;font-size:14px;font-weight:800;color:var(--ink);display:grid;place-items:center}
 .m1-amt.sel{border-color:var(--indigo);background:var(--indigo-soft);color:var(--indigo)}
-.m1-cta{width:100%;height:42px;border:0;border-radius:999px;background:#333;color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px}
+.m1-cta{width:100%;height:48px;border:0;border-radius:999px;background:#333;color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:7px}
 
 /* ── Mockup 2: AI Chat ── */
-.m2-head{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;background:#fff}
-.m2-av{width:34px;height:34px;border-radius:50%;background:var(--indigo);display:grid;place-items:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0}
-.m2-name{font-size:13px;font-weight:800}
-.m2-status{font-size:10px;color:var(--green);margin-top:1px}
-.m2-body{padding:16px;display:flex;flex-direction:column;gap:10px;background:#fafafa;min-height:320px}
-.m2-bubble{font-size:12px;line-height:1.5;padding:10px 12px;border-radius:14px;max-width:85%}
+.m2-head{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;background:#fff}
+.m2-av{width:40px;height:40px;border-radius:50%;background:var(--indigo);display:grid;place-items:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0}
+.m2-name{font-size:15px;font-weight:800}
+.m2-status{font-size:11px;color:var(--green);margin-top:2px}
+.m2-body{padding:20px;display:flex;flex-direction:column;gap:12px;background:#fafafa;min-height:360px}
+.m2-bubble{font-size:13px;line-height:1.55;padding:12px 14px;border-radius:16px;max-width:85%}
 .m2-bubble.user{margin-left:auto;background:var(--indigo);color:#fff;border-bottom-right-radius:4px}
 .m2-bubble.ai{background:#fff;border:1px solid var(--line);color:var(--ink);border-bottom-left-radius:4px}
-.m2-input{padding:12px 16px;border-top:1px solid var(--line);display:flex;gap:8px;align-items:center;background:#fff}
-.m2-input-field{flex:1;height:36px;border:1px solid var(--line);border-radius:18px;padding:0 14px;font-size:12px;color:var(--muted);background:#fafafa;display:flex;align-items:center}
-.m2-send{width:36px;height:36px;border-radius:50%;background:var(--indigo);border:0;display:grid;place-items:center;flex-shrink:0}
+.m2-input{padding:14px 20px;border-top:1px solid var(--line);display:flex;gap:10px;align-items:center;background:#fff}
+.m2-input-field{flex:1;height:40px;border:1px solid var(--line);border-radius:20px;padding:0 16px;font-size:13px;color:var(--muted);background:#fafafa;display:flex;align-items:center}
+.m2-send{width:40px;height:40px;border-radius:50%;background:var(--indigo);border:0;display:grid;place-items:center;flex-shrink:0}
 
 /* ── Mockup 3: Paywall ── */
-.m3-head{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;background:#fff}
-.m3-body{padding:16px;display:flex;flex-direction:column;gap:10px;background:#fafafa}
-.m3-bubble{font-size:12px;line-height:1.5;padding:10px 12px;border-radius:14px;max-width:85%}
+.m3-head{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;background:#fff}
+.m3-body{padding:20px;display:flex;flex-direction:column;gap:12px;background:#fafafa}
+.m3-bubble{font-size:13px;line-height:1.55;padding:12px 14px;border-radius:16px;max-width:85%}
 .m3-bubble.user{margin-left:auto;background:var(--indigo);color:#fff;border-bottom-right-radius:4px}
 .m3-bubble.ai{background:#fff;border:1px solid var(--line);color:var(--ink);border-bottom-left-radius:4px}
 .m3-blur-wrap{position:relative;margin-top:4px}
-.m3-blur{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 12px;font-size:12px;color:var(--ink);max-width:85%;line-height:1.5;filter:blur(4px);user-select:none;opacity:.5}
-.m3-gate{margin:0 16px 16px;border:1px solid rgba(91,79,207,.25);background:linear-gradient(135deg,rgba(91,79,207,.06),rgba(91,79,207,.12));border-radius:18px;padding:20px;text-align:center}
-.m3-gate-icon{width:40px;height:40px;border-radius:50%;background:var(--indigo-soft);color:var(--indigo);display:grid;place-items:center;margin:0 auto 10px}
-.m3-gate-title{font-size:14px;font-weight:800;margin-bottom:4px}
-.m3-gate-sub{font-size:11px;color:var(--muted);margin-bottom:14px;line-height:1.5}
-.m3-unlock-btn{width:100%;height:40px;border:0;border-radius:999px;background:var(--indigo);color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px}
-.m3-free-note{margin-top:8px;font-size:10px;color:var(--muted-2)}
+.m3-blur{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px 14px;font-size:13px;color:var(--ink);max-width:85%;line-height:1.55;filter:blur(4px);user-select:none;opacity:.5}
+.m3-gate{margin:0 20px 20px;border:1px solid rgba(91,79,207,.25);background:linear-gradient(135deg,rgba(91,79,207,.06),rgba(91,79,207,.12));border-radius:20px;padding:24px;text-align:center}
+.m3-gate-icon{width:44px;height:44px;border-radius:50%;background:var(--indigo-soft);color:var(--indigo);display:grid;place-items:center;margin:0 auto 12px}
+.m3-gate-title{font-size:15px;font-weight:800;margin-bottom:6px}
+.m3-gate-sub{font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6}
+.m3-unlock-btn{width:100%;height:44px;border:0;border-radius:999px;background:var(--indigo);color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:7px}
+.m3-free-note{margin-top:10px;font-size:11px;color:var(--muted-2)}
 
 /* ── Rest of page ── */
 .proof-strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#fff}
@@ -228,9 +226,7 @@ footer{padding:32px 0 44px;border-top:1px solid var(--line)}
 @media(max-width:900px){
   .parallax-wrapper{grid-template-columns:1fr}
   .pcol-center{display:none}
-  .pcol-right{display:none}
-  .pstep{padding:0 24px}
-  .pstep-spacer{display:none}
+  .pcol-left{padding:0 24px}
   .hero-intro .container{grid-template-columns:1fr}
   .hero-h1{font-size:46px}
   .outcome-grid{grid-template-columns:1fr}
@@ -307,10 +303,10 @@ footer{padding:32px 0 44px;border-top:1px solid var(--line)}
   </div>
 </section>
 
-<!-- Scroll story: 3-column layout -->
+<!-- Scroll story: 2-column layout -->
 <div class="parallax-wrapper" id="story">
 
-  <!-- Left column: steps 01 and 03 -->
+  <!-- Left column: all 3 steps -->
   <div class="pcol-left">
 
     <div class="pstep" data-step="1">
@@ -324,7 +320,16 @@ footer{padding:32px 0 44px;border-top:1px solid var(--line)}
       </div>
     </div>
 
-    <div class="pstep-spacer"></div>
+    <div class="pstep" data-step="2">
+      <div class="step-num">02 · Stay available with AI</div>
+      <h2 class="step-h2">Your knowledge,<br>always on.</h2>
+      <p class="step-p">Train an AI on your work, writing, and expertise. Your audience can ask questions and get answers in your voice — anytime, even when you're offline.</p>
+      <div class="step-tags">
+        <span class="step-tag"><i data-lucide="bot" width="12"></i> Trained on your content</span>
+        <span class="step-tag"><i data-lucide="clock" width="12"></i> Available 24/7</span>
+        <span class="step-tag"><i data-lucide="lock" width="12"></i> You control access</span>
+      </div>
+    </div>
 
     <div class="pstep" data-step="3">
       <div class="step-num">03 · Offer paid access</div>
@@ -339,7 +344,7 @@ footer{padding:32px 0 44px;border-top:1px solid var(--line)}
 
   </div>
 
-  <!-- Center column: always-visible sticky card -->
+  <!-- Right column: sticky card -->
   <div class="pcol-center">
 
     <!-- Mockup 1: Contribution card -->
@@ -420,25 +425,6 @@ footer{padding:32px 0 44px;border-top:1px solid var(--line)}
 
   </div>
 
-  <!-- Right column: step 02 -->
-  <div class="pcol-right">
-
-    <div class="pstep-spacer"></div>
-
-    <div class="pstep" data-step="2">
-      <div class="step-num">02 · Stay available with AI</div>
-      <h2 class="step-h2">Your knowledge,<br>always on.</h2>
-      <p class="step-p">Train an AI on your work, writing, and expertise. Your audience can ask questions and get answers in your voice — anytime, even when you're offline.</p>
-      <div class="step-tags">
-        <span class="step-tag"><i data-lucide="bot" width="12"></i> Trained on your content</span>
-        <span class="step-tag"><i data-lucide="clock" width="12"></i> Available 24/7</span>
-        <span class="step-tag"><i data-lucide="lock" width="12"></i> You control access</span>
-      </div>
-    </div>
-
-    <div class="pstep-spacer"></div>
-
-  </div>
 
 </div>
 
