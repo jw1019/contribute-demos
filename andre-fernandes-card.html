@@ -27,15 +27,12 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background: var(--cream);
   min-height: 100vh;
-  display: flex; align-items: center; justify-content: center;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
   padding: 48px 24px;
+  gap: 16px;
 }
 
 .contribute-logo {
-  position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
   display: flex;
   align-items: center;
   gap: 7px;
@@ -44,7 +41,6 @@ body {
   color: var(--black);
   text-decoration: none;
   letter-spacing: -0.2px;
-  z-index: 100;
   white-space: nowrap;
 }
 .contribute-logo-mark {
@@ -406,11 +402,6 @@ body {
 </head>
 <body>
 
-<a class="contribute-logo" href="#">
-  <span class="contribute-logo-mark"><i data-lucide="heart-handshake" width="15"></i></span>
-  Contribute
-</a>
-
 <div class="card-clip">
 <div class="card-container">
   <div class="card-inner" id="cardInner">
@@ -611,6 +602,11 @@ body {
   </div>
 
 </div><!-- /card-clip -->
+
+<a class="contribute-logo" href="#">
+  <span class="contribute-logo-mark"><i data-lucide="heart-handshake" width="15"></i></span>
+  Contribute
+</a>
 
 <script>
 lucide.createIcons();
