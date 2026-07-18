@@ -1,965 +1,439 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contribute — Turn Your Passion Into a Living</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Contribute — Fund the work that matters</title>
+<meta name="description" content="Create one page to accept contributions, offer paid access, and let your audience engage with your AI." />
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root{
+  --ink:#11111a;
+  --muted:#666579;
+  --muted-2:#9291a2;
+  --line:#e9e7f0;
+  --surface:#fff;
+  --page:#f7f6fb;
+  --indigo:#5b4fcf;
+  --indigo-2:#776be6;
+  --indigo-dark:#4338b2;
+  --indigo-soft:#efedff;
+  --green:#2f9b6f;
+  --shadow:0 24px 70px rgba(31,27,67,.12),0 2px 10px rgba(31,27,67,.05);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#fff;color:var(--ink);line-height:1.55}
+a{text-decoration:none;color:inherit}
+button{font:inherit}
+.container{width:min(1180px,calc(100% - 48px));margin:0 auto}
 
-:root {
-  --indigo:   #5B4FCF;
-  --indigo-dk:#4840B0;
-  --indigo-lt:#EEF0FD;
-  --black:    #0F0F1A;
-  --gray-dk:  #555568;
-  --gray-md:  #888899;
-  --gray-lt:  #E8E8EF;
-  --cream:    #F5F6FA;
-  --border:   #EDE5DA;
-  --white:    #ffffff;
-  --green:    #2E9E6B;
-}
+/* Nav */
+.nav-wrap{position:sticky;top:0;z-index:50;padding:14px 0;background:rgba(247,246,251,.86);backdrop-filter:blur(18px)}
+.nav{height:64px;padding:0 18px 0 22px;border:1px solid rgba(233,231,240,.95);border-radius:18px;background:rgba(255,255,255,.92);box-shadow:0 8px 28px rgba(31,27,67,.06);display:flex;align-items:center}
+.brand{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:850;letter-spacing:-.35px}
+.brand-mark{width:34px;height:34px;border-radius:11px;background:var(--indigo-soft);display:grid;place-items:center;color:var(--indigo)}
+.nav-links{display:flex;gap:28px;margin-left:auto;font-size:14px;font-weight:650;color:#4e4d5e}
+.nav-links a:hover{color:var(--ink)}
+.nav-actions{display:flex;gap:10px;margin-left:28px}
+.btn{height:44px;padding:0 20px;border-radius:999px;border:0;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:14px;font-weight:800;cursor:pointer;transition:.18s ease}
+.btn-primary{background:var(--indigo);color:#fff;box-shadow:0 8px 20px rgba(91,79,207,.22)}
+.btn-primary:hover{background:var(--indigo-dark);transform:translateY(-1px)}
+.btn-secondary{background:#fff;border:1px solid var(--line);color:var(--ink)}
+.btn-secondary:hover{border-color:#c9c6d8}
 
-html { scroll-behavior: smooth; }
+/* Hero */
+.hero-shell{background:
+ radial-gradient(circle at 84% 14%,rgba(91,79,207,.12),transparent 32%),
+ linear-gradient(180deg,#f8f7fc 0%,#fff 100%);border-bottom:1px solid var(--line)}
+.hero{min-height:760px;padding:86px 0 84px;display:grid;grid-template-columns:minmax(0,.92fr) minmax(520px,1.08fr);gap:72px;align-items:center}
+.hero-copy{max-width:560px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--indigo);font-size:12px;font-weight:850;letter-spacing:.09em;text-transform:uppercase;margin-bottom:22px}
+.eyebrow-dot{width:8px;height:8px;border-radius:50%;background:var(--indigo)}
+h1{font-size:72px;line-height:.98;letter-spacing:-4.2px;font-weight:920;max-width:620px;margin-bottom:26px}
+.hero-copy p{font-size:19px;line-height:1.7;color:var(--muted);max-width:540px;margin-bottom:32px}
+.hero-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.hero-actions .btn{height:52px;padding:0 25px;font-size:15px}
+.hero-note{margin-top:24px;display:flex;gap:17px;flex-wrap:wrap;font-size:13px;color:var(--muted-2)}
+.hero-note span{display:inline-flex;align-items:center;gap:7px}
+.hero-note span:not(:last-child)::after{content:"";width:3px;height:3px;border-radius:50%;background:#c7c5d1;margin-left:9px}
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: var(--white);
-  color: var(--black);
-  line-height: 1.6;
-}
+/* Product visual */
+.product-stage{position:relative;min-height:620px;display:grid;place-items:center}
+.product-halo{position:absolute;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(91,79,207,.14),rgba(91,79,207,.02) 55%,transparent 70%)}
 
-/* ── Nav ── */
-nav {
-  position: sticky; top: 16px; z-index: 100;
-  padding: 0 40px;
-  background: var(--cream);
-  pointer-events: none;
-}
-.nav-inner {
-  max-width: 1080px; margin: 0 auto;
-  height: 56px; padding: 0 20px;
-  background: rgba(255,255,255,0.97);
-  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-  border-radius: 40px;
-  box-shadow: 0 2px 20px rgba(0,0,0,0.09), 0 0 0 1px rgba(0,0,0,0.05);
-  display: flex; align-items: center; gap: 36px;
-  pointer-events: all;
-}
-.nav-logo {
-  display: flex; align-items: center; gap: 10px;
-  font-size: 18px; font-weight: 800; color: var(--black);
-  text-decoration: none; letter-spacing: -0.3px; flex-shrink: 0;
-}
-.nav-logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--indigo); margin-top: 1px; }
-.nav-links { display: flex; gap: 28px; flex: 1; justify-content: center; }
-.nav-links a { font-size: 14px; color: var(--gray-dk); text-decoration: none; font-weight: 500; }
-.nav-links a:hover { color: var(--black); }
-.nav-cta { display: flex; align-items: center; gap: 12px; }
-.btn-ghost {
-  height: 38px; padding: 0 20px;
-  background: transparent; color: var(--black);
-  border: 1.5px solid var(--border); border-radius: 19px;
-  font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none;
-  display: flex; align-items: center;
-}
-.btn-primary {
-  height: 38px; padding: 0 22px;
-  background: var(--indigo); color: white;
-  border: none; border-radius: 19px;
-  font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none;
-  display: flex; align-items: center;
-}
-.btn-primary:hover { background: var(--indigo-dk); }
+/* Creator card */
+.creator-card{width:410px;background:#fff;border:1px solid rgba(231,228,239,.95);border-radius:28px;overflow:hidden;box-shadow:var(--shadow);position:relative;z-index:2;transform:rotate(1deg)}
 
-/* ── Hero wrapper with background image ── */
-.hero-section {
-  position: relative; overflow: hidden;
-  background: var(--cream);
-}
-.hero-bg {
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 72% 90% at 105% 0%, rgba(91,79,207,0.13) 0%, transparent 60%),
-    radial-gradient(ellipse 55% 65% at -5% 100%, rgba(91,79,207,0.08) 0%, transparent 60%);
-  pointer-events: none;
-}
+/* Cover — ocean SVG */
+.cover{height:210px;position:relative;overflow:hidden;background:#1A4A72}
+.cover-badges{position:absolute;left:16px;right:16px;top:16px;display:flex;justify-content:space-between;gap:8px;z-index:4}
+.cover-chip{height:32px;padding:0 12px;border-radius:999px;background:rgba(7,24,42,.68);border:1px solid rgba(255,255,255,.18);color:#fff;display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:800}
+.cover-chip i{color:#74e0ad}
 
-/* ── Hero ── */
-.hero {
-  max-width: 1100px; margin: 0 auto;
-  padding: 100px 60px 80px;
-  display: grid; grid-template-columns: 1fr 360px; gap: 80px; align-items: center;
-  position: relative;
-}
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 7px;
-  background: var(--indigo-lt); color: var(--indigo);
-  border-radius: 20px; padding: 5px 14px;
-  font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
-  text-transform: uppercase; margin-bottom: 24px;
-}
-.hero h1 {
-  font-size: 66px; font-weight: 900;
-  line-height: 1.06; letter-spacing: -2px;
-  color: var(--black); margin-bottom: 22px;
-}
-.hero h1 span {
-  color: var(--indigo);
-  background: linear-gradient(to bottom, transparent 58%, rgba(91,79,207,0.14) 58%);
-  padding: 0 3px;
-}
-.hero-sub {
-  font-size: 18px; color: var(--gray-dk);
-  line-height: 1.7; margin-bottom: 36px; max-width: 480px;
-}
-.hero-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
-.btn-hero {
-  height: 54px; padding: 0 32px;
-  background: var(--indigo); color: white;
-  border: none; border-radius: 27px;
-  font-size: 16px; font-weight: 700; cursor: pointer; text-decoration: none;
-  display: flex; align-items: center; gap: 8px;
-  transition: background 0.15s, transform 0.1s;
-  box-shadow: 0 4px 20px rgba(91,79,207,0.35);
-}
-.btn-hero:hover { background: var(--indigo-dk); transform: translateY(-1px); }
-.btn-hero-ghost {
-  height: 54px; padding: 0 28px;
-  background: transparent; color: var(--black);
-  border: 1.5px solid var(--border); border-radius: 27px;
-  font-size: 15px; font-weight: 600; cursor: pointer; text-decoration: none;
-  display: flex; align-items: center; gap: 8px;
-  transition: border-color 0.15s;
-}
-.btn-hero-ghost:hover { border-color: var(--gray-md); }
-.hero-trust {
-  margin-top: 28px; font-size: 13px; color: var(--gray-md);
-  display: flex; align-items: center; gap: 8px;
-}
-.hero-trust-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--gray-lt); }
+.card-body{padding:22px 24px 24px}
+.profile-row{display:grid;grid-template-columns:54px 1fr auto;gap:12px;align-items:center;margin-top:-6px}
+.avatar{width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#0a5f91,#0a94c5);border:3px solid #fff;color:#fff;display:grid;place-items:center;font-size:14px;font-weight:900;box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.profile-name{font-size:17px;font-weight:850;letter-spacing:-.3px}.profile-handle{font-size:12px;color:var(--muted-2);margin-top:2px}
+.socials{display:flex;gap:6px}.social{width:30px;height:30px;border-radius:50%;border:1px solid #e5ded3;display:grid;place-items:center;color:#8e8b96}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid #e8dfd4;border-radius:14px;overflow:hidden;margin-bottom:16px}
+.stat{padding:11px 6px;text-align:center}.stat:not(:last-child){border-right:1px solid #e8dfd4}.stat strong{display:block;font-size:15px;font-weight:900}.stat span{font-size:9px;color:var(--muted-2)}
+.support-label{font-size:10px;font-weight:850;letter-spacing:.09em;color:var(--muted-2);text-transform:uppercase;margin-bottom:9px}
+.amounts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}.amount{height:42px;border:1px solid #e7ded2;border-radius:12px;background:#fff;font-weight:850;color:var(--ink)}.amount.active{border-color:var(--indigo);background:var(--indigo-soft)}
+.card-cta{width:100%;height:46px;border:0;border-radius:999px;background:#333;color:#fff;font-size:14px;font-weight:850;display:flex;align-items:center;justify-content:center;gap:8px}
+.card-ai{width:100%;height:42px;border:1px solid #e4ddd3;border-radius:999px;background:#fff;color:#5a596c;font-size:13px;font-weight:750;margin-top:9px;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;transition:border-color .15s,color .15s}
+.card-ai:hover{border-color:var(--indigo);color:var(--indigo)}
 
-/* ── Hero Card ── */
-.hero-card {
-  background: var(--white); border-radius: 24px;
-  box-shadow: 0 4px 40px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.04);
-  overflow: hidden; flex-shrink: 0;
-}
-.hero-card-cover {
-  height: 180px; position: relative; overflow: hidden;
-  background: linear-gradient(135deg, #1A1200 0%, #4A2D00 40%, #8B5E00 70%, #C8962A 100%);
-}
-.hero-card-cover-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.25) 100%);
-}
-.hero-card-body { padding: 20px 24px 24px; }
-.hero-card-creator {
-  display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
-}
-.hero-card-av {
-  width: 48px; height: 48px; border-radius: 50%;
-  background: #2C1A00; color: white;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 13px; font-weight: 800; flex-shrink: 0;
-  border: 2.5px solid white; margin-top: -28px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-}
-.hero-card-name { font-size: 16px; font-weight: 800; color: var(--black); }
-.hero-card-handle { font-size: 12px; color: var(--gray-md); }
-.hero-card-bio { font-size: 13px; color: var(--gray-dk); line-height: 1.6; margin-bottom: 16px; }
-.hero-card-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gray-md); margin-bottom: 10px; }
-.hero-card-amounts { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 14px; }
-.hero-card-amt {
-  border: 1.5px solid var(--border); border-radius: 12px;
-  padding: 10px 4px; text-align: center;
-}
-.hero-card-amt.sel { border-color: var(--indigo); background: var(--indigo-lt); }
-.hero-card-amt-val { font-size: 16px; font-weight: 800; color: var(--black); }
-.hero-card-amt-label { font-size: 10px; color: var(--gray-md); }
-.hero-card-btn {
-  width: 100%; height: 44px;
-  background: var(--black); color: white; border: none;
-  border-radius: 22px; font-size: 14px; font-weight: 700;
-  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
-}
-.hero-card-pill {
-  margin-top: 12px; padding: 9px 14px;
-  background: var(--cream); border-radius: 12px;
-  display: flex; align-items: center; justify-content: space-between;
-  font-size: 11px; font-weight: 600; color: var(--indigo);
-}
-.hero-card-pill-copy { color: var(--gray-dk); cursor: pointer; text-decoration: underline; font-size: 11px; }
+.float-card{position:absolute;background:#fff;border:1px solid #ece9f2;box-shadow:0 16px 40px rgba(31,27,67,.10);z-index:3}
+.float-1{left:-18px;top:150px;border-radius:999px;padding:12px 16px;display:flex;align-items:center;gap:9px;font-size:12px;font-weight:800}.float-1 i{color:var(--indigo)}
+.float-2{right:-16px;top:112px;width:168px;border-radius:20px;padding:16px}.float-2 strong{font-size:23px;display:block;letter-spacing:-.7px}.float-2 span{font-size:11px;color:var(--muted)}
+.float-3{right:8px;bottom:82px;width:150px;border-radius:20px;padding:16px}.float-3 .row{display:flex;align-items:flex-start;gap:9px}.float-3 i{color:var(--indigo);margin-top:3px}.float-3 strong{font-size:20px;display:block}.float-3 span{font-size:10px;color:var(--muted)}
 
-/* ── Features ── */
-.features-section {
-  background: var(--cream);
-  padding: 100px 60px;
-}
-.features-inner { max-width: 1100px; margin: 0 auto; }
-.section-eyebrow {
-  font-size: 12px; font-weight: 700; color: var(--indigo);
-  text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px;
-}
-.section-title {
-  font-size: 42px; font-weight: 900; letter-spacing: -1px;
-  color: var(--black); margin-bottom: 16px; line-height: 1.15;
-}
-.section-sub {
-  font-size: 17px; color: var(--gray-dk);
-  max-width: 560px; line-height: 1.7; margin-bottom: 64px;
-}
-.features-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; }
-.feature-card {
-  background: var(--white); border-radius: 24px; padding: 36px;
-  border: 1px solid var(--border);
-  display: flex; flex-direction: column; gap: 18px;
-}
-.feature-icon {
-  width: 52px; height: 52px; border-radius: 16px;
-  display: flex; align-items: center; justify-content: center;
-}
-.feature-icon.blue  { background: var(--indigo-lt); }
-.feature-icon.green { background: #E6F7EF; }
-.feature-icon.gold  { background: #FDF3E0; }
-.feature-num {
-  font-size: 11px; font-weight: 700; color: var(--gray-md);
-  text-transform: uppercase; letter-spacing: 0.8px;
-}
-.feature-name { font-size: 22px; font-weight: 800; color: var(--black); letter-spacing: -0.3px; }
-.feature-desc { font-size: 15px; color: var(--gray-dk); line-height: 1.7; }
-.feature-tag {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-size: 12px; font-weight: 600;
-  border-radius: 20px; padding: 4px 12px; align-self: flex-start;
-  margin-top: auto;
-}
-.feature-tag.blue  { background: var(--indigo-lt); color: var(--indigo); }
-.feature-tag.green { background: #E6F7EF; color: var(--green); }
-.feature-tag.gold  { background: #FDF3E0; color: #B07B10; }
+/* Proof strip */
+.proof-strip{border-bottom:1px solid var(--line);background:#fff}
+.proof-inner{min-height:84px;display:flex;align-items:center;justify-content:space-between;gap:22px}
+.proof-copy{font-size:13px;font-weight:750;color:#4c4b5b}
+.proof-points{display:flex;gap:28px;flex-wrap:wrap;color:var(--muted-2);font-size:12px;font-weight:750}
+.proof-points span{display:flex;align-items:center;gap:8px}.proof-points i{color:var(--indigo)}
 
-/* ── How It Works ── */
-.how-section { padding: 100px 60px; max-width: 1100px; margin: 0 auto; }
-.steps-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 24px; margin-top: 56px; position: relative; }
-.steps-grid::before {
-  content: '';
-  position: absolute; top: 28px; left: calc(12.5% + 14px); right: calc(12.5% + 14px);
-  height: 1.5px; background: var(--border);
-}
-.step-item { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; }
-.step-num {
-  width: 56px; height: 56px; border-radius: 50%;
-  background: var(--white); border: 1.5px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px; font-weight: 800; color: var(--indigo);
-  position: relative; z-index: 1;
-}
-.step-name { font-size: 15px; font-weight: 700; color: var(--black); }
-.step-desc { font-size: 13px; color: var(--gray-dk); line-height: 1.6; }
+/* Shared sections */
+.section{padding:104px 0}
+.section.alt{background:var(--page);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;margin-bottom:48px}
+.section-head h2{font-size:46px;line-height:1.08;letter-spacing:-2.1px;max-width:620px}
+.section-head p{max-width:450px;color:var(--muted);font-size:16px}
 
-/* ── AiJiv Deep Dive ── */
-.aijiv-section {
-  background: var(--black); padding: 100px 60px;
-  overflow: hidden; position: relative;
-}
-.aijiv-inner {
-  max-width: 1100px; margin: 0 auto;
-  display: grid; grid-template-columns: 1fr 420px; gap: 80px; align-items: center;
-}
-.aijiv-glow {
-  position: absolute; top: -200px; right: -200px;
-  width: 600px; height: 600px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(91,79,207,0.25) 0%, transparent 70%);
-  pointer-events: none;
-}
-.aijiv-eyebrow { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
-.aijiv-title { font-size: 44px; font-weight: 900; letter-spacing: -1px; color: white; line-height: 1.1; margin-bottom: 20px; }
-.aijiv-title span { color: #7C72E0; }
-.aijiv-desc { font-size: 17px; color: rgba(255,255,255,0.65); line-height: 1.75; margin-bottom: 36px; }
-.aijiv-features { display: flex; flex-direction: column; gap: 18px; }
-.aijiv-feature {
-  display: flex; align-items: flex-start; gap: 14px;
-}
-.aijiv-feature-icon {
-  width: 36px; height: 36px; border-radius: 10px;
-  background: rgba(91,79,207,0.25); border: 1px solid rgba(91,79,207,0.4);
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-}
-.aijiv-feature-text .name { font-size: 15px; font-weight: 700; color: white; margin-bottom: 2px; }
-.aijiv-feature-text .desc { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.5; }
+/* Outcomes */
+.outcome-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.outcome{background:#fff;border:1px solid var(--line);border-radius:24px;padding:28px;min-height:290px;display:flex;flex-direction:column;transition:.2s ease}
+.outcome:hover{transform:translateY(-3px);box-shadow:0 18px 45px rgba(31,27,67,.07)}
+.outcome-num{font-size:11px;font-weight:850;letter-spacing:.09em;color:var(--muted-2);text-transform:uppercase;margin-bottom:22px}
+.outcome-icon{width:54px;height:54px;border-radius:17px;background:var(--indigo-soft);color:var(--indigo);display:grid;place-items:center;margin-bottom:24px}
+.outcome h3{font-size:22px;letter-spacing:-.5px;margin-bottom:10px}.outcome p{font-size:14px;color:var(--muted);line-height:1.7}.outcome a{margin-top:auto;padding-top:28px;color:var(--indigo);font-size:13px;font-weight:850;display:inline-flex;gap:7px;align-items:center}
 
-/* ── AiJiv Chat Preview ── */
-.chat-preview {
-  background: #16162A; border-radius: 20px;
-  border: 1px solid rgba(255,255,255,0.1);
-  overflow: hidden;
-}
-.chat-header {
-  padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,0.08);
-  display: flex; align-items: center; gap: 10px;
-}
-.chat-header-av {
-  width: 32px; height: 32px; border-radius: 50%;
-  background: var(--indigo); display: flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: 800; color: white;
-}
-.chat-header-name { font-size: 14px; font-weight: 700; color: white; }
-.chat-header-sub { font-size: 11px; color: rgba(255,255,255,0.4); }
-.chat-indicator { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #5FE0A0; margin-left: auto; }
-.chat-indicator-dot { width: 6px; height: 6px; border-radius: 50%; background: #5FE0A0; }
-.chat-body { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
-.chat-msg {
-  display: flex; gap: 10px; align-items: flex-start;
-}
-.chat-msg.user { flex-direction: row-reverse; }
-.chat-av {
-  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 10px; font-weight: 800; color: white;
-}
-.chat-av.ai { background: var(--indigo); }
-.chat-av.user { background: #2A2A40; color: rgba(255,255,255,0.6); }
-.chat-bubble {
-  max-width: 260px; padding: 10px 14px;
-  border-radius: 16px; font-size: 13px; line-height: 1.55;
-}
-.chat-bubble.ai { background: #22224A; color: rgba(255,255,255,0.85); border-bottom-left-radius: 4px; }
-.chat-bubble.user { background: var(--indigo); color: white; border-bottom-right-radius: 4px; }
-.chat-paywall {
-  margin: 4px 0; background: rgba(91,79,207,0.15);
-  border: 1px solid rgba(91,79,207,0.35); border-radius: 14px;
-  padding: 14px 16px; text-align: center;
-}
-.chat-paywall-title { font-size: 13px; font-weight: 700; color: white; margin-bottom: 4px; }
-.chat-paywall-sub { font-size: 11px; color: rgba(255,255,255,0.45); margin-bottom: 12px; }
-.chat-paywall-btn {
-  width: 100%; height: 36px; background: var(--indigo);
-  border: none; border-radius: 18px; color: white;
-  font-size: 12px; font-weight: 700; cursor: pointer;
-}
-.chat-input-bar {
-  padding: 12px 16px; border-top: 1px solid rgba(255,255,255,0.08);
-  display: flex; gap: 8px; align-items: center;
-}
-.chat-input-bar input {
-  flex: 1; background: #22224A; border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 20px; padding: 8px 14px; color: rgba(255,255,255,0.6);
-  font-size: 12px; outline: none;
-}
-.chat-send {
-  width: 32px; height: 32px; border-radius: 50%;
-  background: var(--indigo); border: none;
-  display: flex; align-items: center; justify-content: center; cursor: pointer;
-}
+/* How */
+.how-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:70px;align-items:start}
+.steps{display:grid;gap:12px}.step{display:grid;grid-template-columns:44px 1fr;gap:15px;padding:17px;border:1px solid var(--line);border-radius:17px;background:#fff}.step-num{width:44px;height:44px;border-radius:13px;background:var(--indigo-soft);color:var(--indigo);display:grid;place-items:center;font-size:12px;font-weight:900}.step h3{font-size:16px;margin-bottom:4px}.step p{font-size:13px;color:var(--muted)}
+.page-preview{background:#fff;border:1px solid var(--line);border-radius:26px;overflow:hidden;box-shadow:0 20px 60px rgba(31,27,67,.08)}
+.preview-top{height:190px;background:linear-gradient(135deg,#19182a,#464076);padding:24px;color:#fff;display:flex;flex-direction:column;justify-content:flex-end}.preview-top span{font-size:12px;color:rgba(255,255,255,.55)}.preview-top strong{font-size:28px;letter-spacing:-1px;margin-top:4px}
+.preview-body{padding:24px}.preview-line{height:10px;border-radius:999px;background:#ececf2;margin-bottom:10px}.preview-line.short{width:62%}.preview-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}.preview-actions button{height:44px;border-radius:999px;font-weight:800}.preview-actions button:first-child{border:0;background:var(--indigo);color:#fff}.preview-actions button:last-child{border:1px solid var(--line);background:#fff;color:var(--ink)}
 
-/* ── Social Proof ── */
-.proof-section { padding: 80px 60px; background: var(--cream); }
-.proof-inner { max-width: 1100px; margin: 0 auto; }
-.proof-top { text-align: center; margin-bottom: 56px; }
-.proof-title { font-size: 36px; font-weight: 900; letter-spacing: -0.8px; color: var(--black); margin-bottom: 12px; }
-.proof-sub { font-size: 16px; color: var(--gray-dk); }
-.proof-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
-.proof-card {
-  background: var(--white); border-radius: 20px; padding: 28px;
-  border: 1px solid var(--border);
-}
-.proof-quote { font-size: 15px; color: var(--gray-dk); line-height: 1.7; margin-bottom: 20px; font-style: italic; }
-.proof-author { display: flex; align-items: center; gap: 12px; }
-.proof-av {
-  width: 40px; height: 40px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 13px; font-weight: 800; color: white; flex-shrink: 0;
-}
-.proof-name { font-size: 14px; font-weight: 700; color: var(--black); }
-.proof-role { font-size: 12px; color: var(--gray-md); }
+/* AI */
+.ai-section{background:#171723;color:#fff;position:relative;overflow:hidden}
+.ai-section::after{content:"";position:absolute;width:620px;height:620px;border-radius:50%;right:-220px;top:-260px;background:radial-gradient(circle,rgba(119,107,230,.30),transparent 68%)}
+.ai-grid{display:grid;grid-template-columns:1fr 430px;gap:80px;align-items:center;position:relative;z-index:2}
+.ai-kicker{color:#a99fff}.ai-grid h2{font-size:48px;line-height:1.06;letter-spacing:-2px;margin-bottom:18px}.ai-grid>div>p{font-size:17px;line-height:1.75;color:rgba(255,255,255,.65);max-width:590px;margin-bottom:28px}
+.ai-points{display:grid;grid-template-columns:1fr 1fr;gap:12px}.ai-point{padding:16px;border:1px solid rgba(255,255,255,.09);border-radius:15px;background:rgba(255,255,255,.04)}.ai-point strong{display:block;font-size:14px;margin-bottom:4px}.ai-point span{font-size:12px;color:rgba(255,255,255,.48)}
+.chat{background:#232334;border:1px solid rgba(255,255,255,.1);border-radius:24px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.26)}
+.chat-head{padding:15px 18px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:10px}.chat-av{width:36px;height:36px;border-radius:50%;background:var(--indigo);display:grid;place-items:center;font-size:11px;font-weight:850}.chat-name{font-size:13px;font-weight:800}.chat-status{font-size:10px;color:#70dda9}.chat-body{padding:20px;display:grid;gap:13px}.bubble{font-size:12px;line-height:1.5;padding:11px 13px;border-radius:15px;max-width:82%}.bubble.user{margin-left:auto;background:var(--indigo);border-bottom-right-radius:4px}.bubble.ai{background:#303046;color:rgba(255,255,255,.84);border-bottom-left-radius:4px}.unlock{padding:15px;border:1px solid rgba(119,107,230,.34);background:rgba(119,107,230,.13);border-radius:16px;text-align:center}.unlock strong{display:block;font-size:13px}.unlock span{font-size:10px;color:rgba(255,255,255,.5)}.unlock button{margin-top:11px;height:35px;padding:0 16px;border:0;border-radius:999px;background:var(--indigo);color:#fff;font-size:11px;font-weight:850}
 
-/* ── CTA ── */
-.cta-section {
-  padding: 100px 60px;
-  background: linear-gradient(135deg, #3A30A8 0%, #5B4FCF 50%, #7C6FE8 100%);
-  text-align: center; position: relative; overflow: hidden;
-}
-.cta-glow {
-  position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
-  width: 800px; height: 400px;
-  background: radial-gradient(ellipse, rgba(255,255,255,0.1) 0%, transparent 70%);
-  pointer-events: none;
-}
-.cta-inner { max-width: 640px; margin: 0 auto; position: relative; }
-.cta-eyebrow { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
-.cta-title { font-size: 48px; font-weight: 900; color: white; letter-spacing: -1.2px; line-height: 1.1; margin-bottom: 18px; }
-.cta-sub { font-size: 18px; color: rgba(255,255,255,0.75); line-height: 1.65; margin-bottom: 36px; }
-.btn-cta {
-  height: 58px; padding: 0 36px;
-  background: white; color: var(--indigo);
-  border: none; border-radius: 29px;
-  font-size: 16px; font-weight: 800; cursor: pointer;
-  display: inline-flex; align-items: center; gap: 10px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-  transition: transform 0.1s; text-decoration: none;
-}
-.btn-cta:hover { transform: translateY(-2px); }
-.cta-note { margin-top: 20px; font-size: 13px; color: rgba(255,255,255,0.5); }
+/* Trust / pricing */
+.trust-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:28px}.trust-card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:30px}.trust-card h3{font-size:23px;letter-spacing:-.6px;margin-bottom:11px}.trust-card p{font-size:14px;color:var(--muted);line-height:1.7}.trust-list{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}.trust-item{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:#4e4d5d}.trust-item i{color:var(--green);flex-shrink:0;margin-top:2px}
+.price-card{background:linear-gradient(145deg,#5246c8,#776be6);color:#fff;border-radius:24px;padding:30px;display:flex;flex-direction:column}.price-card .small{font-size:12px;color:rgba(255,255,255,.62);font-weight:800;text-transform:uppercase;letter-spacing:.08em}.price-card h3{font-size:34px;letter-spacing:-1.2px;margin:10px 0}.price-card p{color:rgba(255,255,255,.68);font-size:14px;line-height:1.65}.price-card .btn{margin-top:auto;background:#fff;color:var(--indigo);height:50px}
 
-/* ── Footer ── */
-footer {
-  padding: 48px 60px;
-  border-top: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between;
-  flex-wrap: wrap; gap: 24px;
-}
-.footer-logo { font-size: 16px; font-weight: 800; color: var(--black); display: flex; align-items: center; gap: 8px; }
-.footer-links { display: flex; gap: 24px; }
-.footer-links a { font-size: 13px; color: var(--gray-md); text-decoration: none; }
-.footer-links a:hover { color: var(--gray-dk); }
-.footer-copy { font-size: 12px; color: var(--gray-md); }
+/* CTA */
+.final{padding:96px 0}.cta{background:linear-gradient(135deg,#4b40bf,#786ce6);border-radius:30px;padding:64px 40px;color:#fff;text-align:center;overflow:hidden;position:relative}.cta::before{content:"";position:absolute;width:560px;height:560px;border-radius:50%;left:50%;top:-430px;transform:translateX(-50%);background:rgba(255,255,255,.10)}.cta h2{font-size:48px;line-height:1.04;letter-spacing:-2.2px;position:relative}.cta p{max-width:590px;margin:16px auto 28px;color:rgba(255,255,255,.72);position:relative}.cta .btn{height:52px;background:#fff;color:var(--indigo);position:relative}
+footer{padding:34px 0 46px;border-top:1px solid var(--line)}.footer{display:flex;justify-content:space-between;align-items:center;gap:20px;color:var(--muted-2);font-size:12px}.footer-links{display:flex;gap:20px}
 
-/* ── Responsive ── */
-@media (max-width: 960px) {
-  nav { padding: 0 28px; gap: 20px; }
-  .nav-links { display: none; }
-  .hero { grid-template-columns: 1fr; padding: 60px 28px; gap: 48px; }
-  .hero h1 { font-size: 40px; }
-  .hero-card { max-width: 420px; }
-  .features-section { padding: 64px 28px; }
-  .features-grid { grid-template-columns: 1fr; }
-  .how-section { padding: 64px 28px; }
-  .steps-grid { grid-template-columns: repeat(2,1fr); }
-  .steps-grid::before { display: none; }
-  .aijiv-section { padding: 64px 28px; }
-  .aijiv-inner { grid-template-columns: 1fr; }
-  .aijiv-title { font-size: 34px; }
-  .proof-section { padding: 64px 28px; }
-  .proof-grid { grid-template-columns: 1fr; }
-  .cta-section { padding: 64px 28px; }
-  .cta-title { font-size: 36px; }
-  footer { padding: 32px 28px; flex-direction: column; align-items: flex-start; }
-  .section-title { font-size: 32px; }
+@media(max-width:1020px){
+ .nav-links{display:none}.hero{grid-template-columns:1fr;gap:48px}.hero-copy{max-width:720px}.product-stage{min-height:650px}.section-head{align-items:flex-start;flex-direction:column}.outcome-grid{grid-template-columns:1fr}.outcome{min-height:220px}.how-grid,.ai-grid,.trust-grid{grid-template-columns:1fr}.ai-grid{gap:48px}.proof-inner{padding:20px 0;flex-direction:column;align-items:flex-start}.proof-points{gap:16px}
+}
+@media(max-width:680px){
+ .container{width:min(100% - 28px,1180px)}.nav-wrap{padding-top:8px}.nav{height:58px;border-radius:15px;padding:0 11px 0 14px}.brand{font-size:17px}.brand-mark{width:30px;height:30px}.nav-actions{margin-left:auto}.nav-actions .btn-secondary{display:none}.nav-actions .btn{height:38px;padding:0 14px;font-size:12px}
+ .hero{padding:58px 0 52px}h1{font-size:49px;letter-spacing:-2.8px}.hero-copy p{font-size:16px}.hero-actions .btn{width:100%}.hero-note{gap:8px}.hero-note span{width:100%}.hero-note span::after{display:none!important}
+ .product-stage{min-height:640px;align-items:start;padding-top:28px}.product-halo{display:none}.creator-card{width:min(100%,390px);transform:none}.float-1{left:0;top:0}.float-2{right:0;top:490px;width:145px}.float-3{display:none}
+ .section{padding:76px 0}.section-head h2{font-size:36px}.outcome-grid{gap:16px}.ai-points{grid-template-columns:1fr}.trust-list{grid-template-columns:1fr}.cta{padding:50px 22px}.cta h2{font-size:38px}.footer{flex-direction:column;align-items:flex-start}
 }
 </style>
 </head>
 <body>
 
-<!-- Nav -->
-<nav>
-  <div class="nav-inner">
-    <a class="nav-logo" href="#">
-      <div style="width:30px;height:30px;background:var(--indigo-lt);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-        <i data-lucide="heart-handshake" style="width:16px;height:16px;stroke:var(--indigo);fill:none;"></i>
-      </div>
-      Contribute
-    </a>
-    <div class="nav-links">
-      <a href="#features">Features</a>
-      <a href="#aijiv">AiJiv</a>
-      <a href="#how">How it works</a>
-      <a href="#testimonials">Stories</a>
-    </div>
-    <div class="nav-cta">
-      <a class="btn-ghost" href="#">Sign in</a>
-      <a class="btn-primary" href="un-artists-onboarding.html">Start my page</a>
-    </div>
-  </div>
-</nav>
+<header class="nav-wrap">
+  <nav class="nav container">
+    <a class="brand" href="#"><span class="brand-mark"><i data-lucide="heart-handshake" width="19"></i></span>Contribute</a>
+    <div class="nav-links"><a href="#product">Features</a><a href="#how">How it works</a><a href="#ai">AI</a><a href="#pricing">Pricing</a></div>
+    <div class="nav-actions"><a class="btn btn-secondary" href="#">Sign in</a><a class="btn btn-primary" href="un-artists-onboarding.html">Start my page</a></div>
+  </nav>
+</header>
 
-<!-- Hero -->
-<div class="hero-section">
-<div class="hero-bg"></div>
-<section class="hero">
-  <div>
-    <div class="hero-badge">
-      <i data-lucide="sparkles" style="width:13px;height:13px;stroke:var(--indigo);fill:none;"></i>
-      50,000+ creators · $2M+ raised
-    </div>
-    <h1>Fund your<br><span>work.</span></h1>
-    <p class="hero-sub">Accept contributions, offer paid access, and let your audience connect with your AI — all from one simple page.</p>
-    <div class="hero-actions">
-      <a class="btn-hero" href="un-artists-onboarding.html">
-        Get your Contribute card
-        <i data-lucide="arrow-right" style="width:16px;height:16px;stroke:white;"></i>
-      </a>
-      <a class="btn-hero-ghost" href="#features">
-        <i data-lucide="play" style="width:14px;height:14px;stroke:currentColor;fill:currentColor;"></i>
-        See how it works
-      </a>
-    </div>
-    <div class="hero-trust">
-      <i data-lucide="check-circle" style="width:14px;height:14px;stroke:var(--green);"></i>
-      Free to start
-      <div class="hero-trust-dot"></div>
-      No credit card required
-      <div class="hero-trust-dot"></div>
-      Set up in minutes
-    </div>
-  </div>
-
-  <!-- Creator card preview -->
-  <div class="hero-card">
-    <!-- Cover: abstract ocean gradient -->
-    <div class="hero-card-cover" style="background:#1A4A72;overflow:hidden;">
-      <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;" preserveAspectRatio="xMidYMid slice">
-        <defs>
-          <linearGradient id="cvBg" x1="0" y1="0" x2="0.3" y2="1">
-            <stop offset="0%" stop-color="#2A6A9E"/>
-            <stop offset="100%" stop-color="#0D3A58"/>
-          </linearGradient>
-          <radialGradient id="cvGlow" cx="38%" cy="0%" r="75%">
-            <stop offset="0%" stop-color="#4DA8D8" stop-opacity="0.6"/>
-            <stop offset="100%" stop-color="#0D3A58" stop-opacity="0"/>
-          </radialGradient>
-          <linearGradient id="cvWave1" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="#2A9AC8" stop-opacity="0"/>
-            <stop offset="35%" stop-color="#3AAEDD" stop-opacity="0.55"/>
-            <stop offset="100%" stop-color="#2A9AC8" stop-opacity="0"/>
-          </linearGradient>
-          <linearGradient id="cvWave2" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="#2EB89A" stop-opacity="0"/>
-            <stop offset="50%" stop-color="#36CCAE" stop-opacity="0.4"/>
-            <stop offset="100%" stop-color="#2EB89A" stop-opacity="0"/>
-          </linearGradient>
-        </defs>
-        <!-- Base -->
-        <rect width="400" height="180" fill="url(#cvBg)"/>
-        <!-- Ambient light from top -->
-        <rect width="400" height="180" fill="url(#cvGlow)"/>
-        <!-- Flowing wave layers -->
-        <path d="M-10,145 C60,110 130,130 200,108 C270,86 340,115 410,95 L410,185 L-10,185 Z" fill="url(#cvWave1)" opacity="0.8"/>
-        <path d="M-10,158 C80,130 160,148 240,132 C310,118 370,138 410,125 L410,185 L-10,185 Z" fill="#0A2E48" opacity="0.5"/>
-        <!-- Mid depth band -->
-        <path d="M-10,95 C70,75 150,95 230,80 C310,65 370,82 410,70 C410,90 380,102 310,115 C240,128 160,110 80,122 C40,128 10,120 -10,115 Z" fill="url(#cvWave2)" opacity="0.55"/>
-        <!-- Subtle light shafts -->
-        <path d="M100,0 L118,0 L80,185 L62,185 Z" fill="white" opacity="0.05"/>
-        <path d="M220,0 L234,0 L204,185 L190,185 Z" fill="white" opacity="0.04"/>
-        <path d="M330,0 L342,0 L316,185 L304,185 Z" fill="white" opacity="0.035"/>
-        <!-- Surface shimmer dots -->
-        <circle cx="95" cy="18" r="1.5" fill="white" opacity="0.35"/>
-        <circle cx="200" cy="12" r="1" fill="white" opacity="0.28"/>
-        <circle cx="310" cy="22" r="1.5" fill="white" opacity="0.32"/>
-        <circle cx="155" cy="8" r="1" fill="white" opacity="0.24"/>
-        <circle cx="265" cy="16" r="1" fill="white" opacity="0.24"/>
-      </svg>
-      <div class="hero-card-cover-overlay"></div>
-      <!-- Org type badge -->
-      <div style="position:absolute;top:14px;left:14px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:4px 12px;font-size:11px;color:white;font-weight:600;letter-spacing:0.3px;">
-        <i data-lucide="waves" style="width:11px;height:11px;stroke:white;flex-shrink:0;"></i> Conservation
+<main>
+<section class="hero-shell">
+  <div class="hero container">
+    <div class="hero-copy">
+      <div class="eyebrow"><span class="eyebrow-dot"></span>50,000+ creators · $2M+ raised</div>
+      <h1>Fund your work.</h1>
+      <p>Accept contributions, offer paid access, and let your audience connect with your AI — all from one simple page.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="un-artists-onboarding.html">Start my page <i data-lucide="arrow-right" width="16"></i></a>
+        <a class="btn btn-secondary" href="#product"><i data-lucide="play" width="15"></i> See how it works</a>
       </div>
-      <!-- Verified badge -->
-      <div style="position:absolute;top:14px;right:14px;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:4px 10px;display:flex;align-items:center;gap:5px;font-size:11px;color:white;font-weight:600;">
-        <i data-lucide="shield-check" style="width:11px;height:11px;stroke:#5FE0A0;"></i>
-        Verified Nonprofit
+      <div class="hero-note">
+        <span><i data-lucide="check-circle-2" width="14"></i> Free to start</span>
+        <span>No credit card required</span>
+        <span>Set up in minutes</span>
       </div>
     </div>
 
-    <div class="hero-card-body">
-      <!-- Org info row -->
-      <div class="hero-card-creator" style="align-items:flex-end;margin-bottom:12px;">
-        <div class="hero-card-av" style="background:linear-gradient(135deg,#004E7C,#0088BB);font-size:13px;font-weight:900;letter-spacing:-0.5px;">RF</div>
-        <div style="flex:1;">
-          <div class="hero-card-name">The Reef Fund</div>
-          <div class="hero-card-handle">@reeffund · Sydney · Maldives</div>
-        </div>
-        <div style="display:flex;gap:6px;margin-bottom:4px;">
-          <div style="width:28px;height:28px;border-radius:50%;border:1.5px solid #EDE5DA;display:flex;align-items:center;justify-content:center;">
-            <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-            </svg>
-          </div>
-          <div style="width:28px;height:28px;border-radius:50%;border:1.5px solid #EDE5DA;display:flex;align-items:center;justify-content:center;">
-            <i data-lucide="globe" style="width:12px;height:12px;stroke:#888;"></i>
+    <div class="product-stage">
+      <div class="product-halo"></div>
+      <div class="float-card float-1"><i data-lucide="hand-heart" width="18"></i> One-tap support</div>
+      <div class="float-card float-2"><strong>8.4k</strong><span>supporters</span></div>
+      <div class="float-card float-3"><div class="row"><i data-lucide="trending-up" width="18"></i><div><strong>$18.2k</strong><span>raised this month</span></div></div></div>
+
+      <article class="creator-card">
+        <!-- Ocean SVG cover -->
+        <div class="cover">
+          <svg viewBox="0 0 410 210" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <linearGradient id="cvBg" x1="0" y1="0" x2="0.3" y2="1">
+                <stop offset="0%" stop-color="#2A6A9E"/><stop offset="100%" stop-color="#0D3A58"/>
+              </linearGradient>
+              <radialGradient id="cvGlow" cx="38%" cy="0%" r="75%">
+                <stop offset="0%" stop-color="#4DA8D8" stop-opacity="0.6"/><stop offset="100%" stop-color="#0D3A58" stop-opacity="0"/>
+              </radialGradient>
+              <linearGradient id="cvWave1" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#2A9AC8" stop-opacity="0"/>
+                <stop offset="35%" stop-color="#3AAEDD" stop-opacity="0.55"/>
+                <stop offset="100%" stop-color="#2A9AC8" stop-opacity="0"/>
+              </linearGradient>
+              <linearGradient id="cvWave2" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#2EB89A" stop-opacity="0"/>
+                <stop offset="50%" stop-color="#36CCAE" stop-opacity="0.4"/>
+                <stop offset="100%" stop-color="#2EB89A" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <rect width="410" height="210" fill="url(#cvBg)"/>
+            <rect width="410" height="210" fill="url(#cvGlow)"/>
+            <path d="M-10,155 C60,120 130,140 210,118 C280,96 350,125 420,105 L420,215 L-10,215 Z" fill="url(#cvWave1)" opacity="0.8"/>
+            <path d="M-10,168 C80,140 160,158 250,142 C320,128 380,148 420,135 L420,215 L-10,215 Z" fill="#0A2E48" opacity="0.5"/>
+            <path d="M-10,100 C70,80 150,100 240,85 C320,70 375,88 420,75 C420,95 385,110 315,123 C245,136 160,118 80,130 C40,136 10,128 -10,123 Z" fill="url(#cvWave2)" opacity="0.55"/>
+            <path d="M100,0 L118,0 L80,215 L62,215 Z" fill="white" opacity="0.05"/>
+            <path d="M230,0 L244,0 L214,215 L200,215 Z" fill="white" opacity="0.04"/>
+            <path d="M345,0 L357,0 L331,215 L319,215 Z" fill="white" opacity="0.035"/>
+            <circle cx="95" cy="22" r="1.5" fill="white" opacity="0.35"/>
+            <circle cx="210" cy="14" r="1" fill="white" opacity="0.28"/>
+            <circle cx="325" cy="26" r="1.5" fill="white" opacity="0.32"/>
+            <circle cx="160" cy="10" r="1" fill="white" opacity="0.24"/>
+            <circle cx="275" cy="18" r="1" fill="white" opacity="0.24"/>
+          </svg>
+          <div class="cover-badges">
+            <span class="cover-chip"><i data-lucide="waves" width="12"></i> Conservation</span>
+            <span class="cover-chip"><i data-lucide="shield-check" width="12"></i> Verified nonprofit</span>
           </div>
         </div>
-      </div>
 
-      <!-- Bio placeholder bars -->
-      <div style="margin-bottom:16px;">
-        <div style="height:8px;background:#EEEEF4;border-radius:4px;margin-bottom:7px;"></div>
-        <div style="height:8px;background:#EEEEF4;border-radius:4px;width:72%;"></div>
-      </div>
+        <div class="card-body">
+          <div class="profile-row">
+            <div class="avatar">RF</div>
+            <div>
+              <div class="profile-name">The Reef Fund</div>
+              <div class="profile-handle">@reeffund · Sydney · Maldives</div>
+            </div>
+            <div class="socials">
+              <span class="social">
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+              </span>
+              <span class="social"><i data-lucide="globe" width="13"></i></span>
+            </div>
+          </div>
 
+          <!-- Bio placeholder bars -->
+          <div style="margin:14px 0 12px;">
+            <div style="height:8px;background:#EEEEF4;border-radius:4px;margin-bottom:7px;"></div>
+            <div style="height:8px;background:#EEEEF4;border-radius:4px;width:72%;"></div>
+          </div>
 
-      <!-- Media row -->
-      <div style="display:flex;gap:6px;margin-bottom:14px;">
-        <!-- Image 1: shallow reef, teal/bright -->
-        <div style="flex:1;height:64px;border-radius:8px;overflow:hidden;position:relative;background:#0E6B72;">
-          <svg viewBox="0 0 120 64" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;" preserveAspectRatio="xMidYMid slice">
-            <defs>
-              <linearGradient id="g1bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1AABB5"/><stop offset="100%" stop-color="#0A5060"/></linearGradient>
-              <radialGradient id="g1sun" cx="50%" cy="0%" r="70%"><stop offset="0%" stop-color="#7EEAF5" stop-opacity="0.5"/><stop offset="100%" stop-color="#0A5060" stop-opacity="0"/></radialGradient>
-            </defs>
-            <rect width="120" height="64" fill="url(#g1bg)"/>
-            <rect width="120" height="64" fill="url(#g1sun)"/>
-            <path d="M0,44 C20,34 40,42 60,36 C80,30 100,38 120,32 L120,64 L0,64 Z" fill="#084A55" opacity="0.6"/>
-            <path d="M0,52 C25,44 50,50 75,46 C95,42 110,48 120,44 L120,64 L0,64 Z" fill="#052E36" opacity="0.8"/>
-            <path d="M30,64 C30,50 34,44 38,44 C42,44 46,50 46,64 Z" fill="#0A6B55" opacity="0.7"/>
-            <path d="M75,64 C75,52 78,47 81,47 C84,47 87,52 87,64 Z" fill="#0A6B55" opacity="0.6"/>
-            <circle cx="20" cy="22" r="1" fill="white" opacity="0.4"/>
-            <circle cx="60" cy="16" r="1.2" fill="white" opacity="0.35"/>
-            <circle cx="95" cy="20" r="0.8" fill="white" opacity="0.3"/>
-          </svg>
-        </div>
-        <!-- Image 2: deep blue with light caustics -->
-        <div style="flex:1;height:64px;border-radius:8px;overflow:hidden;position:relative;background:#0B2E52;">
-          <svg viewBox="0 0 120 64" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;" preserveAspectRatio="xMidYMid slice">
-            <defs>
-              <linearGradient id="g2bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1A5C9E"/><stop offset="100%" stop-color="#071E38"/></linearGradient>
-              <radialGradient id="g2c1" cx="35%" cy="25%" r="40%"><stop offset="0%" stop-color="#5BB8E8" stop-opacity="0.35"/><stop offset="100%" stop-color="transparent"/></radialGradient>
-              <radialGradient id="g2c2" cx="72%" cy="40%" r="30%"><stop offset="0%" stop-color="#4AAAD8" stop-opacity="0.25"/><stop offset="100%" stop-color="transparent"/></radialGradient>
-            </defs>
-            <rect width="120" height="64" fill="url(#g2bg)"/>
-            <rect width="120" height="64" fill="url(#g2c1)"/>
-            <rect width="120" height="64" fill="url(#g2c2)"/>
-            <path d="M28,0 L34,0 L22,64 L16,64 Z" fill="white" opacity="0.06"/>
-            <path d="M58,0 L63,0 L52,64 L47,64 Z" fill="white" opacity="0.05"/>
-            <path d="M90,0 L95,0 L85,64 L80,64 Z" fill="white" opacity="0.04"/>
-            <path d="M0,48 C30,40 60,46 90,42 C105,40 115,44 120,42 L120,64 L0,64 Z" fill="#040F1C" opacity="0.7"/>
-          </svg>
-        </div>
-        <!-- Image 3: warm sunrise over water -->
-        <div style="flex:1;height:64px;border-radius:8px;overflow:hidden;position:relative;background:#3A2A10;">
-          <svg viewBox="0 0 120 64" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;" preserveAspectRatio="xMidYMid slice">
-            <defs>
-              <linearGradient id="g3bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#C4733A"/><stop offset="55%" stop-color="#7A3A18"/><stop offset="100%" stop-color="#1A2A3A"/></linearGradient>
-              <radialGradient id="g3glow" cx="50%" cy="42%" r="45%"><stop offset="0%" stop-color="#FFB347" stop-opacity="0.6"/><stop offset="100%" stop-color="transparent"/></radialGradient>
-            </defs>
-            <rect width="120" height="64" fill="url(#g3bg)"/>
-            <rect width="120" height="64" fill="url(#g3glow)"/>
-            <!-- Horizon water -->
-            <path d="M0,38 C25,34 50,38 75,35 C95,32 110,36 120,34 L120,64 L0,64 Z" fill="#1A2A3A" opacity="0.85"/>
-            <!-- Water shimmer -->
-            <path d="M10,42 L20,42" stroke="#FFB347" stroke-width="0.8" opacity="0.3"/>
-            <path d="M40,44 L52,44" stroke="#FFB347" stroke-width="0.8" opacity="0.25"/>
-            <path d="M70,43 L80,43" stroke="#FFB347" stroke-width="0.8" opacity="0.3"/>
-            <path d="M95,45 L105,45" stroke="#FFB347" stroke-width="0.6" opacity="0.2"/>
-            <!-- Sun reflection column -->
-            <path d="M52,38 L68,38 L65,64 L55,64 Z" fill="#FFA020" opacity="0.12"/>
-          </svg>
-        </div>
-      </div>
+          <!-- Media row -->
+          <div style="display:flex;gap:6px;margin-bottom:14px;">
+            <div style="flex:1;height:60px;border-radius:8px;overflow:hidden;position:relative;background:#0E6B72;">
+              <svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;" preserveAspectRatio="xMidYMid slice">
+                <defs>
+                  <linearGradient id="g1bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1AABB5"/><stop offset="100%" stop-color="#0A5060"/></linearGradient>
+                  <radialGradient id="g1sun" cx="50%" cy="0%" r="70%"><stop offset="0%" stop-color="#7EEAF5" stop-opacity="0.5"/><stop offset="100%" stop-color="#0A5060" stop-opacity="0"/></radialGradient>
+                </defs>
+                <rect width="120" height="60" fill="url(#g1bg)"/>
+                <rect width="120" height="60" fill="url(#g1sun)"/>
+                <path d="M0,40 C20,32 40,38 60,33 C80,28 100,35 120,30 L120,60 L0,60 Z" fill="#084A55" opacity="0.6"/>
+                <path d="M0,48 C25,42 50,46 75,43 C95,40 110,45 120,42 L120,60 L0,60 Z" fill="#052E36" opacity="0.8"/>
+                <path d="M30,60 C30,48 33,43 37,43 C41,43 44,48 44,60 Z" fill="#0A6B55" opacity="0.7"/>
+                <path d="M75,60 C75,50 78,46 81,46 C84,46 87,50 87,60 Z" fill="#0A6B55" opacity="0.6"/>
+                <circle cx="20" cy="20" r="1" fill="white" opacity="0.4"/>
+                <circle cx="60" cy="14" r="1.2" fill="white" opacity="0.35"/>
+                <circle cx="95" cy="18" r="0.8" fill="white" opacity="0.3"/>
+              </svg>
+            </div>
+            <div style="flex:1;height:60px;border-radius:8px;overflow:hidden;position:relative;background:#0B2E52;">
+              <svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;" preserveAspectRatio="xMidYMid slice">
+                <defs>
+                  <linearGradient id="g2bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1A5C9E"/><stop offset="100%" stop-color="#071E38"/></linearGradient>
+                  <radialGradient id="g2c1" cx="35%" cy="25%" r="40%"><stop offset="0%" stop-color="#5BB8E8" stop-opacity="0.35"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+                </defs>
+                <rect width="120" height="60" fill="url(#g2bg)"/>
+                <rect width="120" height="60" fill="url(#g2c1)"/>
+                <path d="M28,0 L34,0 L22,60 L16,60 Z" fill="white" opacity="0.06"/>
+                <path d="M58,0 L63,0 L52,60 L47,60 Z" fill="white" opacity="0.05"/>
+                <path d="M90,0 L95,0 L85,60 L80,60 Z" fill="white" opacity="0.04"/>
+                <path d="M0,44 C30,38 60,43 90,40 C105,38 115,42 120,40 L120,60 L0,60 Z" fill="#040F1C" opacity="0.7"/>
+              </svg>
+            </div>
+            <div style="flex:1;height:60px;border-radius:8px;overflow:hidden;position:relative;background:#3A2A10;">
+              <svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%;" preserveAspectRatio="xMidYMid slice">
+                <defs>
+                  <linearGradient id="g3bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#C4733A"/><stop offset="55%" stop-color="#7A3A18"/><stop offset="100%" stop-color="#1A2A3A"/></linearGradient>
+                  <radialGradient id="g3glow" cx="50%" cy="42%" r="45%"><stop offset="0%" stop-color="#FFB347" stop-opacity="0.6"/><stop offset="100%" stop-color="transparent"/></radialGradient>
+                </defs>
+                <rect width="120" height="60" fill="url(#g3bg)"/>
+                <rect width="120" height="60" fill="url(#g3glow)"/>
+                <path d="M0,36 C25,32 50,36 75,33 C95,30 110,34 120,32 L120,60 L0,60 Z" fill="#1A2A3A" opacity="0.85"/>
+                <path d="M10,40 L20,40" stroke="#FFB347" stroke-width="0.8" opacity="0.3"/>
+                <path d="M40,41 L52,41" stroke="#FFB347" stroke-width="0.8" opacity="0.25"/>
+                <path d="M70,40 L80,40" stroke="#FFB347" stroke-width="0.8" opacity="0.3"/>
+                <path d="M52,36 L68,36 L65,60 L55,60 Z" fill="#FFA020" opacity="0.12"/>
+              </svg>
+            </div>
+          </div>
 
-      <!-- Impact stat strip -->
-      <div style="display:flex;gap:0;border:1px solid #EDE5DA;border-radius:12px;overflow:hidden;margin-bottom:16px;">
-        <div style="flex:1;padding:10px 8px;text-align:center;border-right:1px solid #EDE5DA;">
-          <div style="font-size:15px;font-weight:800;color:#0F0F1A;">2.3M</div>
-          <div style="font-size:10px;color:#888;margin-top:1px;">sq ft restored</div>
+          <div class="stats">
+            <div class="stat"><strong>2.3M</strong><span>sq ft restored</span></div>
+            <div class="stat"><strong>14</strong><span>countries</span></div>
+            <div class="stat"><strong>8,400</strong><span>supporters</span></div>
+          </div>
+          <div class="support-label">Support The Reef Fund</div>
+          <div class="amounts">
+            <button class="amount">$5</button>
+            <button class="amount active">$15</button>
+            <button class="amount">$50</button>
+            <button class="amount">$100</button>
+          </div>
+          <button class="card-cta"><i data-lucide="heart" width="15" fill="currentColor"></i> Contribute now</button>
+          <button class="card-ai"><i data-lucide="message-circle" width="15"></i> Ask about our impact</button>
         </div>
-        <div style="flex:1;padding:10px 8px;text-align:center;border-right:1px solid #EDE5DA;">
-          <div style="font-size:15px;font-weight:800;color:#0F0F1A;">14</div>
-          <div style="font-size:10px;color:#888;margin-top:1px;">countries</div>
-        </div>
-        <div style="flex:1;padding:10px 8px;text-align:center;">
-          <div style="font-size:15px;font-weight:800;color:#0F0F1A;">8,400</div>
-          <div style="font-size:10px;color:#888;margin-top:1px;">supporters</div>
-        </div>
-      </div>
-
-      <!-- Divider -->
-      <div style="height:1px;background:#EDE5DA;margin-bottom:14px;"></div>
-
-      <div class="hero-card-label">Support The Reef Fund</div>
-      <div class="hero-card-amounts">
-        <div class="hero-card-amt">
-          <div class="hero-card-amt-val">$5</div>
-        </div>
-        <div class="hero-card-amt sel">
-          <div class="hero-card-amt-val">$15</div>
-        </div>
-        <div class="hero-card-amt">
-          <div class="hero-card-amt-val">$50</div>
-        </div>
-        <div class="hero-card-amt">
-          <div class="hero-card-amt-val">$100</div>
-        </div>
-      </div>
-      <button class="hero-card-btn" style="background:#333;">
-        <i data-lucide="heart" style="width:14px;height:14px;stroke:white;fill:white;"></i>
-        Contribute Now
-      </button>
-      <!-- AiJiv chat button -->
-      <button style="width:100%;height:42px;margin-top:10px;background:white;border:1.5px solid #EDE5DA;border-radius:21px;font-size:13px;font-weight:600;color:#555568;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:border-color 0.15s;" onmouseover="this.style.borderColor='#5B4FCF';this.style.color='#5B4FCF';" onmouseout="this.style.borderColor='#EDE5DA';this.style.color='#555568';">
-        <i data-lucide="message-circle" style="width:14px;height:14px;stroke:currentColor;"></i>
-        Ask about our impact
-      </button>
+      </article>
     </div>
   </div>
 </section>
-</div><!-- /hero-section -->
 
-<!-- Features -->
-<section class="features-section" id="features">
-  <div class="features-inner">
-    <div class="section-eyebrow">Three tools, one platform</div>
-    <h2 class="section-title">Everything you need<br>to earn from your work</h2>
-    <p class="section-sub">Whether you're an artist, educator, activist, or expert — Contribute gives you a complete toolkit to build sustainable income from the audience you've already earned.</p>
+<section class="proof-strip">
+  <div class="proof-inner container">
+    <div class="proof-copy">Built for creators, educators, experts, and organizations.</div>
+    <div class="proof-points">
+      <span><i data-lucide="link-2" width="15"></i> One shareable page</span>
+      <span><i data-lucide="wallet-cards" width="15"></i> Multiple ways to earn</span>
+      <span><i data-lucide="shield-check" width="15"></i> You control access</span>
+    </div>
+  </div>
+</section>
 
-    <div class="features-grid">
-      <!-- Contributions -->
-      <div class="feature-card">
-        <div>
-          <div class="feature-num">Tool 01</div>
-        </div>
-        <div class="feature-icon blue">
-          <i data-lucide="heart" style="width:24px;height:24px;stroke:var(--indigo);fill:none;"></i>
-        </div>
-        <div>
-          <div class="feature-name">Contributions</div>
-          <p class="feature-desc">Let supporters directly fund your mission. Set flexible one-time or recurring amounts, share one link, and start receiving contributions from anyone, anywhere in the world.</p>
-        </div>
-        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--gray-dk);">
-          <li style="display:flex;align-items:center;gap:8px;"><i data-lucide="check" style="width:14px;height:14px;stroke:var(--green);flex-shrink:0;"></i> Custom contribution amounts</li>
-          <li style="display:flex;align-items:center;gap:8px;"><i data-lucide="check" style="width:14px;height:14px;stroke:var(--green);flex-shrink:0;"></i> One shareable link</li>
-          <li style="display:flex;align-items:center;gap:8px;"><i data-lucide="check" style="width:14px;height:14px;stroke:var(--green);flex-shrink:0;"></i> Supports causes, artists & orgs</li>
-        </ul>
-        <div class="feature-tag blue">
-          <i data-lucide="zap" style="width:12px;height:12px;stroke:currentColor;"></i>
-          Free to enable
-        </div>
+<section class="section" id="product">
+  <div class="container">
+    <div class="section-head">
+      <div><div class="eyebrow"><span class="eyebrow-dot"></span>One page, more ways to earn</div><h2>Start with support. Add more when you're ready.</h2></div>
+      <p>Contribute brings the most useful parts of donations, memberships, digital access, and AI into one coherent experience.</p>
+    </div>
+    <div class="outcome-grid">
+      <article class="outcome"><div class="outcome-num">01 · Support</div><div class="outcome-icon"><i data-lucide="heart" width="25"></i></div><h3>Accept contributions</h3><p>Let people support your work with one-time or recurring contributions through a page that feels like yours.</p><a href="#">Learn more <i data-lucide="arrow-right" width="14"></i></a></article>
+      <article class="outcome"><div class="outcome-num">02 · Access</div><div class="outcome-icon"><i data-lucide="lock-keyhole" width="25"></i></div><h3>Offer paid access</h3><p>Charge for premium writing, downloads, courses, memberships, or deeper access to your expertise.</p><a href="#">Learn more <i data-lucide="arrow-right" width="14"></i></a></article>
+      <article class="outcome"><div class="outcome-num">03 · Engagement</div><div class="outcome-icon"><i data-lucide="bot" width="25"></i></div><h3>Stay available with AI</h3><p>Let your audience ask questions and learn from your knowledge, even when you are not online.</p><a href="#">Learn more <i data-lucide="arrow-right" width="14"></i></a></article>
+    </div>
+  </div>
+</section>
+
+<section class="section alt" id="how">
+  <div class="container">
+    <div class="section-head">
+      <div><div class="eyebrow"><span class="eyebrow-dot"></span>Simple by design</div><h2>Go from idea to a live page in minutes.</h2></div>
+      <p>Set up the essentials first. Contributions, paid access, and AI can be turned on independently.</p>
+    </div>
+    <div class="how-grid">
+      <div class="steps">
+        <div class="step"><div class="step-num">01</div><div><h3>Claim your page</h3><p>Choose your contribute.to link and add your identity, story, and work.</p></div></div>
+        <div class="step"><div class="step-num">02</div><div><h3>Choose how people support you</h3><p>Enable contributions, paid access, AI, or any combination.</p></div></div>
+        <div class="step"><div class="step-num">03</div><div><h3>Share one link</h3><p>Use it across your site, social profiles, newsletter, and messages.</p></div></div>
+        <div class="step"><div class="step-num">04</div><div><h3>Build a lasting relationship</h3><p>Turn one-time supporters into members, customers, and a community.</p></div></div>
       </div>
-
-      <!-- AiJiv -->
-      <div class="feature-card">
-        <div>
-          <div class="feature-num">Tool 02</div>
-        </div>
-        <div class="feature-icon gold">
-          <i data-lucide="bot" style="width:24px;height:24px;stroke:#B07B10;fill:none;"></i>
-        </div>
-        <div>
-          <div class="feature-name">AiJiv</div>
-          <p class="feature-desc">Your cognitive presence. AiJiv internalises your reasoning patterns and frameworks — then deploys your knowledge as an intelligent presence that engages and earns, always on.</p>
-        </div>
-        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--gray-dk);">
-          <li style="display:flex;align-items:center;gap:8px;"><i data-lucide="check" style="width:14px;height:14px;stroke:var(--green);flex-shrink:0;"></i> Learns how you think, not just what you've said</li>
-          <li style="display:flex;align-items:center;gap:8px;"><i data-lucide="check" style="width:14px;height:14px;stroke:var(--green);flex-shrink:0;"></i> Answers questions you've never publicly addressed</li>
-          <li style="display:flex;align-items:center;gap:8px;"><i data-lucide="check" style="width:14px;height:14px;stroke:var(--green);flex-shrink:0;"></i> Compounds — gets smarter every conversation</li>
-        </ul>
-        <div class="feature-tag gold">
-          <i data-lucide="sparkles" style="width:12px;height:12px;stroke:currentColor;"></i>
-          Powered by AI
-        </div>
-      </div>
-
-      <!-- Paywall -->
-      <div class="feature-card">
-        <div>
-          <div class="feature-num">Tool 03</div>
-        </div>
-        <div class="feature-icon green">
-          <i data-lucide="lock" style="width:24px;height:24px;stroke:var(--green);fill:none;"></i>
-        </div>
-        <div>
-          <div class="feature-name">Paywall</div>
-          <p class="feature-desc">Offer a free taste, then gate deeper access. Set the number of free AiJiv chats, then let your supporters unlock unlimited conversations for a price you control.</p>
-        </div>
-        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--gray-dk);">
-          <li style="display:flex;align-items:center;gap:8px;"><i data-lucide="check" style="width:14px;height:14px;stroke:var(--green);flex-shrink:0;"></i> You set the free chat limit</li>
-          <li style="display:flex;align-items:center;gap:8px;"><i data-lucide="check" style="width:14px;height:14px;stroke:var(--green);flex-shrink:0;"></i> You control the price</li>
-          <li style="display:flex;align-items:center;gap:8px;"><i data-lucide="check" style="width:14px;height:14px;stroke:var(--green);flex-shrink:0;"></i> Seamless upgrade flow</li>
-        </ul>
-        <div class="feature-tag green">
-          <i data-lucide="trending-up" style="width:12px;height:12px;stroke:currentColor;"></i>
-          Recurring revenue
+      <div class="page-preview">
+        <div class="preview-top"><span>contribute.to/reeffund</span><strong>The Reef Fund</strong></div>
+        <div class="preview-body">
+          <div class="preview-line"></div><div class="preview-line short"></div>
+          <div class="preview-actions"><button>Support</button><button>Ask our AI</button></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- How it works -->
-<section class="how-section" id="how">
-  <div class="section-eyebrow">Get started in minutes</div>
-  <h2 class="section-title">From zero to earning,<br>in 4 simple steps</h2>
-  <div class="steps-grid">
-    <div class="step-item">
-      <div class="step-num">1</div>
-      <div class="step-name">Claim your link</div>
-      <p class="step-desc">Choose your unique contribute.to URL — your personal storefront.</p>
-    </div>
-    <div class="step-item">
-      <div class="step-num">2</div>
-      <div class="step-name">Build your profile</div>
-      <p class="step-desc">Add your photo, cover image, bio, and a gallery of your work.</p>
-    </div>
-    <div class="step-item">
-      <div class="step-num">3</div>
-      <div class="step-name">Set up your AI</div>
-      <p class="step-desc">Enable AiJiv, upload your content, and set your paywall terms.</p>
-    </div>
-    <div class="step-item">
-      <div class="step-num">4</div>
-      <div class="step-name">Share & earn</div>
-      <p class="step-desc">Share your link everywhere. Contributions and AI chats start flowing.</p>
-    </div>
-  </div>
-</section>
-
-<!-- AiJiv deep dive -->
-<section class="aijiv-section" id="aijiv">
-  <div class="aijiv-glow"></div>
-  <div class="aijiv-inner">
+<section class="section ai-section" id="ai">
+  <div class="container ai-grid">
     <div>
-      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(124,114,224,0.15);border:1px solid rgba(124,114,224,0.3);border-radius:20px;padding:5px 14px;margin-bottom:20px;">
-        <i data-lucide="bot" style="width:13px;height:13px;stroke:#7C72E0;"></i>
-        <span style="font-size:12px;font-weight:700;color:#7C72E0;text-transform:uppercase;letter-spacing:0.8px;">AiJiv — Powered by Contribute</span>
-      </div>
-      <h2 class="aijiv-title">Your Cognitive<br><span>Presence.</span></h2>
-      <p class="aijiv-desc">Most platforms store your content. AiJiv internalises how you think — turning years of knowledge into an intelligent presence that engages your audience, answers their questions, and earns on your behalf. Around the clock.</p>
-
-      <!-- 6-point grid -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;">
-        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 18px;">
-          <div style="font-size:11px;font-weight:700;color:#7C72E0;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:5px;">01</div>
-          <div style="font-size:14px;font-weight:700;color:white;margin-bottom:3px;">Internalises your reasoning</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.45);line-height:1.5;">Patterns and frameworks — not just words.</div>
-        </div>
-        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 18px;">
-          <div style="font-size:11px;font-weight:700;color:#7C72E0;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:5px;">02</div>
-          <div style="font-size:14px;font-weight:700;color:white;margin-bottom:3px;">Learns how you think</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.45);line-height:1.5;">Not just what you've said — your perspective.</div>
-        </div>
-        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 18px;">
-          <div style="font-size:11px;font-weight:700;color:#7C72E0;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:5px;">03</div>
-          <div style="font-size:14px;font-weight:700;color:white;margin-bottom:3px;">Authentically you</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.45);line-height:1.5;">Generates answers you would actually give.</div>
-        </div>
-        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 18px;">
-          <div style="font-size:11px;font-weight:700;color:#7C72E0;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:5px;">04</div>
-          <div style="font-size:14px;font-weight:700;color:white;margin-bottom:3px;">Compounds over time</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.45);line-height:1.5;">Gets smarter with every conversation.</div>
-        </div>
-        <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 18px;">
-          <div style="font-size:11px;font-weight:700;color:#7C72E0;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:5px;">05</div>
-          <div style="font-size:14px;font-weight:700;color:white;margin-bottom:3px;">Answers the unasked</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.45);line-height:1.5;">Responds to questions you've never publicly addressed.</div>
-        </div>
-        <div style="background:rgba(124,114,224,0.15);border:1px solid rgba(124,114,224,0.3);border-radius:14px;padding:16px 18px;">
-          <div style="font-size:11px;font-weight:700;color:#7C72E0;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:5px;">06</div>
-          <div style="font-size:14px;font-weight:700;color:white;margin-bottom:3px;">Always on. Always earning.</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.55);line-height:1.5;">Your knowledge, understood. Deployed. With a paywall built in.</div>
-        </div>
+      <div class="eyebrow ai-kicker"><span class="eyebrow-dot"></span>AI, explained plainly</div>
+      <h2>Let your audience talk with your knowledge.</h2>
+      <p>Train an AI using your work, perspective, and expertise. It answers questions in a way that reflects your material while you control what is free and what requires payment.</p>
+      <div class="ai-points">
+        <div class="ai-point"><strong>Built from your work</strong><span>Use the content and sources you choose.</span></div>
+        <div class="ai-point"><strong>You control access</strong><span>Offer free conversations or paid access.</span></div>
+        <div class="ai-point"><strong>Available anytime</strong><span>Help your audience without being online.</span></div>
+        <div class="ai-point"><strong>Designed to convert</strong><span>Move naturally from a free taste to paid access.</span></div>
       </div>
     </div>
-
-    <!-- Chat preview -->
-    <div class="chat-preview">
-      <div class="chat-header">
-        <div class="chat-header-av">AF</div>
-        <div>
-          <div class="chat-header-name">André's AiJiv</div>
-          <div class="chat-header-sub">Trained on 15 years of work</div>
-        </div>
-        <div class="chat-indicator">
-          <div class="chat-indicator-dot"></div>
-          Live
-        </div>
-      </div>
+    <div class="chat">
+      <div class="chat-head"><div class="chat-av">RF</div><div><div class="chat-name">Reef Fund AI</div><div class="chat-status">● Online</div></div></div>
       <div class="chat-body">
-        <div class="chat-msg user">
-          <div class="chat-av user">Y</div>
-          <div class="chat-bubble user">How does Candomblé influence your photographic approach?</div>
-        </div>
-        <div class="chat-msg">
-          <div class="chat-av ai">AF</div>
-          <div class="chat-bubble ai">Candomblé taught me to see what's sacred in the everyday. When I enter a ritual space, I'm not documenting — I'm bearing witness. The orixás give permission to the eye...</div>
-        </div>
-        <div class="chat-msg user">
-          <div class="chat-av user">Y</div>
-          <div class="chat-bubble user">How do you approach photographing sacred spaces respectfully?</div>
-        </div>
-        <!-- Paywall -->
-        <div class="chat-paywall">
-          <div class="chat-paywall-title">You've used 3 free chats</div>
-          <div class="chat-paywall-sub">Unlock unlimited conversations with André's AiJiv</div>
-          <button class="chat-paywall-btn">Unlock for $5 / month</button>
-        </div>
-      </div>
-      <div class="chat-input-bar">
-        <input type="text" placeholder="Ask André anything…" disabled>
-        <button class="chat-send">
-          <i data-lucide="send" style="width:13px;height:13px;stroke:white;"></i>
-        </button>
+        <div class="bubble user">Where is the restoration work happening?</div>
+        <div class="bubble ai">We're active across 14 countries — from the Great Barrier Reef to the Maldives. Each site uses transplanting techniques suited to local species.</div>
+        <div class="bubble user">Can I see the impact of my contribution?</div>
+        <div class="unlock"><strong>You've used 3 free conversations</strong><span>Unlock full access to the Reef Fund AI</span><br><button>Unlock for $5/month</button></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Testimonials -->
-<section class="proof-section" id="testimonials">
-  <div class="proof-inner">
-    <div class="proof-top">
-      <h2 class="proof-title">Creators love Contribute</h2>
-      <p class="proof-sub">From photographers and authors to educators and activists — here's what people are saying.</p>
+<section class="section alt" id="pricing">
+  <div class="container trust-grid">
+    <div class="trust-card">
+      <div class="eyebrow"><span class="eyebrow-dot"></span>Trust matters</div>
+      <h3>A clearer way to build around your audience.</h3>
+      <p>People should understand what they are paying for, and you should stay in control of your page, pricing, and content.</p>
+      <div class="trust-list">
+        <div class="trust-item"><i data-lucide="check-circle-2" width="17"></i><span>Set your own contribution amounts and access rules.</span></div>
+        <div class="trust-item"><i data-lucide="check-circle-2" width="17"></i><span>Choose what your AI can use and answer from.</span></div>
+        <div class="trust-item"><i data-lucide="check-circle-2" width="17"></i><span>Use one page instead of stitching together multiple tools.</span></div>
+        <div class="trust-item"><i data-lucide="check-circle-2" width="17"></i><span>Start simple and add monetization only when it fits.</span></div>
+      </div>
     </div>
-    <div class="proof-grid">
-      <div class="proof-card">
-        <p class="proof-quote">"We replaced three donation platforms with one Contribute link. Contributions went up 40% in the first month — and our AiJiv now answers donor questions we never had time to respond to."</p>
-        <div class="proof-author">
-          <div class="proof-av" style="background:linear-gradient(135deg,#004E7C,#0088BB);">RF</div>
-          <div>
-            <div class="proof-name">The Reef Fund</div>
-            <div class="proof-role">Marine Conservation Nonprofit · Sydney & Maldives</div>
-          </div>
-        </div>
-      </div>
-      <div class="proof-card">
-        <p class="proof-quote">"The paywall on AiJiv changed everything. I was giving away 10 years of knowledge for free. Now my audience pays for deep access, and they love it."</p>
-        <div class="proof-author">
-          <div class="proof-av" style="background:#1A4A2E;">MO</div>
-          <div>
-            <div class="proof-name">Maya Osei</div>
-            <div class="proof-role">Author & Educator · Accra, Ghana</div>
-          </div>
-        </div>
-      </div>
-      <div class="proof-card">
-        <p class="proof-quote">"Contribute let me turn my UN advocacy work into something sustainable. It's not about the money — it's about having the resources to keep doing the work."</p>
-        <div class="proof-author">
-          <div class="proof-av" style="background:#2C1A5E;">LR</div>
-          <div>
-            <div class="proof-name">Lena Ramírez</div>
-            <div class="proof-role">Human Rights Advocate · Geneva</div>
-          </div>
-        </div>
-      </div>
+    <div class="price-card">
+      <div class="small">Simple starting point</div>
+      <h3>Free to start</h3>
+      <p>Create your page and begin accepting support. Add paid access and AI when you are ready.</p>
+      <a class="btn" href="un-artists-onboarding.html">Start my page <i data-lucide="arrow-right" width="16"></i></a>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
-<section class="cta-section">
-  <div class="cta-glow"></div>
-  <div class="cta-inner">
-    <div class="cta-eyebrow">Start earning today</div>
-    <h2 class="cta-title">Get your Contribute card now</h2>
-    <p class="cta-sub">Claim your link, set up your profile, and start receiving support from your audience in minutes.</p>
-    <a class="btn-cta" href="un-artists-onboarding.html">
-      <i data-lucide="arrow-right" style="width:18px;height:18px;stroke:var(--indigo);"></i>
-      Get started — it's free
-    </a>
-    <div class="cta-note">No credit card required · Cancel anytime</div>
+<section class="final">
+  <div class="container">
+    <div class="cta">
+      <h2>Give your work a place to grow.</h2>
+      <p>Start with a simple support page today. Add paid access and AI whenever they make sense for your audience.</p>
+      <a class="btn" href="un-artists-onboarding.html">Start my page <i data-lucide="arrow-right" width="16"></i></a>
+    </div>
   </div>
 </section>
+</main>
 
-<!-- Footer -->
 <footer>
-  <div class="footer-logo">
-    <i data-lucide="heart-handshake" style="width:20px;height:20px;stroke:var(--indigo);fill:none;"></i>
-    Contribute
+  <div class="footer container">
+    <a class="brand" href="#"><span class="brand-mark"><i data-lucide="heart-handshake" width="18"></i></span>Contribute</a>
+    <div class="footer-links"><a href="#">Product</a><a href="#">Pricing</a><a href="#">Terms</a><a href="#">Privacy</a></div>
+    <span>© 2026 Contribute.to</span>
   </div>
-  <div class="footer-links">
-    <a href="#">Product</a>
-    <a href="#">Pricing</a>
-    <a href="#">For Artists</a>
-    <a href="#">AiJiv</a>
-    <a href="#">Terms</a>
-    <a href="#">Privacy</a>
-  </div>
-  <div class="footer-copy">©2026 Contribute.to</div>
 </footer>
 
-<script>lucide.createIcons();</script>
+<script>
+lucide.createIcons();
+document.querySelectorAll('.amount').forEach(btn => btn.addEventListener('click', () => {
+  document.querySelectorAll('.amount').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}));
+</script>
 </body>
 </html>
