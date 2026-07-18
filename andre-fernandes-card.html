@@ -31,6 +31,31 @@ body {
   padding: 48px 24px;
 }
 
+.contribute-logo {
+  position: fixed;
+  top: 20px;
+  left: 24px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--black);
+  text-decoration: none;
+  letter-spacing: -0.2px;
+  z-index: 100;
+}
+.contribute-logo-mark {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--indigo);
+  display: grid;
+  place-items: center;
+  color: #fff;
+  flex-shrink: 0;
+}
+
 /* ═══════════════════════════════
    3D CARD FLIP WRAPPER
    Two-level structure:
@@ -382,6 +407,11 @@ body {
 </style>
 </head>
 <body>
+
+<a class="contribute-logo" href="#">
+  <span class="contribute-logo-mark"><i data-lucide="heart-handshake" width="15"></i></span>
+  Contribute
+</a>
 
 <div class="card-clip">
 <div class="card-container">
