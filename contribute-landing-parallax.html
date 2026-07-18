@@ -43,16 +43,16 @@ button{font:inherit;cursor:pointer}
 .btn-ghost:hover{border-color:#c9c6d8}
 
 /* ── Hero intro ── */
-.hero-intro{min-height:100vh;background:var(--page);display:flex;align-items:center;padding-top:84px;border-bottom:1px solid var(--line)}
-.hero-intro .container{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
-.hero-copy{max-width:520px}
+.hero-intro{min-height:86vh;background:#fff;display:flex;align-items:center;padding-top:84px;border-bottom:1px solid var(--line)}
+.hero-intro .container{display:flex;flex-direction:column;align-items:center;text-align:center}
+.hero-copy{max-width:720px}
 .eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--indigo);font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px}
 .eyebrow-dot{width:7px;height:7px;border-radius:50%;background:var(--indigo)}
-.hero-h1{font-size:64px;line-height:1.06;letter-spacing:-3.2px;font-weight:700;margin-bottom:22px;color:var(--ink)}
-.hero-sub{font-size:17px;line-height:1.72;color:var(--muted);margin-bottom:32px}
-.hero-actions{display:flex;align-items:center;gap:12px}
-.hero-actions .btn{height:50px;padding:0 24px;font-size:14px}
-.hero-note{margin-top:22px;display:flex;gap:20px;font-size:12px;color:var(--muted-2)}
+.hero-h1{font-size:72px;line-height:1.04;letter-spacing:-3.2px;font-weight:700;margin-bottom:24px;color:var(--ink)}
+.hero-sub{font-size:18px;line-height:1.72;color:var(--muted);margin-bottom:36px;max-width:560px}
+.hero-actions{display:flex;align-items:center;justify-content:center;gap:12px}
+.hero-actions .btn{height:52px;padding:0 28px;font-size:15px}
+.hero-note{margin-top:24px;display:flex;gap:24px;font-size:12px;color:var(--muted-2);justify-content:center}
 .hero-note span{display:inline-flex;align-items:center;gap:6px}
 
 /* ── Parallax 2-column story ── */
@@ -228,7 +228,6 @@ footer{padding:32px 0 44px;border-top:1px solid var(--line)}
   .parallax-wrapper{grid-template-columns:1fr}
   .pcol-center{display:none}
   .pcol-left{padding:0 24px}
-  .hero-intro .container{grid-template-columns:1fr}
   .hero-h1{font-size:46px}
   .outcome-grid{grid-template-columns:1fr}
   .proof-inner{flex-direction:column;align-items:flex-start;padding:20px 0;gap:14px}
@@ -268,37 +267,6 @@ footer{padding:32px 0 44px;border-top:1px solid var(--line)}
         <span><i data-lucide="check-circle-2" width="13"></i> Free to start</span>
         <span><i data-lucide="check-circle-2" width="13"></i> No credit card</span>
         <span><i data-lucide="check-circle-2" width="13"></i> Set up in minutes</span>
-      </div>
-    </div>
-    <!-- Static card preview in hero -->
-    <div style="display:flex;justify-content:center">
-      <div style="width:320px;background:#fff;border:1px solid rgba(231,228,239,.95);border-radius:24px;overflow:hidden;box-shadow:var(--shadow);">
-        <div style="height:150px;position:relative;overflow:hidden;background:#1A4A72;">
-          <img src="https://c.stocksy.com/a/GEXS00/z9/6800920.jpg" alt="Coral reef" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
-          <div style="position:absolute;left:12px;right:12px;top:12px;display:flex;justify-content:space-between;z-index:2">
-            <span style="height:24px;padding:0 9px;border-radius:999px;background:rgba(7,24,42,.68);border:1px solid rgba(255,255,255,.18);color:#fff;font-size:10px;font-weight:700;display:inline-flex;align-items:center;gap:4px"><i data-lucide="waves" width="10"></i> Conservation</span>
-            <span style="height:24px;padding:0 9px;border-radius:999px;background:rgba(7,24,42,.68);border:1px solid rgba(255,255,255,.18);color:#fff;font-size:10px;font-weight:700;display:inline-flex;align-items:center;gap:4px"><i data-lucide="shield-check" width="10" style="color:#74e0ad"></i> Verified</span>
-          </div>
-        </div>
-        <div style="padding:16px 18px 18px">
-          <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px">
-            <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#0a5f91,#0a94c5);border:2px solid #fff;color:#fff;display:grid;place-items:center;font-size:11px;font-weight:900;flex-shrink:0;">RF</div>
-            <div><div style="font-size:14px;font-weight:800;">The Reef Fund</div><div style="font-size:11px;color:var(--muted-2)">@reeffund · Sydney</div></div>
-          </div>
-          <div style="margin-bottom:10px"><div style="height:7px;background:#EEEEF4;border-radius:4px;margin-bottom:5px"></div><div style="height:7px;background:#EEEEF4;border-radius:4px;width:68%"></div></div>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);border:1px solid #e8dfd4;border-radius:10px;overflow:hidden;margin-bottom:12px">
-            <div style="padding:7px 4px;text-align:center;border-right:1px solid #e8dfd4"><div style="font-size:12px;font-weight:900;line-height:1">2.3M</div><div style="font-size:8px;color:var(--muted-2);margin-top:2px">sq ft restored</div></div>
-            <div style="padding:7px 4px;text-align:center;border-right:1px solid #e8dfd4"><div style="font-size:12px;font-weight:900;line-height:1">14</div><div style="font-size:8px;color:var(--muted-2);margin-top:2px">countries</div></div>
-            <div style="padding:7px 4px;text-align:center"><div style="font-size:12px;font-weight:900;line-height:1">8,400</div><div style="font-size:8px;color:var(--muted-2);margin-top:2px">supporters</div></div>
-          </div>
-          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:9px">
-            <div style="height:34px;border:1px solid #e7ded2;border-radius:8px;font-size:12px;font-weight:800;display:grid;place-items:center">$5</div>
-            <div style="height:34px;border:1px solid var(--indigo);border-radius:8px;background:var(--indigo-soft);color:var(--indigo);font-size:12px;font-weight:800;display:grid;place-items:center">$15</div>
-            <div style="height:34px;border:1px solid #e7ded2;border-radius:8px;font-size:12px;font-weight:800;display:grid;place-items:center">$50</div>
-            <div style="height:34px;border:1px solid #e7ded2;border-radius:8px;font-size:12px;font-weight:800;display:grid;place-items:center">$100</div>
-          </div>
-          <button style="width:100%;height:38px;border:0;border-radius:999px;background:#333;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:5px"><i data-lucide="heart" width="12" fill="white" stroke="white"></i> Contribute now</button>
-        </div>
       </div>
     </div>
   </div>
