@@ -64,8 +64,8 @@ button{font:inherit;cursor:pointer}
   border-bottom:1px solid var(--line);
 }
 
-/* Left text column */
-.pcol-left{ min-width:0; padding:0 72px 0 calc((100vw - 1180px)/2 + 24px); }
+/* Right text column (order: 1 puts it after the card) */
+.pcol-left{ min-width:0; order:1; padding:0 calc((100vw - 1180px)/2 + 24px) 0 72px; }
 
 /* Each step occupies one viewport height */
 .pstep{
@@ -87,7 +87,7 @@ button{font:inherit;cursor:pointer}
 .step-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
 .step-tag{height:30px;padding:0 12px;border-radius:999px;background:var(--indigo-soft);color:var(--indigo);font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:5px}
 
-/* Right sticky demo panel */
+/* Left sticky demo panel */
 .pcol-center{
   position:sticky;
   top:0;
@@ -95,9 +95,10 @@ button{font:inherit;cursor:pointer}
   display:flex;
   align-items:center;
   justify-content:center;
-  border-left:1px solid var(--line);
+  border-right:1px solid var(--line);
   background:#fff;
   align-self:start;
+  order:0;
 }
 
 /* Card mockups */
