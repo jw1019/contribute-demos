@@ -35,13 +35,17 @@ body {
 .contribute-logo {
   display: flex;
   align-items: center;
-  gap: 7px;
-  font-size: 14px;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gray-md);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.contribute-logo .contribute-logo-mark,
+.contribute-logo strong {
   font-weight: 800;
   color: var(--black);
-  text-decoration: none;
-  letter-spacing: -0.2px;
-  white-space: nowrap;
 }
 .contribute-logo-mark {
   display: flex;
@@ -604,8 +608,9 @@ body {
 </div><!-- /card-clip -->
 
 <a class="contribute-logo" href="#">
+  Powered by
   <span class="contribute-logo-mark"><i data-lucide="heart-handshake" width="15"></i></span>
-  Contribute
+  <strong>Contribute</strong>
 </a>
 
 <script>
