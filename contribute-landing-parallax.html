@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Contribute — Fund the work that matters</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>
+:root{
+  --ink:#11111a;
+  --muted:#666579;
+  --muted-2:#9291a2;
+  --line:#e9e7f0;
+  --page:#F8F5F3;
+  --indigo:#5b4fcf;
+  --indigo-dark:#4338b2;
+  --indigo-soft:#efedff;
+  --green:#2f9b6f;
+  --shadow:0 24px 70px rgba(31,27,67,.12),0 2px 10px rgba(31,27,67,.05);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Open Sans',Inter,-apple-system,sans-serif;background:#fff;color:var(--ink);line-height:1.55;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button{font:inherit;cursor:pointer}
+.container{width:min(1180px,calc(100% - 48px));margin:0 auto}
+
+/* ── Nav ── */
+.nav-wrap{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 0;background:rgba(248,245,243,.88);backdrop-filter:blur(18px);border-bottom:1px solid rgba(233,231,240,.6)}
+.nav{height:56px;display:flex;align-items:center;gap:32px}
+.brand{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:800;letter-spacing:-.3px}
+.brand-mark{width:32px;height:32px;border-radius:10px;background:var(--indigo-soft);display:grid;place-items:center;color:var(--indigo)}
+.nav-links{display:flex;gap:24px;margin-left:auto;font-size:14px;font-weight:600;color:var(--muted)}
+.nav-links a:hover{color:var(--ink)}
+.nav-actions{display:flex;gap:10px;margin-left:24px}
+.btn{height:40px;padding:0 18px;border-radius:999px;border:0;display:inline-flex;align-items:center;justify-content:center;gap:7px;font-size:13px;font-weight:700;cursor:pointer;transition:.18s ease}
+.btn-primary{background:var(--indigo);color:#fff}
+.btn-primary:hover{background:var(--indigo-dark);transform:translateY(-1px)}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
+.btn-ghost:hover{border-color:#c9c6d8}
+
+/* ── Hero intro ── */
+.hero-intro{min-height:100vh;background:var(--page);display:flex;align-items:center;padding-top:84px;border-bottom:1px solid var(--line)}
+.hero-intro .container{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.hero-copy{max-width:520px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--indigo);font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px}
+.eyebrow-dot{width:7px;height:7px;border-radius:50%;background:var(--indigo)}
+.hero-h1{font-size:64px;line-height:1.06;letter-spacing:-3.2px;font-weight:700;margin-bottom:22px;color:var(--ink)}
+.hero-sub{font-size:17px;line-height:1.72;color:var(--muted);margin-bottom:32px}
+.hero-actions{display:flex;align-items:center;gap:12px}
+.hero-actions .btn{height:50px;padding:0 24px;font-size:14px}
+.hero-note{margin-top:22px;display:flex;gap:20px;font-size:12px;color:var(--muted-2)}
+.hero-note span{display:inline-flex;align-items:center;gap:6px}
+
+/* ── Scroll story section ── */
+.story-section{display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
+
+.story-steps{padding:0 80px 0 calc((100vw - 1180px)/2 + 24px)}
+.story-step{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:80px 0}
+.step-num{font-size:11px;font-weight:800;letter-spacing:.12em;color:var(--indigo);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.step-num::before{content:'';display:block;width:24px;height:2px;background:var(--indigo)}
+.step-h2{font-size:42px;line-height:1.1;letter-spacing:-1.8px;font-weight:700;margin-bottom:16px}
+.step-p{font-size:16px;line-height:1.75;color:var(--muted);max-width:420px}
+.step-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.step-tag{height:30px;padding:0 12px;border-radius:999px;background:var(--indigo-soft);color:var(--indigo);font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:5px}
+
+/* ── Sticky demo panel ── */
+.story-demo{position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;background:#fff;border-left:1px solid var(--line)}
+.demo-inner{position:relative;width:340px}
+
+/* Phone mockups */
+.mockup-frame{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%) scale(.94);
+  width:340px;
+  background:#fff;
+  border:1px solid rgba(231,228,239,.95);
+  border-radius:28px;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+  transition:opacity .5s ease, transform .5s ease;
+  opacity:0;
+  pointer-events:none;
+}
+.mockup-frame.active{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:all}
+.mockup-frame.out-above{opacity:0;transform:translate(-50%,-60%) scale(.94)}
+.mockup-frame.out-below{opacity:0;transform:translate(-50%,-40%) scale(.94)}
+
+/* ── Mockup 1: Contribution card ── */
+.m1-cover{height:160px;position:relative;overflow:hidden;background:#1A4A72}
+.m1-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.m1-cover-badges{position:absolute;left:12px;right:12px;top:12px;display:flex;justify-content:space-between;z-index:2}
+.m1-chip{height:26px;padding:0 10px;border-radius:999px;background:rgba(7,24,42,.68);border:1px solid rgba(255,255,255,.18);color:#fff;font-size:10px;font-weight:700;display:inline-flex;align-items:center;gap:5px}
+.m1-chip i{color:#74e0ad}
+.m1-body{padding:18px 20px 20px}
+.m1-profile{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.m1-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#0a5f91,#0a94c5);border:2.5px solid #fff;color:#fff;display:grid;place-items:center;font-size:12px;font-weight:900;flex-shrink:0;box-shadow:0 3px 8px rgba(0,0,0,.15)}
+.m1-name{font-size:15px;font-weight:800;letter-spacing:-.2px}
+.m1-handle{font-size:11px;color:var(--muted-2);margin-top:1px}
+.m1-bio-bars{margin-bottom:12px}
+.m1-bar{height:7px;background:#EEEEF4;border-radius:4px;margin-bottom:6px}
+.m1-stats{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid #e8dfd4;border-radius:12px;overflow:hidden;margin-bottom:14px}
+.m1-stat{padding:8px 4px;text-align:center;display:flex;flex-direction:column;gap:2px}
+.m1-stat:not(:last-child){border-right:1px solid #e8dfd4}
+.m1-stat strong{font-size:13px;font-weight:900;line-height:1}
+.m1-stat span{font-size:8px;color:var(--muted-2);line-height:1}
+.m1-label{font-size:9px;font-weight:800;letter-spacing:.09em;color:var(--muted-2);text-transform:uppercase;margin-bottom:8px}
+.m1-amounts{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}
+.m1-amt{height:36px;border:1px solid #e7ded2;border-radius:10px;background:#fff;font-size:13px;font-weight:800;color:var(--ink);display:grid;place-items:center}
+.m1-amt.sel{border-color:var(--indigo);background:var(--indigo-soft);color:var(--indigo)}
+.m1-cta{width:100%;height:42px;border:0;border-radius:999px;background:#333;color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px}
+
+/* ── Mockup 2: AI Chat ── */
+.m2-head{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;background:#fff}
+.m2-av{width:34px;height:34px;border-radius:50%;background:var(--indigo);display:grid;place-items:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0}
+.m2-name{font-size:13px;font-weight:800}
+.m2-status{font-size:10px;color:var(--green);margin-top:1px}
+.m2-body{padding:16px;display:flex;flex-direction:column;gap:10px;background:#fafafa;min-height:320px}
+.m2-bubble{font-size:12px;line-height:1.5;padding:10px 12px;border-radius:14px;max-width:85%}
+.m2-bubble.user{margin-left:auto;background:var(--indigo);color:#fff;border-bottom-right-radius:4px}
+.m2-bubble.ai{background:#fff;border:1px solid var(--line);color:var(--ink);border-bottom-left-radius:4px}
+.m2-input{padding:12px 16px;border-top:1px solid var(--line);display:flex;gap:8px;align-items:center;background:#fff}
+.m2-input-field{flex:1;height:36px;border:1px solid var(--line);border-radius:18px;padding:0 14px;font-size:12px;color:var(--muted);background:#fafafa;display:flex;align-items:center}
+.m2-send{width:36px;height:36px;border-radius:50%;background:var(--indigo);border:0;display:grid;place-items:center;flex-shrink:0}
+
+/* ── Mockup 3: Paywall ── */
+.m3-head{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;background:#fff}
+.m3-body{padding:16px;display:flex;flex-direction:column;gap:10px;background:#fafafa}
+.m3-bubble{font-size:12px;line-height:1.5;padding:10px 12px;border-radius:14px;max-width:85%}
+.m3-bubble.user{margin-left:auto;background:var(--indigo);color:#fff;border-bottom-right-radius:4px}
+.m3-bubble.ai{background:#fff;border:1px solid var(--line);color:var(--ink);border-bottom-left-radius:4px}
+.m3-blur-wrap{position:relative;margin-top:4px}
+.m3-blur{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 12px;font-size:12px;color:var(--ink);max-width:85%;line-height:1.5;filter:blur(4px);user-select:none;opacity:.5}
+.m3-gate{margin:0 16px 16px;border:1px solid rgba(91,79,207,.25);background:linear-gradient(135deg,rgba(91,79,207,.06),rgba(91,79,207,.12));border-radius:18px;padding:20px;text-align:center}
+.m3-gate-icon{width:40px;height:40px;border-radius:50%;background:var(--indigo-soft);color:var(--indigo);display:grid;place-items:center;margin:0 auto 10px}
+.m3-gate-title{font-size:14px;font-weight:800;margin-bottom:4px}
+.m3-gate-sub{font-size:11px;color:var(--muted);margin-bottom:14px;line-height:1.5}
+.m3-unlock-btn{width:100%;height:40px;border:0;border-radius:999px;background:var(--indigo);color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px}
+.m3-free-note{margin-top:8px;font-size:10px;color:var(--muted-2)}
+
+/* ── Rest of page ── */
+.proof-strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#fff}
+.proof-inner{min-height:80px;display:flex;align-items:center;justify-content:space-between;gap:22px}
+.proof-copy{font-size:13px;font-weight:700;color:#4c4b5b}
+.proof-points{display:flex;gap:28px;color:var(--muted-2);font-size:12px;font-weight:700}
+.proof-points span{display:flex;align-items:center;gap:7px}
+.proof-points i{color:var(--indigo)}
+
+.section{padding:100px 0}
+.section.alt{background:var(--page);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.section-head{margin-bottom:52px}
+.section-head .eyebrow{margin-bottom:14px}
+.section-head h2{font-size:44px;line-height:1.1;letter-spacing:-2px;font-weight:700;max-width:600px;margin-bottom:14px}
+.section-head p{font-size:16px;color:var(--muted);max-width:520px}
+
+.outcome-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.outcome{background:#fff;border:1px solid var(--line);border-radius:22px;padding:26px;min-height:280px;display:flex;flex-direction:column;transition:.2s ease}
+.outcome:hover{transform:translateY(-3px);box-shadow:0 18px 45px rgba(31,27,67,.07)}
+.outcome-num{font-size:10px;font-weight:800;letter-spacing:.1em;color:var(--muted-2);text-transform:uppercase;margin-bottom:20px}
+.outcome-icon{width:50px;height:50px;border-radius:16px;background:var(--indigo-soft);color:var(--indigo);display:grid;place-items:center;margin-bottom:20px}
+.outcome h3{font-size:20px;letter-spacing:-.4px;font-weight:700;margin-bottom:8px}
+.outcome p{font-size:14px;color:var(--muted);line-height:1.7}
+.outcome a{margin-top:auto;padding-top:24px;color:var(--indigo);font-size:13px;font-weight:700;display:inline-flex;gap:6px;align-items:center}
+
+.final{padding:88px 0}
+.cta{background:linear-gradient(135deg,#4b40bf,#786ce6);border-radius:28px;padding:64px 40px;color:#fff;text-align:center;position:relative;overflow:hidden}
+.cta::before{content:"";position:absolute;width:500px;height:500px;border-radius:50%;left:50%;top:-380px;transform:translateX(-50%);background:rgba(255,255,255,.08)}
+.cta h2{font-size:46px;line-height:1.06;letter-spacing:-2px;font-weight:700;position:relative;margin-bottom:14px}
+.cta p{max-width:540px;margin:0 auto 26px;color:rgba(255,255,255,.7);position:relative;font-size:16px}
+.cta .btn{height:50px;padding:0 28px;background:#fff;color:var(--indigo);font-size:14px;position:relative}
+
+footer{padding:32px 0 44px;border-top:1px solid var(--line)}
+.footer{display:flex;justify-content:space-between;align-items:center;color:var(--muted-2);font-size:12px}
+.footer-links{display:flex;gap:20px}
+
+/* Demo panel background */
+.story-demo{background:var(--page)}
+
+/* Animated typing dots */
+.typing{display:flex;gap:4px;align-items:center;padding:10px 14px}
+.typing span{width:6px;height:6px;border-radius:50%;background:var(--muted-2);animation:bounce .9s infinite}
+.typing span:nth-child(2){animation-delay:.15s}
+.typing span:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,80%,100%{transform:translateY(0);opacity:.4}40%{transform:translateY(-5px);opacity:1}}
+
+@media(max-width:900px){
+  .story-section{grid-template-columns:1fr}
+  .story-demo{display:none}
+  .story-steps{padding:0 24px}
+  .hero-intro .container{grid-template-columns:1fr}
+  .hero-h1{font-size:46px}
+  .outcome-grid{grid-template-columns:1fr}
+  .proof-inner{flex-direction:column;align-items:flex-start;padding:20px 0;gap:14px}
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<header class="nav-wrap">
+  <nav class="nav container">
+    <a class="brand" href="#"><span class="brand-mark"><i data-lucide="heart-handshake" width="18"></i></span>Contribute</a>
+    <div class="nav-links">
+      <a href="#story">Features</a>
+      <a href="#product">How it works</a>
+      <a href="#pricing">Pricing</a>
+    </div>
+    <div class="nav-actions">
+      <a class="btn btn-ghost" href="#">Sign in</a>
+      <a class="btn btn-primary" href="un-artists-onboarding.html">Start my card</a>
+    </div>
+  </nav>
+</header>
+
+<!-- Hero intro -->
+<section class="hero-intro">
+  <div class="container">
+    <div class="hero-copy">
+      <div class="eyebrow"><span class="eyebrow-dot"></span>Support and monetization infrastructure</div>
+      <h1 class="hero-h1">Turn audience support into lasting impact.</h1>
+      <p class="hero-sub">Contribute brings contributions, paid access, and AI-powered engagement into one platform for people, projects, and causes.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="un-artists-onboarding.html">Start my card <i data-lucide="arrow-right" width="15"></i></a>
+        <a class="btn btn-ghost" href="#story">Explore the platform</a>
+      </div>
+      <div class="hero-note">
+        <span><i data-lucide="check-circle-2" width="13"></i> Free to start</span>
+        <span><i data-lucide="check-circle-2" width="13"></i> No credit card</span>
+        <span><i data-lucide="check-circle-2" width="13"></i> Set up in minutes</span>
+      </div>
+    </div>
+    <!-- Static card preview in hero -->
+    <div style="display:flex;justify-content:center">
+      <div style="width:320px;background:#fff;border:1px solid rgba(231,228,239,.95);border-radius:24px;overflow:hidden;box-shadow:var(--shadow);">
+        <div style="height:150px;position:relative;overflow:hidden;background:#1A4A72;">
+          <img src="https://c.stocksy.com/a/GEXS00/z9/6800920.jpg" alt="Coral reef" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+          <div style="position:absolute;left:12px;right:12px;top:12px;display:flex;justify-content:space-between;z-index:2">
+            <span style="height:24px;padding:0 9px;border-radius:999px;background:rgba(7,24,42,.68);border:1px solid rgba(255,255,255,.18);color:#fff;font-size:10px;font-weight:700;display:inline-flex;align-items:center;gap:4px"><i data-lucide="waves" width="10"></i> Conservation</span>
+            <span style="height:24px;padding:0 9px;border-radius:999px;background:rgba(7,24,42,.68);border:1px solid rgba(255,255,255,.18);color:#fff;font-size:10px;font-weight:700;display:inline-flex;align-items:center;gap:4px"><i data-lucide="shield-check" width="10" style="color:#74e0ad"></i> Verified</span>
+          </div>
+        </div>
+        <div style="padding:16px 18px 18px">
+          <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px">
+            <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#0a5f91,#0a94c5);border:2px solid #fff;color:#fff;display:grid;place-items:center;font-size:11px;font-weight:900;flex-shrink:0;">RF</div>
+            <div><div style="font-size:14px;font-weight:800;">The Reef Fund</div><div style="font-size:11px;color:var(--muted-2)">@reeffund · Sydney</div></div>
+          </div>
+          <div style="margin-bottom:10px"><div style="height:7px;background:#EEEEF4;border-radius:4px;margin-bottom:5px"></div><div style="height:7px;background:#EEEEF4;border-radius:4px;width:68%"></div></div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);border:1px solid #e8dfd4;border-radius:10px;overflow:hidden;margin-bottom:12px">
+            <div style="padding:7px 4px;text-align:center;border-right:1px solid #e8dfd4"><div style="font-size:12px;font-weight:900;line-height:1">2.3M</div><div style="font-size:8px;color:var(--muted-2);margin-top:2px">sq ft restored</div></div>
+            <div style="padding:7px 4px;text-align:center;border-right:1px solid #e8dfd4"><div style="font-size:12px;font-weight:900;line-height:1">14</div><div style="font-size:8px;color:var(--muted-2);margin-top:2px">countries</div></div>
+            <div style="padding:7px 4px;text-align:center"><div style="font-size:12px;font-weight:900;line-height:1">8,400</div><div style="font-size:8px;color:var(--muted-2);margin-top:2px">supporters</div></div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:9px">
+            <div style="height:34px;border:1px solid #e7ded2;border-radius:8px;font-size:12px;font-weight:800;display:grid;place-items:center">$5</div>
+            <div style="height:34px;border:1px solid var(--indigo);border-radius:8px;background:var(--indigo-soft);color:var(--indigo);font-size:12px;font-weight:800;display:grid;place-items:center">$15</div>
+            <div style="height:34px;border:1px solid #e7ded2;border-radius:8px;font-size:12px;font-weight:800;display:grid;place-items:center">$50</div>
+            <div style="height:34px;border:1px solid #e7ded2;border-radius:8px;font-size:12px;font-weight:800;display:grid;place-items:center">$100</div>
+          </div>
+          <button style="width:100%;height:38px;border:0;border-radius:999px;background:#333;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:5px"><i data-lucide="heart" width="12" fill="white" stroke="white"></i> Contribute now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Scroll story -->
+<div class="story-section" id="story">
+
+  <!-- Left: text steps -->
+  <div class="story-steps">
+
+    <div class="story-step" data-step="1">
+      <div class="step-num">01 · Contributions</div>
+      <h2 class="step-h2">One card.<br>Every way to give.</h2>
+      <p class="step-p">Give your audience a simple way to support your work. Set your own amounts, accept one-time or recurring contributions, and get paid directly — no platform middleman.</p>
+      <div class="step-tags">
+        <span class="step-tag"><i data-lucide="heart" width="12"></i> One-time & recurring</span>
+        <span class="step-tag"><i data-lucide="wallet" width="12"></i> Direct payouts</span>
+        <span class="step-tag"><i data-lucide="sliders-horizontal" width="12"></i> Custom amounts</span>
+      </div>
+    </div>
+
+    <div class="story-step" data-step="2">
+      <div class="step-num">02 · AI Engagement</div>
+      <h2 class="step-h2">Your knowledge,<br>always available.</h2>
+      <p class="step-p">Train an AI on your work, writing, and expertise. Your audience can ask questions and explore your knowledge anytime — even when you're not online. You control what's free and what's paid.</p>
+      <div class="step-tags">
+        <span class="step-tag"><i data-lucide="bot" width="12"></i> Trained on your content</span>
+        <span class="step-tag"><i data-lucide="clock" width="12"></i> Available 24/7</span>
+        <span class="step-tag"><i data-lucide="lock" width="12"></i> You control access</span>
+      </div>
+    </div>
+
+    <div class="story-step" data-step="3">
+      <div class="step-num">03 · Paid Access</div>
+      <h2 class="step-h2">Free taste.<br>Paid depth.</h2>
+      <p class="step-p">Offer a few free conversations, then gate deeper access behind a subscription. It's a natural, non-pushy way to convert curious visitors into paying supporters.</p>
+      <div class="step-tags">
+        <span class="step-tag"><i data-lucide="sparkles" width="12"></i> Free tier included</span>
+        <span class="step-tag"><i data-lucide="trending-up" width="12"></i> Converts naturally</span>
+        <span class="step-tag"><i data-lucide="settings" width="12"></i> You set the price</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Right: sticky demo -->
+  <div class="story-demo">
+    <div class="demo-inner" style="position:relative;height:560px;width:340px;">
+
+      <!-- Mockup 1: Contribution card -->
+      <div class="mockup-frame active" id="mock-1">
+        <div class="m1-cover">
+          <img src="https://c.stocksy.com/a/GEXS00/z9/6800920.jpg" alt="Reef">
+          <div class="m1-cover-badges">
+            <span class="m1-chip"><i data-lucide="waves" width="10"></i> Conservation</span>
+            <span class="m1-chip"><i data-lucide="shield-check" width="10"></i> Verified</span>
+          </div>
+        </div>
+        <div class="m1-body">
+          <div class="m1-profile">
+            <div class="m1-avatar">RF</div>
+            <div><div class="m1-name">The Reef Fund</div><div class="m1-handle">@reeffund · Sydney · Maldives</div></div>
+          </div>
+          <div class="m1-bio-bars">
+            <div class="m1-bar"></div>
+            <div class="m1-bar" style="width:70%"></div>
+          </div>
+          <div class="m1-stats">
+            <div class="m1-stat"><strong>2.3M</strong><span>sq ft restored</span></div>
+            <div class="m1-stat"><strong>14</strong><span>countries</span></div>
+            <div class="m1-stat"><strong>8,400</strong><span>supporters</span></div>
+          </div>
+          <div class="m1-label">Support The Reef Fund</div>
+          <div class="m1-amounts">
+            <div class="m1-amt">$5</div>
+            <div class="m1-amt sel">$15</div>
+            <div class="m1-amt">$50</div>
+            <div class="m1-amt">$100</div>
+          </div>
+          <button class="m1-cta"><i data-lucide="heart" width="13" fill="white" stroke="white"></i> Contribute now</button>
+        </div>
+      </div>
+
+      <!-- Mockup 2: AI Chat -->
+      <div class="mockup-frame" id="mock-2">
+        <div class="m2-head">
+          <div class="m2-av">RF</div>
+          <div><div class="m2-name">Reef Fund AI</div><div class="m2-status">● Online now</div></div>
+        </div>
+        <div class="m2-body">
+          <div class="m2-bubble user">Where is the restoration work happening?</div>
+          <div class="m2-bubble ai">We're active across 14 countries — from the Great Barrier Reef to the Maldives and the Red Sea. Each site uses transplanting methods suited to local coral species.</div>
+          <div class="m2-bubble user">How do I know my contribution is being used?</div>
+          <div class="m2-bubble ai">Every supporter receives quarterly impact reports showing exactly which sites their funds supported and the sq footage restored.</div>
+          <div class="typing"><span></span><span></span><span></span></div>
+        </div>
+        <div class="m2-input">
+          <div class="m2-input-field" style="color:var(--muted-2)">Ask me anything…</div>
+          <button class="m2-send"><i data-lucide="arrow-up" width="14" stroke="white"></i></button>
+        </div>
+      </div>
+
+      <!-- Mockup 3: Paywall -->
+      <div class="mockup-frame" id="mock-3">
+        <div class="m3-head" style="padding:14px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;background:#fff">
+          <div style="width:34px;height:34px;border-radius:50%;background:var(--indigo);display:grid;place-items:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0">RF</div>
+          <div><div style="font-size:13px;font-weight:800">Reef Fund AI</div><div style="font-size:10px;color:var(--green)">● Online now</div></div>
+        </div>
+        <div class="m3-body">
+          <div class="m3-bubble user">What species of coral do you focus on?</div>
+          <div class="m3-bubble ai">We primarily work with Acropora and Porites species — fast-growing varieties that anchor reef ecosystems.</div>
+          <div class="m3-bubble user">Can you explain the transplanting process?</div>
+          <div class="m3-blur-wrap">
+            <div class="m3-blur">We grow coral fragments in underwater nurseries for 6–12 months before transplanting them onto degraded reef surfaces using an eco-safe bonding method developed with…</div>
+          </div>
+        </div>
+        <div class="m3-gate">
+          <div class="m3-gate-icon"><i data-lucide="lock" width="18"></i></div>
+          <div class="m3-gate-title">You've used 3 free conversations</div>
+          <div class="m3-gate-sub">Unlock unlimited access to the Reef Fund AI and support their mission at the same time.</div>
+          <button class="m3-unlock-btn"><i data-lucide="sparkles" width="13"></i> Unlock for $5/month</button>
+          <div class="m3-free-note">Cancel anytime · Supports reef restoration directly</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Proof strip -->
+<section class="proof-strip">
+  <div class="proof-inner container">
+    <div class="proof-copy">Support infrastructure for people, projects, and causes.</div>
+    <div class="proof-points">
+      <span><i data-lucide="link-2" width="14"></i> One shareable card</span>
+      <span><i data-lucide="wallet-cards" width="14"></i> Multiple ways to earn</span>
+      <span><i data-lucide="shield-check" width="14"></i> You control access</span>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="section" id="product">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow"><span class="eyebrow-dot"></span>One platform, more ways to earn</div>
+      <h2>Start with support. Add more when you're ready.</h2>
+      <p>Contribute combines contributions, paid access, and AI-powered engagement — for individuals, projects, and causes of every kind.</p>
+    </div>
+    <div class="outcome-grid">
+      <article class="outcome">
+        <div class="outcome-num">01 · Support</div>
+        <div class="outcome-icon"><i data-lucide="heart" width="24"></i></div>
+        <h3>Accept contributions</h3>
+        <p>Let people support your work with one-time or recurring contributions through a card that feels like yours.</p>
+        <a href="#">Learn more <i data-lucide="arrow-right" width="13"></i></a>
+      </article>
+      <article class="outcome">
+        <div class="outcome-num">02 · Access</div>
+        <div class="outcome-icon"><i data-lucide="lock-keyhole" width="24"></i></div>
+        <h3>Offer paid access</h3>
+        <p>Charge for premium writing, downloads, courses, memberships, or deeper access to your expertise.</p>
+        <a href="#">Learn more <i data-lucide="arrow-right" width="13"></i></a>
+      </article>
+      <article class="outcome">
+        <div class="outcome-num">03 · Engagement</div>
+        <div class="outcome-icon"><i data-lucide="bot" width="24"></i></div>
+        <h3>Stay available with AI</h3>
+        <p>Let your audience ask questions and learn from your knowledge — even when you're not online.</p>
+        <a href="#">Learn more <i data-lucide="arrow-right" width="13"></i></a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="final">
+  <div class="container">
+    <div class="cta">
+      <h2>Give your work a place to grow.</h2>
+      <p>Start with a simple support card today. Add paid access and AI whenever they make sense for your audience.</p>
+      <a class="btn" href="un-artists-onboarding.html">Start my card <i data-lucide="arrow-right" width="15"></i></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer container">
+    <a class="brand" href="#"><span class="brand-mark"><i data-lucide="heart-handshake" width="17"></i></span>Contribute</a>
+    <div class="footer-links"><a href="#" style="color:var(--muted-2)">Product</a><a href="#" style="color:var(--muted-2)">Pricing</a><a href="#" style="color:var(--muted-2)">Terms</a><a href="#" style="color:var(--muted-2)">Privacy</a></div>
+    <span>© 2026 Contribute.to</span>
+  </div>
+</footer>
+
+<script>
+lucide.createIcons();
+
+// Scroll-driven mockup transitions
+const steps = document.querySelectorAll('.story-step');
+const mocks = {1: document.getElementById('mock-1'), 2: document.getElementById('mock-2'), 3: document.getElementById('mock-3')};
+let currentStep = 1;
+
+function setMock(n) {
+  if (n === currentStep) return;
+  const prev = mocks[currentStep];
+  const next = mocks[n];
+  // Slide prev up if going forward, down if going back
+  prev.classList.remove('active');
+  prev.classList.add(n > currentStep ? 'out-above' : 'out-below');
+  setTimeout(() => prev.classList.remove('out-above', 'out-below'), 600);
+  next.classList.remove('out-above', 'out-below');
+  next.classList.add('active');
+  currentStep = n;
+}
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const n = parseInt(entry.target.dataset.step);
+      setMock(n);
+    }
+  });
+}, { threshold: 0.5 });
+
+steps.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
