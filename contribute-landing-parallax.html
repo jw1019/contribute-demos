@@ -55,42 +55,84 @@ button{font:inherit;cursor:pointer}
 .hero-note{margin-top:22px;display:flex;gap:20px;font-size:12px;color:var(--muted-2)}
 .hero-note span{display:inline-flex;align-items:center;gap:6px}
 
-/* ── Scroll story section ── */
-.story-section{display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
+/* ── Parallax 3-column story ── */
+.parallax-wrapper{
+  display:grid;
+  grid-template-columns:1fr 400px 1fr;
+  background:#fff;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+}
 
-.story-steps{padding:0 80px 0 calc((100vw - 1180px)/2 + 24px)}
-.story-step{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:80px 0}
+/* Left + right text columns */
+.pcol-left, .pcol-right{ min-width:0; }
+
+/* Each step occupies one viewport height */
+.pstep{
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:0 56px;
+  opacity:0;
+  transform:translateY(24px);
+  transition:opacity .55s ease, transform .55s ease;
+}
+.pstep.visible{opacity:1;transform:translateY(0)}
+.pstep-spacer{height:100vh}
+
 .step-num{font-size:11px;font-weight:800;letter-spacing:.12em;color:var(--indigo);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.step-num::before{content:'';display:block;width:24px;height:2px;background:var(--indigo)}
-.step-h2{font-size:42px;line-height:1.1;letter-spacing:-1.8px;font-weight:700;margin-bottom:16px}
-.step-p{font-size:16px;line-height:1.75;color:var(--muted);max-width:420px}
-.step-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
-.step-tag{height:30px;padding:0 12px;border-radius:999px;background:var(--indigo-soft);color:var(--indigo);font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:5px}
+.step-num::before{content:'';display:block;width:20px;height:2px;background:var(--indigo)}
+.step-h2{font-size:38px;line-height:1.12;letter-spacing:-1.6px;font-weight:700;margin-bottom:14px}
+.step-p{font-size:15px;line-height:1.75;color:var(--muted)}
+.step-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.step-tag{height:28px;padding:0 11px;border-radius:999px;background:var(--indigo-soft);color:var(--indigo);font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:5px}
 
-/* ── Sticky demo panel ── */
-.story-demo{position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;background:#fff;border-left:1px solid var(--line)}
-.demo-inner{position:relative;width:340px}
+/* Center sticky column */
+.pcol-center{
+  position:sticky;
+  top:0;
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-left:1px solid var(--line);
+  border-right:1px solid var(--line);
+  background:var(--page);
+  align-self:start; /* needed for sticky inside grid */
+}
 
-/* Phone mockups */
+/* Card mockups — centered in sticky panel */
 .mockup-frame{
-  position:absolute;top:50%;left:50%;
-  transform:translate(-50%,-50%) scale(.94);
-  width:340px;
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,calc(-50% + 18px)) scale(.97);
+  width:370px;
   background:#fff;
   border:1px solid rgba(231,228,239,.95);
   border-radius:28px;
   overflow:hidden;
   box-shadow:var(--shadow);
-  transition:opacity .5s ease, transform .5s ease;
+  transition:opacity .48s ease, transform .48s ease;
   opacity:0;
   pointer-events:none;
 }
-.mockup-frame.active{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:all}
-.mockup-frame.out-above{opacity:0;transform:translate(-50%,-60%) scale(.94)}
-.mockup-frame.out-below{opacity:0;transform:translate(-50%,-40%) scale(.94)}
+.mockup-frame.active{
+  opacity:1;
+  transform:translate(-50%,-50%) scale(1);
+  pointer-events:all;
+}
+.mockup-frame.out-above{
+  opacity:0;
+  transform:translate(-50%,calc(-50% - 18px)) scale(.97);
+}
+.mockup-frame.out-below{
+  opacity:0;
+  transform:translate(-50%,calc(-50% + 18px)) scale(.97);
+}
 
 /* ── Mockup 1: Contribution card ── */
-.m1-cover{height:160px;position:relative;overflow:hidden;background:#1A4A72}
+.m1-cover{height:200px;position:relative;overflow:hidden;background:#1A4A72}
 .m1-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .m1-cover-badges{position:absolute;left:12px;right:12px;top:12px;display:flex;justify-content:space-between;z-index:2}
 .m1-chip{height:26px;padding:0 10px;border-radius:999px;background:rgba(7,24,42,.68);border:1px solid rgba(255,255,255,.18);color:#fff;font-size:10px;font-weight:700;display:inline-flex;align-items:center;gap:5px}
@@ -176,9 +218,6 @@ footer{padding:32px 0 44px;border-top:1px solid var(--line)}
 .footer{display:flex;justify-content:space-between;align-items:center;color:var(--muted-2);font-size:12px}
 .footer-links{display:flex;gap:20px}
 
-/* Demo panel background */
-.story-demo{background:var(--page)}
-
 /* Animated typing dots */
 .typing{display:flex;gap:4px;align-items:center;padding:10px 14px}
 .typing span{width:6px;height:6px;border-radius:50%;background:var(--muted-2);animation:bounce .9s infinite}
@@ -187,9 +226,11 @@ footer{padding:32px 0 44px;border-top:1px solid var(--line)}
 @keyframes bounce{0%,80%,100%{transform:translateY(0);opacity:.4}40%{transform:translateY(-5px);opacity:1}}
 
 @media(max-width:900px){
-  .story-section{grid-template-columns:1fr}
-  .story-demo{display:none}
-  .story-steps{padding:0 24px}
+  .parallax-wrapper{grid-template-columns:1fr}
+  .pcol-center{display:none}
+  .pcol-right{display:none}
+  .pstep{padding:0 24px}
+  .pstep-spacer{display:none}
   .hero-intro .container{grid-template-columns:1fr}
   .hero-h1{font-size:46px}
   .outcome-grid{grid-template-columns:1fr}
@@ -266,16 +307,16 @@ footer{padding:32px 0 44px;border-top:1px solid var(--line)}
   </div>
 </section>
 
-<!-- Scroll story -->
-<div class="story-section" id="story">
+<!-- Scroll story: 3-column layout -->
+<div class="parallax-wrapper" id="story">
 
-  <!-- Left: text steps -->
-  <div class="story-steps">
+  <!-- Left column: steps 01 and 03 -->
+  <div class="pcol-left">
 
-    <div class="story-step" data-step="1">
+    <div class="pstep" data-step="1">
       <div class="step-num">01 · Accept contributions</div>
       <h2 class="step-h2">Let your audience<br>support your work.</h2>
-      <p class="step-p">Set your own amounts, accept one-time or recurring contributions, and get paid directly. No middleman, no complexity — just a simple card that works for any person, project, or cause.</p>
+      <p class="step-p">Set your own amounts, accept one-time or recurring contributions, and get paid directly. No middleman — just a simple card that works for any person, project, or cause.</p>
       <div class="step-tags">
         <span class="step-tag"><i data-lucide="heart" width="12"></i> One-time & recurring</span>
         <span class="step-tag"><i data-lucide="wallet" width="12"></i> Direct payouts</span>
@@ -283,21 +324,12 @@ footer{padding:32px 0 44px;border-top:1px solid var(--line)}
       </div>
     </div>
 
-    <div class="story-step" data-step="2">
-      <div class="step-num">02 · Stay available with AI</div>
-      <h2 class="step-h2">Your knowledge,<br>always on.</h2>
-      <p class="step-p">Train an AI on your work, writing, and expertise. Your audience can ask questions and get answers in your voice — anytime, even when you're offline. You decide what's free and what requires access.</p>
-      <div class="step-tags">
-        <span class="step-tag"><i data-lucide="bot" width="12"></i> Trained on your content</span>
-        <span class="step-tag"><i data-lucide="clock" width="12"></i> Available 24/7</span>
-        <span class="step-tag"><i data-lucide="lock" width="12"></i> You control access</span>
-      </div>
-    </div>
+    <div class="pstep-spacer"></div>
 
-    <div class="story-step" data-step="3">
+    <div class="pstep" data-step="3">
       <div class="step-num">03 · Offer paid access</div>
       <h2 class="step-h2">Free to explore.<br>Paid to go deeper.</h2>
-      <p class="step-p">Give visitors a taste for free, then unlock deeper access behind a subscription. It's a natural conversion — people who engage with your AI are already invested in your work.</p>
+      <p class="step-p">Give visitors a taste for free, then unlock deeper access behind a subscription. People who engage with your AI are already invested in your work.</p>
       <div class="step-tags">
         <span class="step-tag"><i data-lucide="sparkles" width="12"></i> Free tier included</span>
         <span class="step-tag"><i data-lucide="trending-up" width="12"></i> Converts naturally</span>
@@ -307,88 +339,107 @@ footer{padding:32px 0 44px;border-top:1px solid var(--line)}
 
   </div>
 
-  <!-- Right: sticky demo -->
-  <div class="story-demo">
-    <div class="demo-inner" style="position:relative;height:560px;width:340px;">
+  <!-- Center column: always-visible sticky card -->
+  <div class="pcol-center">
 
-      <!-- Mockup 1: Contribution card -->
-      <div class="mockup-frame active" id="mock-1">
-        <div class="m1-cover">
-          <img src="https://c.stocksy.com/a/GEXS00/z9/6800920.jpg" alt="Reef">
-          <div class="m1-cover-badges">
-            <span class="m1-chip"><i data-lucide="waves" width="10"></i> Conservation</span>
-            <span class="m1-chip"><i data-lucide="shield-check" width="10"></i> Verified</span>
-          </div>
-        </div>
-        <div class="m1-body">
-          <div class="m1-profile">
-            <div class="m1-avatar">RF</div>
-            <div><div class="m1-name">The Reef Fund</div><div class="m1-handle">@reeffund · Sydney · Maldives</div></div>
-          </div>
-          <div class="m1-bio-bars">
-            <div class="m1-bar"></div>
-            <div class="m1-bar" style="width:70%"></div>
-          </div>
-          <div class="m1-stats">
-            <div class="m1-stat"><strong>2.3M</strong><span>sq ft restored</span></div>
-            <div class="m1-stat"><strong>14</strong><span>countries</span></div>
-            <div class="m1-stat"><strong>8,400</strong><span>supporters</span></div>
-          </div>
-          <div class="m1-label">Support The Reef Fund</div>
-          <div class="m1-amounts">
-            <div class="m1-amt">$5</div>
-            <div class="m1-amt sel">$15</div>
-            <div class="m1-amt">$50</div>
-            <div class="m1-amt">$100</div>
-          </div>
-          <button class="m1-cta"><i data-lucide="heart" width="13" fill="white" stroke="white"></i> Contribute now</button>
+    <!-- Mockup 1: Contribution card -->
+    <div class="mockup-frame active" id="mock-1">
+      <div class="m1-cover">
+        <img src="https://c.stocksy.com/a/GEXS00/z9/6800920.jpg" alt="Reef">
+        <div class="m1-cover-badges">
+          <span class="m1-chip"><i data-lucide="waves" width="10"></i> Conservation</span>
+          <span class="m1-chip"><i data-lucide="shield-check" width="10"></i> Verified</span>
         </div>
       </div>
-
-      <!-- Mockup 2: AI Chat -->
-      <div class="mockup-frame" id="mock-2">
-        <div class="m2-head">
-          <div class="m2-av">RF</div>
-          <div><div class="m2-name">Reef Fund AI</div><div class="m2-status">● Online now</div></div>
+      <div class="m1-body">
+        <div class="m1-profile">
+          <div class="m1-avatar">RF</div>
+          <div><div class="m1-name">The Reef Fund</div><div class="m1-handle">@reeffund · Sydney · Maldives</div></div>
         </div>
-        <div class="m2-body">
-          <div class="m2-bubble user">Where is the restoration work happening?</div>
-          <div class="m2-bubble ai">We're active across 14 countries — from the Great Barrier Reef to the Maldives and the Red Sea. Each site uses transplanting methods suited to local coral species.</div>
-          <div class="m2-bubble user">How do I know my contribution is being used?</div>
-          <div class="m2-bubble ai">Every supporter receives quarterly impact reports showing exactly which sites their funds supported and the sq footage restored.</div>
-          <div class="typing"><span></span><span></span><span></span></div>
+        <div class="m1-bio-bars">
+          <div class="m1-bar"></div>
+          <div class="m1-bar" style="width:70%"></div>
         </div>
-        <div class="m2-input">
-          <div class="m2-input-field" style="color:var(--muted-2)">Ask me anything…</div>
-          <button class="m2-send"><i data-lucide="arrow-up" width="14" stroke="white"></i></button>
+        <div class="m1-stats">
+          <div class="m1-stat"><strong>2.3M</strong><span>sq ft restored</span></div>
+          <div class="m1-stat"><strong>14</strong><span>countries</span></div>
+          <div class="m1-stat"><strong>8,400</strong><span>supporters</span></div>
         </div>
+        <div class="m1-label">Support The Reef Fund</div>
+        <div class="m1-amounts">
+          <div class="m1-amt">$5</div>
+          <div class="m1-amt sel">$15</div>
+          <div class="m1-amt">$50</div>
+          <div class="m1-amt">$100</div>
+        </div>
+        <button class="m1-cta"><i data-lucide="heart" width="13" fill="white" stroke="white"></i> Contribute now</button>
       </div>
-
-      <!-- Mockup 3: Paywall -->
-      <div class="mockup-frame" id="mock-3">
-        <div class="m3-head" style="padding:14px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;background:#fff">
-          <div style="width:34px;height:34px;border-radius:50%;background:var(--indigo);display:grid;place-items:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0">RF</div>
-          <div><div style="font-size:13px;font-weight:800">Reef Fund AI</div><div style="font-size:10px;color:var(--green)">● Online now</div></div>
-        </div>
-        <div class="m3-body">
-          <div class="m3-bubble user">What species of coral do you focus on?</div>
-          <div class="m3-bubble ai">We primarily work with Acropora and Porites species — fast-growing varieties that anchor reef ecosystems.</div>
-          <div class="m3-bubble user">Can you explain the transplanting process?</div>
-          <div class="m3-blur-wrap">
-            <div class="m3-blur">We grow coral fragments in underwater nurseries for 6–12 months before transplanting them onto degraded reef surfaces using an eco-safe bonding method developed with…</div>
-          </div>
-        </div>
-        <div class="m3-gate">
-          <div class="m3-gate-icon"><i data-lucide="lock" width="18"></i></div>
-          <div class="m3-gate-title">You've used 3 free conversations</div>
-          <div class="m3-gate-sub">Unlock unlimited access to the Reef Fund AI and support their mission at the same time.</div>
-          <button class="m3-unlock-btn"><i data-lucide="sparkles" width="13"></i> Unlock for $5/month</button>
-          <div class="m3-free-note">Cancel anytime · Supports reef restoration directly</div>
-        </div>
-      </div>
-
     </div>
+
+    <!-- Mockup 2: AI Chat -->
+    <div class="mockup-frame" id="mock-2">
+      <div class="m2-head">
+        <div class="m2-av">RF</div>
+        <div><div class="m2-name">Reef Fund AI</div><div class="m2-status">● Online now</div></div>
+      </div>
+      <div class="m2-body">
+        <div class="m2-bubble user">Where is the restoration work happening?</div>
+        <div class="m2-bubble ai">We're active across 14 countries — from the Great Barrier Reef to the Maldives and the Red Sea. Each site uses transplanting methods suited to local coral species.</div>
+        <div class="m2-bubble user">How do I know my contribution is being used?</div>
+        <div class="m2-bubble ai">Every supporter receives quarterly impact reports showing exactly which sites their funds supported and the sq footage restored.</div>
+        <div class="typing"><span></span><span></span><span></span></div>
+      </div>
+      <div class="m2-input">
+        <div class="m2-input-field" style="color:var(--muted-2)">Ask me anything…</div>
+        <button class="m2-send"><i data-lucide="arrow-up" width="14" stroke="white"></i></button>
+      </div>
+    </div>
+
+    <!-- Mockup 3: Paywall -->
+    <div class="mockup-frame" id="mock-3">
+      <div class="m3-head">
+        <div style="width:34px;height:34px;border-radius:50%;background:var(--indigo);display:grid;place-items:center;font-size:10px;font-weight:800;color:#fff;flex-shrink:0">RF</div>
+        <div><div style="font-size:13px;font-weight:800">Reef Fund AI</div><div style="font-size:10px;color:var(--green)">● Online now</div></div>
+      </div>
+      <div class="m3-body">
+        <div class="m3-bubble user">What species of coral do you focus on?</div>
+        <div class="m3-bubble ai">We primarily work with Acropora and Porites species — fast-growing varieties that anchor reef ecosystems.</div>
+        <div class="m3-bubble user">Can you explain the transplanting process?</div>
+        <div class="m3-blur-wrap">
+          <div class="m3-blur">We grow coral fragments in underwater nurseries for 6–12 months before transplanting them onto degraded reef surfaces using an eco-safe bonding method developed with…</div>
+        </div>
+      </div>
+      <div class="m3-gate">
+        <div class="m3-gate-icon"><i data-lucide="lock" width="18"></i></div>
+        <div class="m3-gate-title">You've used 3 free conversations</div>
+        <div class="m3-gate-sub">Unlock unlimited access to the Reef Fund AI and support their mission at the same time.</div>
+        <button class="m3-unlock-btn"><i data-lucide="sparkles" width="13"></i> Unlock for $5/month</button>
+        <div class="m3-free-note">Cancel anytime · Supports reef restoration directly</div>
+      </div>
+    </div>
+
   </div>
+
+  <!-- Right column: step 02 -->
+  <div class="pcol-right">
+
+    <div class="pstep-spacer"></div>
+
+    <div class="pstep" data-step="2">
+      <div class="step-num">02 · Stay available with AI</div>
+      <h2 class="step-h2">Your knowledge,<br>always on.</h2>
+      <p class="step-p">Train an AI on your work, writing, and expertise. Your audience can ask questions and get answers in your voice — anytime, even when you're offline.</p>
+      <div class="step-tags">
+        <span class="step-tag"><i data-lucide="bot" width="12"></i> Trained on your content</span>
+        <span class="step-tag"><i data-lucide="clock" width="12"></i> Available 24/7</span>
+        <span class="step-tag"><i data-lucide="lock" width="12"></i> You control access</span>
+      </div>
+    </div>
+
+    <div class="pstep-spacer"></div>
+
+  </div>
+
 </div>
 
 <!-- Proof strip -->
@@ -460,7 +511,7 @@ footer{padding:32px 0 44px;border-top:1px solid var(--line)}
 lucide.createIcons();
 
 // Scroll-driven mockup transitions
-const steps = document.querySelectorAll('.story-step');
+const steps = document.querySelectorAll('.pstep');
 const mocks = {1: document.getElementById('mock-1'), 2: document.getElementById('mock-2'), 3: document.getElementById('mock-3')};
 let currentStep = 1;
 
@@ -468,7 +519,6 @@ function setMock(n) {
   if (n === currentStep) return;
   const prev = mocks[currentStep];
   const next = mocks[n];
-  // Slide prev up if going forward, down if going back
   prev.classList.remove('active');
   prev.classList.add(n > currentStep ? 'out-above' : 'out-below');
   setTimeout(() => prev.classList.remove('out-above', 'out-below'), 600);
@@ -477,16 +527,18 @@ function setMock(n) {
   currentStep = n;
 }
 
-const observer = new IntersectionObserver((entries) => {
+// Observe steps for mockup switching + fade-in
+const mockObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
+    const n = parseInt(entry.target.dataset.step);
     if (entry.isIntersecting) {
-      const n = parseInt(entry.target.dataset.step);
+      entry.target.classList.add('visible');
       setMock(n);
     }
   });
-}, { threshold: 0.5 });
+}, { threshold: 0.45 });
 
-steps.forEach(s => observer.observe(s));
+steps.forEach(s => mockObserver.observe(s));
 </script>
 </body>
 </html>
