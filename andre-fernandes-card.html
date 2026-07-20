@@ -164,7 +164,8 @@ body {
 .gallery-cell:hover img { transform: scale(1.04); }
 
 /* Image viewer */
-.iv-overlay { position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0); pointer-events: none; transition: background 0.25s; display: flex; align-items: center; justify-content: center; }
+.iv-overlay { position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0); pointer-events: none; transition: background 0.25s; display: none; align-items: center; justify-content: center; }
+.iv-overlay.visible { display: flex; }
 .iv-overlay.open { background: rgba(0,0,0,0.92); pointer-events: all; }
 .iv-stage { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; }
 .iv-img-wrap { position: relative; max-width: min(88vw, 680px); max-height: 80vh; opacity: 0; transform: scale(0.94); transition: opacity 0.22s, transform 0.22s; }
@@ -436,7 +437,7 @@ body {
     <!-- ── FRONT ── -->
     <div class="card-front">
       <div class="cover" onclick="window.open('https://www.youtube.com/watch?v=xJvB_AC0O4E','_blank')" style="cursor:pointer;">
-        <img src="https://i0.wp.com/jornalgrandebahia.com.br/wp-content/uploads/2025/11/Fotografo-Andre-Fernandes-apresenta-exposicao-inedita-'Candomble-20251117.jpg?fit=1400%2C933&quality=80&ssl=1" alt="André Fernandes" onerror="this.style.display='none'">
+        <img src="https://i0.wp.com/jornalgrandebahia.com.br/wp-content/uploads/2025/11/Fotografo-Andre-Fernandes-apresenta-exposicao-inedita-%E2%80%98Candomble-20251117.jpg?fit=1400%2C933&quality=80&ssl=1" alt="André Fernandes" onerror="this.style.display='none'">
         <div class="cover-overlay"></div>
         <!-- Play button -->
         <div class="yt-play">
@@ -833,14 +834,24 @@ function pickPw(el) {
     cur = idx;
     buildDots();
     document.getElementById('ivImg').src = imgs[cur];
-    document.getElementById('ivOverlay').classList.add('open');
+    const ov = document.getElementById('ivOverlay');
+    ov.classList.add('visible');
+    void ov.offsetWidth; // force reflow so transition fires
+    ov.classList.add('open');
     document.body.style.overflow = 'hidden';
     updateNav();
   }
 
   function ivClose() {
-    document.getElementById('ivOverlay').classList.remove('open');
+    const ov = document.getElementById('ivOverlay');
+    ov.classList.remove('open');
     document.body.style.overflow = '';
+    function hide() {
+      ov.classList.remove('visible');
+      document.getElementById('ivImg').src = '';
+      ov.removeEventListener('transitionend', hide);
+    }
+    ov.addEventListener('transitionend', hide);
   }
   window.ivClose = ivClose;
 
@@ -883,7 +894,9 @@ function pickPw(el) {
   });
 
   document.getElementById('ivOverlay').addEventListener('click', e => {
-    if (e.target === e.currentTarget || e.target.id === 'ivStage') ivClose();
+    // Close unless clicking a nav arrow, dot, or the close button itself
+    const isControl = e.target.closest('.iv-arrow, .iv-close, .iv-counter');
+    if (!isControl) ivClose();
   });
 
   document.getElementById('ivStage').addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, {passive:true});
