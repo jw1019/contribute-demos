@@ -163,14 +163,27 @@ body {
 .gallery-cell img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.2s; }
 .gallery-cell:hover img { transform: scale(1.04); }
 
-/* Photo modal */
-.photo-modal { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
-.photo-modal.open { opacity: 1; pointer-events: all; }
-.photo-modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.88); }
-.photo-modal-img { position: relative; max-width: min(90vw, 720px); max-height: 85vh; border-radius: 12px; overflow: hidden; box-shadow: 0 24px 80px rgba(0,0,0,0.6); }
-.photo-modal-img img { display: block; max-width: 100%; max-height: 85vh; object-fit: contain; }
-.photo-modal-close { position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; border-radius: 50%; background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.2); color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
-.photo-modal-close:hover { background: rgba(0,0,0,0.8); }
+/* Image viewer */
+.iv-overlay { position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0); pointer-events: none; transition: background 0.25s; display: flex; align-items: center; justify-content: center; }
+.iv-overlay.open { background: rgba(0,0,0,0.92); pointer-events: all; }
+.iv-stage { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; }
+.iv-img-wrap { position: relative; max-width: min(88vw, 680px); max-height: 80vh; opacity: 0; transform: scale(0.94); transition: opacity 0.22s, transform 0.22s; }
+.iv-overlay.open .iv-img-wrap { opacity: 1; transform: scale(1); }
+.iv-img-wrap.slide-left  { animation: iv-slide-left  0.22s ease forwards; }
+.iv-img-wrap.slide-right { animation: iv-slide-right 0.22s ease forwards; }
+@keyframes iv-slide-left  { from{opacity:0;transform:translateX(40px) scale(.96)} to{opacity:1;transform:translateX(0) scale(1)} }
+@keyframes iv-slide-right { from{opacity:0;transform:translateX(-40px) scale(.96)} to{opacity:1;transform:translateX(0) scale(1)} }
+.iv-img-wrap img { display: block; max-width: 100%; max-height: 80vh; object-fit: contain; border-radius: 10px; box-shadow: 0 24px 80px rgba(0,0,0,0.7); }
+.iv-close { position: fixed; top: 18px; right: 20px; width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; z-index: 10000; }
+.iv-close:hover { background: rgba(255,255,255,0.22); }
+.iv-arrow { position: fixed; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; z-index: 10000; }
+.iv-arrow:hover { background: rgba(255,255,255,0.24); }
+.iv-arrow.prev { left: 16px; }
+.iv-arrow.next { right: 16px; }
+.iv-arrow.hidden { opacity: 0; pointer-events: none; }
+.iv-counter { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 10000; }
+.iv-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.35); transition: background 0.2s, transform 0.2s; }
+.iv-dot.on { background: white; transform: scale(1.3); }
 
 .stats-strip { display: flex; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 14px; }
 .stat { flex: 1; padding: 10px 8px; text-align: center; }
@@ -785,34 +798,107 @@ function pickPw(el) {
 }
 </script>
 
-<!-- Photo Modal -->
-<div class="photo-modal" id="photoModal">
-  <div class="photo-modal-backdrop" onclick="closeModal()"></div>
-  <div class="photo-modal-img">
-    <img id="modalImg" src="" alt="">
-    <button class="photo-modal-close" onclick="closeModal()" aria-label="Close">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
-    </button>
+<!-- Image Viewer -->
+<div class="iv-overlay" id="ivOverlay">
+  <button class="iv-close" onclick="ivClose()" aria-label="Close">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+  </button>
+  <button class="iv-arrow prev" id="ivPrev" onclick="ivNav(-1)" aria-label="Previous">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <div class="iv-stage" id="ivStage">
+    <div class="iv-img-wrap" id="ivWrap">
+      <img id="ivImg" src="" alt="">
+    </div>
   </div>
+  <button class="iv-arrow next" id="ivNext" onclick="ivNav(1)" aria-label="Next">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <div class="iv-counter" id="ivDots"></div>
 </div>
 
 <script>
-document.querySelectorAll('.gallery-cell').forEach(cell => {
-  cell.addEventListener('click', () => {
-    const img = cell.querySelector('img');
-    if (!img || img.style.display === 'none') return;
-    document.getElementById('modalImg').src = img.src;
-    document.getElementById('photoModal').classList.add('open');
+(function(){
+  let imgs = [], cur = 0, touchX = 0;
+
+  function buildList() {
+    imgs = [];
+    document.querySelectorAll('.gallery-cell img').forEach(img => {
+      if (img.style.display !== 'none') imgs.push(img.src);
+    });
+  }
+
+  function ivOpen(idx) {
+    buildList();
+    cur = idx;
+    buildDots();
+    document.getElementById('ivImg').src = imgs[cur];
+    document.getElementById('ivOverlay').classList.add('open');
     document.body.style.overflow = 'hidden';
+    updateNav();
+  }
+
+  function ivClose() {
+    document.getElementById('ivOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  window.ivClose = ivClose;
+
+  function ivNav(dir) {
+    const next = cur + dir;
+    if (next < 0 || next >= imgs.length) return;
+    const wrap = document.getElementById('ivWrap');
+    wrap.classList.remove('slide-left','slide-right');
+    void wrap.offsetWidth;
+    wrap.classList.add(dir > 0 ? 'slide-left' : 'slide-right');
+    cur = next;
+    document.getElementById('ivImg').src = imgs[cur];
+    updateNav();
+    buildDots();
+  }
+  window.ivNav = ivNav;
+
+  function updateNav() {
+    document.getElementById('ivPrev').classList.toggle('hidden', cur === 0);
+    document.getElementById('ivNext').classList.toggle('hidden', cur === imgs.length - 1);
+  }
+
+  function buildDots() {
+    const el = document.getElementById('ivDots');
+    el.innerHTML = '';
+    imgs.forEach((_, i) => {
+      const d = document.createElement('div');
+      d.className = 'iv-dot' + (i === cur ? ' on' : '');
+      d.onclick = () => { if (i !== cur) ivNav(i - cur); };
+      el.appendChild(d);
+    });
+  }
+
+  document.querySelectorAll('.gallery-cell').forEach((cell, i) => {
+    cell.addEventListener('click', () => {
+      const img = cell.querySelector('img');
+      if (!img || img.style.display === 'none') return;
+      ivOpen(i);
+    });
   });
-});
 
-function closeModal() {
-  document.getElementById('photoModal').classList.remove('open');
-  document.body.style.overflow = '';
-}
+  document.getElementById('ivOverlay').addEventListener('click', e => {
+    if (e.target === e.currentTarget || e.target.id === 'ivStage') ivClose();
+  });
 
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  document.getElementById('ivStage').addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, {passive:true});
+  document.getElementById('ivStage').addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchX;
+    if (Math.abs(dx) > 40) ivNav(dx < 0 ? 1 : -1);
+  }, {passive:true});
+
+  document.addEventListener('keydown', e => {
+    if (!document.getElementById('ivOverlay').classList.contains('open')) return;
+    if (e.key === 'Escape') ivClose();
+    if (e.key === 'ArrowLeft') ivNav(-1);
+    if (e.key === 'ArrowRight') ivNav(1);
+  });
+})();
 </script>
 </body>
 </html>
