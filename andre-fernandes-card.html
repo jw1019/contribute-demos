@@ -159,8 +159,18 @@ body {
 .card-bio { font-size: 13px; color: var(--gray-dk); line-height: 1.65; margin-bottom: 14px; }
 
 .gallery-strip { display: grid; grid-template-columns: repeat(3,1fr); gap: 5px; border-radius: 10px; overflow: hidden; margin-bottom: 14px; }
-.gallery-cell { aspect-ratio: 1; overflow: hidden; background: #0D0D0D; }
-.gallery-cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.gallery-cell { aspect-ratio: 1; overflow: hidden; background: #0D0D0D; cursor: pointer; }
+.gallery-cell img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.2s; }
+.gallery-cell:hover img { transform: scale(1.04); }
+
+/* Photo modal */
+.photo-modal { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+.photo-modal.open { opacity: 1; pointer-events: all; }
+.photo-modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.88); }
+.photo-modal-img { position: relative; max-width: min(90vw, 720px); max-height: 85vh; border-radius: 12px; overflow: hidden; box-shadow: 0 24px 80px rgba(0,0,0,0.6); }
+.photo-modal-img img { display: block; max-width: 100%; max-height: 85vh; object-fit: contain; }
+.photo-modal-close { position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; border-radius: 50%; background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.2); color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; }
+.photo-modal-close:hover { background: rgba(0,0,0,0.8); }
 
 .stats-strip { display: flex; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 14px; }
 .stat { flex: 1; padding: 10px 8px; text-align: center; }
@@ -413,7 +423,7 @@ body {
     <!-- ── FRONT ── -->
     <div class="card-front">
       <div class="cover" onclick="window.open('https://www.youtube.com/watch?v=xJvB_AC0O4E','_blank')" style="cursor:pointer;">
-        <img src="https://images.unsplash.com/photo-1583166614297-a97b68d5cead?fm=jpg&q=80&w=1400&auto=format&fit=crop" alt="André Fernandes" onerror="this.style.display='none'">
+        <img src="https://i0.wp.com/jornalgrandebahia.com.br/wp-content/uploads/2025/11/Fotografo-Andre-Fernandes-apresenta-exposicao-inedita-'Candomble-20251117.jpg?fit=1400%2C933&quality=80&ssl=1" alt="André Fernandes" onerror="this.style.display='none'">
         <div class="cover-overlay"></div>
         <!-- Play button -->
         <div class="yt-play">
@@ -458,9 +468,9 @@ body {
           <div class="gallery-cell">
             <img src="https://lh7-rt.googleusercontent.com/docsz/AD_4nXd_e-h4Edcm1zDbRzBebgJibOdBqcJbc4jSB0yp9Xj098HdJzAOPOfsvwZgQNauMwIYlQD3Gn1pPQsODkNV7XfETh0BhKErLBYkZJas74e1UdZdmLrTH6894TC8LTbvovN7oRcg-Q?key=ZoAkwjBXgiKRygjbBrknzkpA" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#1A0A00,#4A2800)'">
           </div>
-          <!-- Geneva exhibition, people viewing the work -->
+          <!-- Orixás series — UN award-winning work -->
           <div class="gallery-cell">
-            <img src="https://i0.wp.com/almapreta.com.br/images/2024/11/Fotografo-Andre-Fernandes-representa-o-Brasil-em-premiacao-internacional-com-ensaio-sobre-Orixas.jpg?fit=400%2C400&ssl=1" onerror="this.src='https://almapreta.com.br/images/2024/11/Fotografo-Andre-Fernandes-representa-o-Brasil-em-premiacao-internacional-com-ensaio-sobre-Orixas.jpg';this.onerror=null;">
+            <img src="https://i0.wp.com/jornalgrandebahia.com.br/wp-content/uploads/2024/12/Fotografo-brasileiro-recebe-mencao-honrosa-em-concurso-da-ONU-pelos-registros-do-Candomble-20241206.jpg?fit=800%2C533&quality=80&ssl=1" onerror="this.style.display='none';this.parentElement.style.background='linear-gradient(135deg,#1A0A00,#4A2800)'">
           </div>
           <!-- André Fernandes portrait -->
           <div class="gallery-cell">
@@ -773,6 +783,36 @@ function pickPw(el) {
   document.querySelectorAll('.pw-opt').forEach(o => o.classList.remove('on'));
   el.classList.add('on');
 }
+</script>
+
+<!-- Photo Modal -->
+<div class="photo-modal" id="photoModal">
+  <div class="photo-modal-backdrop" onclick="closeModal()"></div>
+  <div class="photo-modal-img">
+    <img id="modalImg" src="" alt="">
+    <button class="photo-modal-close" onclick="closeModal()" aria-label="Close">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.gallery-cell').forEach(cell => {
+  cell.addEventListener('click', () => {
+    const img = cell.querySelector('img');
+    if (!img || img.style.display === 'none') return;
+    document.getElementById('modalImg').src = img.src;
+    document.getElementById('photoModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+});
+
+function closeModal() {
+  document.getElementById('photoModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 </script>
 </body>
 </html>
