@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AiJiv — Set up your profile · Contribution</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EDE3D6; --bg-inner:#E9DECF; --card:#FFFFFF; --card-soft:#FCFAF7;
+  --brown:#8A7248; --brown-soft:#B8A386; --brown-tint:#EFE7DC;
+  --ink:#1A1A1A; --muted:#9A8C7C; --line:#E4D9C9;
+  --navy:#1B1E2E; --purple:#6E4BE0; --purple-tint:#F3EFFE;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:'DM Sans',-apple-system,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+.shell{max-width:1180px;margin:0 auto;padding:18px 22px 80px}
+
+.nav{background:var(--bg-inner);border-radius:22px;padding:10px 14px;display:flex;align-items:center;gap:6px;margin-bottom:22px}
+.logo{width:44px;height:44px;display:grid;place-items:center;color:var(--brown-soft);font-size:26px}
+.navbtn{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;color:var(--brown);opacity:.75;cursor:pointer;border:none;background:none;font-size:18px}
+.navbtn.active{background:var(--brown);color:#fff;opacity:1}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:10px;background:#fff;border-radius:30px;padding:5px 8px 5px 18px}
+.ghost{border:none;background:none;color:var(--brown-soft);font-size:15px;cursor:pointer;padding:8px 12px}
+.pill{background:var(--brown-soft);color:#fff;border:none;border-radius:22px;padding:10px 22px;font-size:15px;font-family:inherit;cursor:pointer}
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--brown-tint);display:grid;place-items:center;font-size:15px}
+
+.page{background:var(--bg-inner);border-radius:26px;padding:34px}
+.hello{font-size:30px;color:var(--brown-soft);font-weight:400;margin:0 0 26px}
+.card{background:var(--card);border-radius:24px;padding:34px 38px;margin-bottom:24px}
+.card h2{font-size:27px;margin:0 0 6px;font-weight:400;color:var(--brown)}
+.progress{color:var(--brown-soft);font-size:15px;margin:0 0 26px}
+
+.tasks{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.task{border:1px solid var(--line);border-radius:18px;padding:22px 24px;display:flex;gap:16px;align-items:flex-start;background:#fff;text-align:left;font-family:inherit;color:inherit}
+.task .cir{width:36px;height:36px;border-radius:50%;background:var(--brown-tint);display:grid;place-items:center;flex:none;color:var(--brown);font-size:16px}
+.task.done .cir{background:var(--brown-soft);color:#fff}
+.task .tt{font-size:18px;margin-bottom:5px}
+.task .td{font-size:14.5px;color:var(--brown-soft);line-height:1.45}
+.task.click{cursor:pointer;transition:.15s}
+.task.click:hover{border-color:var(--brown-soft);box-shadow:0 3px 14px rgba(120,95,55,.07)}
+.newtag{display:inline-block;background:var(--brown-tint);color:var(--brown);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:20px;margin-left:8px;vertical-align:middle;font-weight:500}
+
+/* ---------- contribution page ---------- */
+#profileView[hidden],#contribView[hidden]{display:none}
+.back{background:none;border:none;font-family:inherit;font-size:15px;color:var(--brown);cursor:pointer;padding:0;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.crumb{font-size:13px;color:var(--brown-soft);margin-bottom:8px}
+.pagetitle{font-size:31px;font-weight:400;color:var(--brown);margin:0 0 6px}
+.pagesub{font-size:15.5px;color:var(--brown-soft);margin:0 0 26px;max-width:640px;line-height:1.5}
+
+.layout{display:grid;grid-template-columns:1fr 400px;gap:24px;align-items:start}
+.section{border-top:1px solid var(--line);padding-top:26px;margin-top:26px}
+.section:first-child{border:none;padding-top:0;margin-top:0}
+.slabel{font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:16px}
+.field{margin-bottom:24px}
+.field:last-child{margin-bottom:0}
+.label{font-size:15px;font-weight:500;margin-bottom:4px}
+.hint{font-size:13.5px;color:var(--brown-soft);margin-bottom:14px;line-height:1.45}
+
+.tiers{display:flex;gap:14px;flex-wrap:wrap}
+.tier{position:relative;flex:1;min-width:100px;background:var(--card-soft);border:1px solid var(--line);border-radius:16px;padding:20px 8px 16px;text-align:center;cursor:pointer;transition:.15s}
+.tier.pop{border-color:var(--brown);background:#fff;box-shadow:0 0 0 1px var(--brown)}
+.tier input{width:100%;border:none;background:none;text-align:center;font-family:inherit;font-size:26px;font-weight:700;outline:none;color:var(--ink)}
+.tier .unit{font-size:13px;color:var(--muted);margin-top:2px}
+.poptag{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:var(--brown);color:#fff;font-size:11px;padding:3px 12px;border-radius:20px;opacity:0}
+.tier.pop .poptag{opacity:1}
+
+.subrow{display:flex;align-items:center;gap:14px;background:var(--card-soft);border:1px solid var(--line);border-radius:16px;padding:16px 20px;margin-top:14px}
+.subrow .t{font-size:14.5px;font-weight:500}
+.subrow .d{font-size:13px;color:var(--brown-soft)}
+.switch{width:46px;height:27px;border-radius:20px;background:#DCD2C4;position:relative;cursor:pointer;transition:.22s;flex:none;border:none}
+.switch.on{background:var(--brown)}
+.switch:after{content:"";position:absolute;top:4px;left:4px;width:19px;height:19px;border-radius:50%;background:#fff;transition:.22s}
+.switch.on:after{transform:translateX(19px)}
+.switch.lg{width:56px;height:32px}
+.switch.lg:after{width:24px;height:24px}
+.switch.lg.on:after{transform:translateX(24px)}
+.limits{display:flex;gap:12px;margin-top:12px}
+.limit{flex:1}
+.limit .cap{font-size:12.5px;color:var(--muted);margin-bottom:6px}
+.money{display:flex;align-items:center;background:var(--card-soft);border:1px solid var(--line);border-radius:14px;padding:0 16px}
+.money span{color:var(--muted);font-size:15px}
+.money input{border:none;background:none;font-family:inherit;font-size:15px;padding:13px 6px;width:100%;outline:none;color:var(--ink)}
+.limits[data-off="1"]{opacity:.4;pointer-events:none}
+
+.seg{display:inline-flex;background:var(--card-soft);border:1px solid var(--line);border-radius:14px;padding:4px;gap:4px}
+.seg button{border:none;background:none;font-family:inherit;font-size:14px;padding:9px 20px;border-radius:11px;cursor:pointer;color:var(--brown-soft)}
+.seg button.sel{background:var(--brown);color:#fff}
+.input{width:100%;border:1px solid var(--line);background:var(--card-soft);border-radius:14px;padding:14px 18px;font-family:inherit;font-size:15px;outline:none;color:var(--ink)}
+.input:focus{border-color:var(--brown-soft);background:#fff}
+.counter{text-align:right;font-size:12.5px;color:var(--muted);margin-top:6px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.payout{display:flex;align-items:center;gap:14px;background:var(--card-soft);border:1px solid var(--line);border-radius:16px;padding:18px 22px}
+.dot{width:9px;height:9px;border-radius:50%;background:#4CAF7D;flex:none}
+.payout .m{font-size:15px}.payout .s{font-size:13px;color:var(--muted)}
+.payout button{margin-left:auto;border:1px solid var(--line);background:#fff;border-radius:20px;padding:9px 18px;font-family:inherit;font-size:14px;color:var(--brown);cursor:pointer}
+
+/* sticky preview */
+.side{position:sticky;top:20px}
+.side .cap{font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:14px}
+.preview-wrap{background:var(--brown-tint);border-radius:22px;padding:24px;display:flex;justify-content:center}
+.widget{background:#fff;border-radius:20px;padding:24px;width:100%;box-shadow:0 6px 24px rgba(90,70,40,.09)}
+.who{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.ini{width:44px;height:44px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:14px;font-weight:700}
+.nm{font-size:16px;font-weight:700;line-height:1.25}.hd{font-size:14px;color:#8b8b93}
+.wbio{font-size:14px;color:#5c5c66;line-height:1.5;margin-bottom:18px}
+.sec{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:#9a9aa2;margin-bottom:12px}
+.wtiers{display:flex;gap:8px;margin-bottom:12px}
+.wt{flex:1;border:1px solid #E6E4EE;border-radius:12px;padding:12px 2px;text-align:center;position:relative;cursor:pointer}
+.wt.pop{border-color:var(--purple)}
+.wt.sel{border-color:var(--purple);background:var(--purple-tint)}
+.wt .a{font-size:18px;font-weight:700}.wt .b{font-size:11px;color:#8b8b93}
+.wt .p{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--purple);color:#fff;font-size:10px;padding:2px 9px;border-radius:20px;opacity:0}
+.wt.pop .p{opacity:1}
+.wcustom{border:1px dashed #D8D5E4;border-radius:12px;padding:12px 14px;margin-bottom:16px;cursor:pointer;display:flex;align-items:center;gap:8px;color:#8b8b93;font-size:14px}
+.wcustom.sel{border-style:solid;border-color:var(--purple);background:var(--purple-tint);color:var(--ink)}
+.wcustom .cur{font-weight:700;font-size:17px;color:var(--ink)}
+.wcustom input{border:none;background:none;font-family:inherit;font-size:17px;font-weight:700;width:100%;outline:none;padding:0;color:var(--ink)}
+.werr{color:#C0392B;font-size:12px;margin:-8px 0 12px;display:none}
+.cta{width:100%;background:var(--navy);color:#fff;border:none;border-radius:30px;padding:16px;font-family:inherit;font-size:16px;font-weight:500;cursor:pointer}
+.wnote{font-size:12.5px;color:#9a9aa2;text-align:center;margin-top:12px}
+.offnote{font-size:13.5px;color:var(--brown-soft);text-align:center;padding:30px 10px}
+
+.savebar{display:flex;align-items:center;gap:14px;margin-top:28px;padding-top:24px;border-top:1px solid var(--line)}
+.btn-primary{background:var(--brown);color:#fff;border:none;border-radius:24px;padding:13px 30px;font-family:inherit;font-size:15px;cursor:pointer}
+.btn-ghost{background:none;border:1px solid var(--line);border-radius:24px;padding:13px 26px;font-family:inherit;font-size:15px;color:var(--brown);cursor:pointer}
+.note{font-size:13.5px;color:var(--brown-soft)}
+.dim[data-off="1"]{opacity:.4;pointer-events:none}
+@media(max-width:1000px){.layout{grid-template-columns:1fr}.side{position:static}}
+@media(max-width:820px){.tasks,.grid2{grid-template-columns:1fr}.card{padding:24px 20px}}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="nav">
+    <div class="logo">✤</div>
+    <button class="navbtn active">▣</button>
+    <button class="navbtn">⌘</button>
+    <button class="navbtn">☺</button>
+    <button class="navbtn">♡</button>
+    <div class="nav-right">
+      <button class="ghost">Preview</button>
+      <button class="pill">Publish</button>
+      <span style="color:var(--brown-soft)">⌁</span>
+      <div class="avatar">🧑</div>
+    </div>
+  </div>
+
+  <!-- ============ VIEW 1: profile checklist ============ -->
+  <div class="page" id="profileView">
+    <h1 class="hello">Hello, Jason Wu</h1>
+    <div class="card">
+      <h2>Set up your profile</h2>
+      <p class="progress" id="pProg">6 of 9 tasks completed (67%)</p>
+      <div class="tasks">
+        <div class="task done"><div class="cir">✓</div><div><div class="tt">Write Your Bio</div><div class="td">Introduce yourself and share your professional background</div></div></div>
+        <div class="task done"><div class="cir">✓</div><div><div class="tt">Set Initial Greeting</div><div class="td">Craft the welcome message users see when they start a chat</div></div></div>
+        <div class="task"><div class="cir">◷</div><div><div class="tt">Add a Headline</div><div class="td">Summarize your expertise in a catchy, one-line phrase</div></div></div>
+        <div class="task"><div class="cir">◷</div><div><div class="tt">Include a Disclaimer</div><div class="td">Provide any necessary legal or professional boundaries</div></div></div>
+        <div class="task done"><div class="cir">✓</div><div><div class="tt">Claim Your Handle</div><div class="td">Choose a unique username for your AiJiv</div></div></div>
+        <div class="task done"><div class="cir">✓</div><div><div class="tt">Set Your Subscription Plan</div><div class="td">Choose a subscription tier that your audience will pay to chat with your AiJiv</div></div></div>
+        <div class="task done"><div class="cir">✓</div><div><div class="tt">Upload Profile Picture</div><div class="td">Add a professional photo to personalize your AiJiv</div></div></div>
+        <div class="task done"><div class="cir">✓</div><div><div class="tt">Add Your Domain Expertise</div><div class="td">Specify your areas of expertise to help users understand your strengths</div></div></div>
+        <button class="task click" id="taskContrib"><div class="cir">◷</div><div><div class="tt">Set Up Contributions <span class="newtag">New</span></div><div class="td">Let supporters give a one-time contribution without subscribing</div></div></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ VIEW 2: contribution setup ============ -->
+  <div class="page" id="contribView" hidden>
+    <button class="back" id="back">← Set up your profile</button>
+    <div class="card">
+      <p class="crumb">Task 9 of 9</p>
+      <h1 class="pagetitle">Set Up Contributions</h1>
+      <p class="pagesub">Supporters can give a one-time contribution on your public expert page — no subscription needed. AiJiv takes no cut.</p>
+
+      <div class="layout">
+        <!-- left: all settings -->
+        <div>
+
+          <div class="section">
+            <div class="slabel">Status</div>
+            <div class="subrow" style="margin-top:0">
+              <div style="flex:1">
+                <div class="t">Show contributions on my page</div>
+                <div class="d">Turn off to hide the contribute block from visitors.</div>
+              </div>
+              <button class="switch lg on" id="mainSw"></button>
+            </div>
+          </div>
+
+          <div class="dim" id="dimWrap" data-off="0">
+
+            <div class="section">
+              <div class="slabel">Amounts</div>
+              <div class="field">
+                <div class="label">Preset amounts</div>
+                <div class="hint">Up to four. Tap a card to mark one “Popular.”</div>
+                <div class="tiers" id="tiers">
+                  <div class="tier"><div class="poptag">Popular</div><input value="1"><div class="unit">one-time</div></div>
+                  <div class="tier pop"><div class="poptag">Popular</div><input value="3"><div class="unit">one-time</div></div>
+                  <div class="tier"><div class="poptag">Popular</div><input value="5"><div class="unit">one-time</div></div>
+                  <div class="tier"><div class="poptag">Popular</div><input value="10"><div class="unit">one-time</div></div>
+                </div>
+                <div class="subrow">
+                  <div style="flex:1">
+                    <div class="t">Allow custom amounts</div>
+                    <div class="d">Adds a field so supporters can enter their own number.</div>
+                  </div>
+                  <button class="switch on" id="cuSw"></button>
+                </div>
+                <div class="limits" id="limits" data-off="0">
+                  <div class="limit"><div class="cap">Minimum</div><div class="money"><span>$</span><input id="minA" value="1"></div></div>
+                  <div class="limit"><div class="cap">Maximum</div><div class="money"><span>$</span><input id="maxA" value="500"></div></div>
+                  <div class="limit"><div class="cap">Prefilled</div><div class="money"><span>$</span><input id="preA" value="25"></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="slabel">Wording</div>
+              <div class="grid2">
+                <div class="field">
+                  <div class="label">Button label</div>
+                  <div class="hint">What the support button says.</div>
+                  <div class="seg" id="seg"><button class="sel">Contribute</button><button>Support</button><button>Tip</button></div>
+                </div>
+                <div class="field">
+                  <div class="label">Section heading</div>
+                  <div class="hint">Shown above the amounts.</div>
+                  <input class="input" id="heading" maxlength="40" value="Support Andrew">
+                  <div class="counter"><span id="cnt">26</span> characters left</div>
+                </div>
+              </div>
+              <div class="field">
+                <div class="label">Supporting line</div>
+                <div class="hint">Optional. One sentence on what contributions fund.</div>
+                <input class="input" id="subline" maxlength="90" value="Contributions go toward materials and studio time.">
+              </div>
+              <div class="field">
+                <div class="label">Thank-you message</div>
+                <div class="hint">Your AiJiv delivers this in your voice right after checkout.</div>
+                <input class="input" maxlength="140" value="Thank you — this genuinely keeps the studio running. Ask me anything anytime.">
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="slabel">Payouts</div>
+              <div class="field">
+                <div class="hint" style="margin-bottom:12px">Where contributions land. Processing fees apply; AiJiv takes no cut.</div>
+                <div class="payout"><span class="dot"></span><div><div class="m">Stripe · •••• 4821</div><div class="s">Connected · payouts every Friday</div></div><button>Manage</button></div>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="slabel">Notifications</div>
+              <div class="subrow" style="margin-top:0">
+                <div style="flex:1"><div class="t">Email me on every contribution</div><div class="d">Otherwise you get a weekly summary.</div></div>
+                <button class="switch on" onclick="this.classList.toggle('on')"></button>
+              </div>
+              <div class="subrow">
+                <div style="flex:1"><div class="t">Show supporter names publicly</div><div class="d">Supporters can opt out at checkout.</div></div>
+                <button class="switch" onclick="this.classList.toggle('on')"></button>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="savebar">
+            <button class="btn-primary" id="save">Save and mark complete</button>
+            <button class="btn-ghost" id="cancel">Cancel</button>
+            <span class="note">Changes go live when you next Publish.</span>
+          </div>
+        </div>
+
+        <!-- right: sticky live preview -->
+        <div class="side">
+          <div class="cap">Live preview</div>
+          <div class="preview-wrap">
+            <div class="widget">
+              <div class="who"><div class="ini">AW</div><div><div class="nm">Andrew Wong</div><div class="hd">@andrewwong</div></div></div>
+              <div class="wbio">Interdisciplinary artist exploring cultural identity, displacement, and the tension between belonging and loss.</div>
+              <div id="pvBlock">
+                <div class="sec" id="pvHead">SUPPORT ANDREW</div>
+                <div class="wtiers" id="pvTiers"></div>
+                <div class="wcustom" id="pvCustom"><span class="cur">$</span><input id="pvC" placeholder="Custom amount"></div>
+                <div class="werr" id="pvErr"></div>
+                <button class="cta">♥ <span id="pvLabel">Contribute</span> <span id="pvAmt"></span></button>
+                <div class="wnote" id="pvNote">Contributions go toward materials and studio time.</div>
+              </div>
+              <div class="offnote" id="pvOff" style="display:none">Contributions are hidden from your page.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---- routing ---- */
+const pView=document.getElementById('profileView'), cView=document.getElementById('contribView');
+const taskC=document.getElementById('taskContrib');
+function go(v){pView.hidden=v;cView.hidden=!v;window.scrollTo({top:0,behavior:'smooth'});}
+taskC.onclick=()=>go(true);
+document.getElementById('back').onclick=()=>go(false);
+document.getElementById('cancel').onclick=()=>go(false);
+document.getElementById('save').onclick=()=>{
+  taskC.classList.add('done'); taskC.querySelector('.cir').textContent='✓';
+  document.getElementById('pProg').textContent='7 of 9 tasks completed (78%)';
+  go(false);
+};
+
+/* ---- amounts + live preview ---- */
+const tiers=document.getElementById('tiers'), pv=document.getElementById('pvTiers');
+const cuSw=document.getElementById('cuSw'), limits=document.getElementById('limits');
+const pvCustom=document.getElementById('pvCustom'), cIn=document.getElementById('pvC');
+const err=document.getElementById('pvErr'), amt=document.getElementById('pvAmt');
+let picked=1, customMode=false;
+
+function render(){
+  pv.innerHTML='';
+  [...tiers.children].forEach((t,i)=>{
+    const v=t.querySelector('input').value||'0';
+    const d=document.createElement('div');
+    d.className='wt'+(t.classList.contains('pop')?' pop':'')+((!customMode&&picked===i)?' sel':'');
+    d.innerHTML='<div class="p">Popular</div><div class="a">$'+v+'</div><div class="b">one-time</div>';
+    d.onclick=()=>{customMode=false;picked=i;cIn.value='';render();};
+    pv.appendChild(d);
+  });
+  const on=cuSw.classList.contains('on');
+  pvCustom.style.display=on?'flex':'none';
+  pvCustom.classList.toggle('sel',customMode);
+  validate();
+}
+function validate(){
+  const min=+document.getElementById('minA').value||0, max=+document.getElementById('maxA').value||Infinity;
+  if(customMode){
+    if(cIn.value===''){err.style.display='none';amt.textContent='';return;}
+    const v=parseFloat(cIn.value);
+    if(isNaN(v)||v<min){err.textContent='Minimum contribution is $'+min+'.';err.style.display='block';amt.textContent='';return;}
+    if(v>max){err.textContent='Maximum contribution is $'+max+'.';err.style.display='block';amt.textContent='';return;}
+    err.style.display='none';amt.textContent='$'+v;return;
+  }
+  err.style.display='none';
+  amt.textContent='$'+tiers.children[picked].querySelector('input').value;
+}
+tiers.addEventListener('click',e=>{
+  const t=e.target.closest('.tier'); if(!t||e.target.tagName==='INPUT')return;
+  [...tiers.children].forEach(x=>x.classList.remove('pop')); t.classList.add('pop'); render();
+});
+tiers.addEventListener('input',render);
+pvCustom.addEventListener('click',()=>{
+  customMode=true; if(!cIn.value)cIn.value=document.getElementById('preA').value;
+  render(); cIn.focus(); cIn.select();
+});
+cIn.addEventListener('input',validate);
+cuSw.addEventListener('click',()=>{
+  cuSw.classList.toggle('on');
+  const on=cuSw.classList.contains('on');
+  limits.dataset.off=on?'0':'1'; if(!on)customMode=false; render();
+});
+['minA','maxA'].forEach(id=>document.getElementById(id).addEventListener('input',validate));
+
+document.getElementById('seg').addEventListener('click',e=>{
+  if(e.target.tagName!=='BUTTON')return;
+  [...e.currentTarget.children].forEach(b=>b.classList.remove('sel'));
+  e.target.classList.add('sel'); document.getElementById('pvLabel').textContent=e.target.textContent;
+});
+const h=document.getElementById('heading');
+h.addEventListener('input',()=>{
+  document.getElementById('pvHead').textContent=h.value.toUpperCase();
+  document.getElementById('cnt').textContent=40-h.value.length;
+});
+document.getElementById('subline').addEventListener('input',e=>{
+  document.getElementById('pvNote').textContent=e.target.value||'One-time · secure checkout';
+});
+
+const mainSw=document.getElementById('mainSw');
+mainSw.addEventListener('click',()=>{
+  mainSw.classList.toggle('on');
+  const on=mainSw.classList.contains('on');
+  document.getElementById('dimWrap').dataset.off=on?'0':'1';
+  document.getElementById('pvBlock').style.display=on?'block':'none';
+  document.getElementById('pvOff').style.display=on?'none':'block';
+});
+render();
+</script>
+</body>
+</html>
