@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AiJiv widget × Contribute — moments</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --p:#6E72D6; --p-soft:#A8AAE6; --p-tint:#EEEFFB; --p-deep:#5155C4;
+  --ink:#2B2B33; --grey:#8E8E9A; --line:#EDEEF6; --panel:#F7F8FC;
+  --navy:#1B1E2E;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#E9E6E1;font-family:'DM Sans',-apple-system,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+.wrap{display:grid;grid-template-columns:300px 1fr;gap:30px;max-width:1080px;margin:0 auto;padding:34px 24px 70px}
+
+/* left rail */
+.rail h1{font-size:21px;font-weight:500;margin:0 0 6px}
+.rail p.lead{font-size:14px;color:#7A756C;line-height:1.55;margin:0 0 22px}
+.moment{display:block;width:100%;text-align:left;border:1px solid #DCD7CE;background:#FBFAF8;border-radius:14px;padding:14px 16px;margin-bottom:10px;cursor:pointer;font-family:inherit;transition:.15s}
+.moment:hover{border-color:#BFB8AC}
+.moment.on{border-color:var(--p);background:#fff;box-shadow:0 0 0 1px var(--p)}
+.moment .n{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--p);font-weight:500;margin-bottom:4px}
+.moment .t{font-size:15px;font-weight:500;margin-bottom:3px}
+.moment .d{font-size:12.5px;color:#8B8579;line-height:1.45}
+
+/* widget */
+.stage{display:flex;justify-content:center;align-items:flex-start}
+.widget{width:420px;background:#fff;border-radius:22px;box-shadow:0 18px 50px rgba(60,50,40,.18);overflow:hidden;display:flex;flex-direction:column;min-height:640px}
+.whead{margin:14px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:12px 16px;display:flex;align-items:center;gap:12px}
+.pfp{width:44px;height:44px;border-radius:50%;background:#BDBDC6 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"/>') center/cover;flex:none;display:grid;place-items:center;color:#fff;font-size:13px;font-weight:700}
+.whead .nm{font-size:17px;font-weight:700;line-height:1.2}
+.whead .tag{font-size:13.5px;color:var(--grey)}
+.hicons{margin-left:auto;display:flex;gap:14px;color:var(--p);font-size:17px;align-items:center}
+.hicon{cursor:pointer;background:none;border:none;color:var(--p);font-size:17px;padding:0;line-height:1;font-family:inherit;position:relative}
+.hicon.heart{font-size:19px}
+.hicon.heart.pulse:after{content:"";position:absolute;top:-2px;right:-4px;width:6px;height:6px;border-radius:50%;background:#E0574A}
+
+.body{flex:1;padding:6px 18px 0;overflow:auto}
+.day{display:flex;align-items:center;gap:14px;color:var(--grey);font-size:14px;margin:22px 0}
+.day:before,.day:after{content:"";flex:1;height:1px;background:var(--line)}
+.me{background:var(--p);color:#fff;border-radius:20px;padding:14px 20px;font-size:16px;max-width:78%;margin-left:auto;margin-bottom:20px}
+.them{display:flex;gap:12px;margin-bottom:18px}
+.them .pfp{width:32px;height:32px;font-size:10px}
+.them .txt{font-size:16px;line-height:1.5;color:#3A3A44}
+
+/* inline contribute card */
+.incard{border:1px solid var(--line);background:var(--panel);border-radius:18px;padding:18px;margin:6px 0 20px}
+.incard .q{font-size:14.5px;color:#4A4A56;line-height:1.45;margin-bottom:14px}
+.incard .q b{font-weight:700}
+.chips{display:flex;gap:8px;margin-bottom:12px}
+.chip{flex:1;border:1px solid #E2E3F0;background:#fff;border-radius:12px;padding:11px 2px;text-align:center;cursor:pointer;position:relative;transition:.12s}
+.chip:hover{border-color:var(--p-soft)}
+.chip.sel{border-color:var(--p);background:var(--p-tint)}
+.chip .a{font-size:17px;font-weight:700}
+.chip .b{font-size:10.5px;color:var(--grey)}
+.chip .pop{position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--p);color:#fff;font-size:9.5px;padding:2px 8px;border-radius:20px;letter-spacing:.03em}
+.custom{border:1px dashed #D5D6E8;border-radius:12px;padding:11px 14px;display:flex;align-items:center;gap:7px;cursor:pointer;color:var(--grey);font-size:14px;margin-bottom:12px}
+.custom.sel{border-style:solid;border-color:var(--p);background:var(--p-tint);color:var(--ink)}
+.custom .cur{font-weight:700;font-size:16px;color:var(--ink)}
+.custom input{border:none;background:none;font-family:inherit;font-size:16px;font-weight:700;width:100%;outline:none;padding:0;color:var(--ink)}
+.err{color:#C0392B;font-size:12px;margin:-6px 0 10px;display:none}
+.give{width:100%;background:var(--navy);color:#fff;border:none;border-radius:26px;padding:14px;font-family:inherit;font-size:15.5px;font-weight:500;cursor:pointer}
+.give.ghost{background:none;border:1px solid var(--line);color:var(--p)}
+.dismiss{display:block;margin:10px auto 0;background:none;border:none;color:var(--grey);font-size:13px;cursor:pointer;font-family:inherit}
+.fineprint{font-size:11.5px;color:var(--grey);text-align:center;margin-top:10px}
+
+/* gate / paywall state */
+.gate{text-align:center;padding:16px 6px 0}
+.gate .big{font-size:21px;color:var(--p);line-height:1.4;font-weight:500;margin-bottom:10px}
+.gate .sml{font-size:14.5px;color:var(--grey);line-height:1.5;margin-bottom:22px}
+.or{display:flex;align-items:center;gap:12px;color:var(--grey);font-size:12.5px;margin:16px 0}
+.or:before,.or:after{content:"";flex:1;height:1px;background:var(--line)}
+.subbtn{width:100%;background:var(--p);color:#fff;border:none;border-radius:26px;padding:14px;font-family:inherit;font-size:15.5px;font-weight:500;cursor:pointer;margin-bottom:4px}
+
+/* thanks */
+.thanks{text-align:center;padding:40px 10px}
+.thanks .ring{width:66px;height:66px;border-radius:50%;background:var(--p-tint);color:var(--p);display:grid;place-items:center;font-size:28px;margin:0 auto 18px}
+.thanks .big{font-size:19px;font-weight:500;margin-bottom:8px}
+.thanks .sml{font-size:15px;color:var(--grey);line-height:1.55;max-width:300px;margin:0 auto 18px}
+.badge{display:inline-block;background:var(--p-tint);color:var(--p-deep);border-radius:20px;padding:7px 16px;font-size:13px}
+
+/* slide-over panel from header */
+.sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:22px 22px 0 0;box-shadow:0 -12px 40px rgba(40,35,60,.16);padding:22px;transform:translateY(101%);transition:.28s cubic-bezier(.3,.8,.4,1)}
+.sheet.up{transform:translateY(0)}
+.sheet h4{margin:0 0 4px;font-size:17px;font-weight:700}
+.sheet .sub{font-size:13.5px;color:var(--grey);margin:0 0 18px;line-height:1.45}
+.sheetwrap{position:relative;overflow:hidden;flex:1;display:flex;flex-direction:column}
+
+/* footer */
+.pill{background:var(--p);color:#fff;border-radius:24px;padding:11px 22px;display:flex;align-items:center;gap:12px;font-size:15px;width:fit-content;margin:14px auto 0}
+.pill .cnt{width:26px;height:26px;border-radius:50%;background:#E4E5F8;color:var(--p-deep);display:grid;place-items:center;font-size:13px;font-weight:500}
+.pill.warn{background:#fff;color:var(--p);border:1px solid var(--p-soft)}
+.pill.warn .cnt{background:var(--p-tint)}
+.pill .link{margin-left:2px;text-decoration:underline;cursor:pointer;font-weight:500}
+.composer{margin:14px 18px 0;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:14px 16px;display:flex;align-items:center;gap:10px}
+.composer input{border:none;background:none;flex:1;font-family:inherit;font-size:16px;outline:none;color:var(--ink)}
+.composer input::placeholder{color:#B4B4BE}
+.send{width:44px;height:44px;border-radius:50%;background:#D9DAF3;color:#fff;display:grid;place-items:center;flex:none;font-size:17px}
+.wfoot{border-top:1px solid var(--line);margin-top:14px;padding:14px;text-align:center;font-size:12px;letter-spacing:.16em;color:#B0B0BC}
+.wfoot b{color:var(--p-soft)}
+@media(max-width:900px){.wrap{grid-template-columns:1fr}.widget{width:100%;max-width:420px;margin:0 auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="rail">
+    <h1>Contribute inside the AiJiv widget</h1>
+    <p class="lead">Four moments where a one-time contribution fits the conversation rather than interrupting it. Click to preview each.</p>
+
+    <button class="moment on" data-m="0">
+      <div class="n">Always available</div>
+      <div class="t">Heart in the header</div>
+      <div class="d">A persistent icon beside search and share. Opens a sheet without leaving the chat.</div>
+    </button>
+    <button class="moment" data-m="1">
+      <div class="n">After a good answer</div>
+      <div class="t">Inline card in the thread</div>
+      <div class="d">Appears once per session after a substantive reply — the peak-value moment.</div>
+    </button>
+    <button class="moment" data-m="2">
+      <div class="n">Running low</div>
+      <div class="t">Conversations pill</div>
+      <div class="d">At 1 left, the counter offers a contribution to keep going.</div>
+    </button>
+    <button class="moment" data-m="3">
+      <div class="n">Out of conversations</div>
+      <div class="t">The gate</div>
+      <div class="d">Subscribe monthly, or contribute once. Catches people who won't commit to a plan.</div>
+    </button>
+    <button class="moment" data-m="4">
+      <div class="n">After giving</div>
+      <div class="t">Thank-you in his voice</div>
+      <div class="d">The AiJiv itself thanks them, and unlocks more conversations.</div>
+    </button>
+  </div>
+
+  <div class="stage">
+    <div class="widget">
+      <div class="whead">
+        <div class="pfp">PM</div>
+        <div>
+          <div class="nm">Poonacha Machaiah</div>
+          <div class="tag">Exploring the bridge …</div>
+        </div>
+        <div class="hicons">
+          <button class="hicon">⌕</button>
+          <button class="hicon">⤳</button>
+          <button class="hicon heart pulse" id="heartBtn" title="Support Poonacha">♡</button>
+          <button class="hicon">⇥</button>
+          <button class="hicon">✕</button>
+        </div>
+      </div>
+
+      <div class="sheetwrap">
+        <div class="body" id="body"></div>
+
+        <!-- slide-up sheet for header heart -->
+        <div class="sheet" id="sheet">
+          <h4>Support Poonacha</h4>
+          <p class="sub">A one-time contribution. Goes directly to his work — no subscription, no cut taken by AiJiv.</p>
+          <div id="sheetPicker"></div>
+        </div>
+      </div>
+
+      <div id="footArea"></div>
+      <div class="wfoot">• P O W E R E D &nbsp;B Y &nbsp;<b>A I J I V</b></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const AMOUNTS=[3,5,10,25];
+const state={sel:1,custom:false,cval:''};
+
+function picker(id,ctaLabel,ghost){
+  return `
+  <div class="chips" data-picker="${id}">
+    ${AMOUNTS.map((a,i)=>`<div class="chip${i===state.sel&&!state.custom?' sel':''}" data-i="${i}">${i===1?'<div class="pop">Popular</div>':''}<div class="a">$${a}</div><div class="b">one-time</div></div>`).join('')}
+  </div>
+  <div class="custom${state.custom?' sel':''}" data-custom="${id}"><span class="cur">$</span><input placeholder="Custom amount" value="${state.cval}"></div>
+  <div class="err" data-err="${id}"></div>
+  <button class="give${ghost?' ghost':''}" data-give="${id}">♥ ${ctaLabel} <span data-amt="${id}"></span></button>
+  <div class="fineprint">Secure checkout · you'll stay in this conversation</div>`;
+}
+
+function wire(root){
+  root.querySelectorAll('[data-picker]').forEach(p=>{
+    p.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{
+      state.sel=+c.dataset.i; state.custom=false; state.cval=''; refresh();
+    });
+  });
+  root.querySelectorAll('[data-custom]').forEach(c=>{
+    c.onclick=()=>{state.custom=true;refresh();const i=document.querySelector('[data-custom] input');i.focus();};
+    c.querySelector('input').oninput=e=>{state.cval=e.target.value;updateAmt();};
+  });
+  updateAmt();
+}
+function updateAmt(){
+  const min=1,max=500;
+  let v=null,msg='';
+  if(state.custom){
+    if(state.cval!==''){
+      const n=parseFloat(state.cval);
+      if(isNaN(n)||n<min)msg='Minimum is $'+min+'.';
+      else if(n>max)msg='Maximum is $'+max+'.';
+      else v=n;
+    }
+  }else v=AMOUNTS[state.sel];
+  document.querySelectorAll('[data-err]').forEach(e=>{e.textContent=msg;e.style.display=msg?'block':'none';});
+  document.querySelectorAll('[data-amt]').forEach(e=>e.textContent=v?('$'+v):'');
+}
+
+const body=document.getElementById('body'), foot=document.getElementById('footArea'), sheet=document.getElementById('sheet');
+
+const thread=`
+  <div class="day">Yesterday</div>
+  <div class="me">Tell me more about yourself</div>
+  <div class="them"><div class="pfp">PM</div><div class="txt">I am Poonacha Machaiah, a social entrepreneur and business leader with over 20 years of global experience. My journey began as a software engineer, driven by a deep passion for AI and robotics.</div></div>`;
+
+const composer=`
+  <div class="composer"><input placeholder="Ask me anything...."><div class="send">➤</div></div>`;
+
+const views={
+  0:{body:thread, foot:`<div class="pill"><span class="cnt">4</span> Conversations Left</div>${composer}`, sheet:true},
+  1:{body:thread+`
+      <div class="incard">
+        <div class="q">Was that useful? <b>Poonacha's AiJiv is free to chat with.</b> A one-time contribution supports the work behind it.</div>
+        ${picker('inline','Contribute')}
+        <button class="dismiss">Maybe later</button>
+      </div>`,
+     foot:`<div class="pill"><span class="cnt">3</span> Conversations Left</div>${composer}`},
+  2:{body:thread,
+     foot:`<div class="pill warn"><span class="cnt">1</span> Last conversation — <span class="link" data-goto="3">contribute to keep going</span></div>${composer}`},
+  3:{body:`
+      <div class="gate">
+        <div class="big">You've used your 5 free conversations.</div>
+        <div class="sml">Keep talking with Poonacha's AiJiv — subscribe for ongoing access, or contribute once for 20 more conversations.</div>
+        <button class="subbtn">Subscribe · $1 / month</button>
+        <div class="fineprint">Cancel anytime</div>
+        <div class="or">or give once</div>
+        ${picker('gate','Contribute')}
+      </div>`,
+     foot:''},
+  4:{body:`
+      <div class="thanks">
+        <div class="ring">♥</div>
+        <div class="big">Thank you, truly.</div>
+        <div class="sml">"Every great idea starts with a conversation — you just helped keep this one going. Ask me anything."</div>
+        <div class="badge">20 conversations unlocked</div>
+      </div>`,
+     foot:`<div class="pill"><span class="cnt">20</span> Conversations Left</div>${composer}`}
+};
+
+function show(i){
+  const v=views[i];
+  body.innerHTML=v.body; foot.innerHTML=v.foot;
+  sheet.classList.remove('up');
+  document.getElementById('heartBtn').style.display=v.sheet===false?'none':'inline-block';
+  if(v.sheet)document.getElementById('sheetPicker').innerHTML=picker('sheet','Contribute');
+  wire(document);
+  document.querySelectorAll('[data-goto]').forEach(el=>el.onclick=()=>select(+el.dataset.goto));
+  document.querySelectorAll('[data-give]').forEach(b=>b.onclick=()=>select(4));
+  document.querySelectorAll('.dismiss').forEach(b=>b.onclick=()=>select(0));
+}
+function select(i){
+  document.querySelectorAll('.moment').forEach(m=>m.classList.toggle('on',+m.dataset.m===i));
+  show(i);
+}
+document.querySelectorAll('.moment').forEach(m=>m.onclick=()=>select(+m.dataset.m));
+document.getElementById('heartBtn').onclick=()=>{
+  document.getElementById('sheetPicker').innerHTML=picker('sheet','Contribute');
+  wire(document);
+  document.querySelectorAll('[data-give]').forEach(b=>b.onclick=()=>{sheet.classList.remove('up');select(4);});
+  sheet.classList.toggle('up');
+};
+function refresh(){
+  const cur=[...document.querySelectorAll('.moment')].findIndex(m=>m.classList.contains('on'));
+  const sheetUp=sheet.classList.contains('up');
+  show(cur);
+  if(sheetUp){
+    document.getElementById('sheetPicker').innerHTML=picker('sheet','Contribute');
+    wire(document);
+    document.querySelectorAll('[data-give]').forEach(b=>b.onclick=()=>{sheet.classList.remove('up');select(4);});
+    sheet.classList.add('up');
+  }
+}
+select(0);
+</script>
+</body>
+</html>
